@@ -29,15 +29,16 @@ class HomeController extends AbstractController
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
     public function add(ManagerRegistry $doctrine, Produit $produit = null, Request $request): Response{
 
-        $user = $this->getUser();
+       // $user = $produit->getUser()->getId();
+
+        //var_dump($user);die;
 
         if(!$produit){ // edit
             $produit = new Produit();
+            
         } //add
 
-        $form = $this->createForm(ProduitType::class, $produit,  [
-            'user' => $user,
-        ]);
+        $form = $this->createForm(ProduitType::class, $produit);
         $form->handleRequest($request); // analyse the request
 
         if($form->isSubmitted() && $form->isValid()){ // valid respecter les contraintes

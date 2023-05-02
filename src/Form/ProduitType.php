@@ -24,9 +24,9 @@ class ProduitType extends AbstractType
                 'class' => Categorie::class,
                 "choice_label" => 'nomCategorie',
             ])
-            ->add('user_id', HiddenType::class, [
+           /* ->add('user_id', HiddenType::class, [
                 'data' => $options['user']->getId(),
-            ])
+            ])*/
             ->add('Valider', SubmitType::class)
         ;
     }
@@ -38,6 +38,6 @@ class ProduitType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Produit::class,
         ]);
-        $resolver->setRequired('user');
+        //$resolver->setRequired('user');
     }
 }
