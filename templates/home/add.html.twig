@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter votre article{% endblock %}
+
+{% block body %}
+
+    <h1>Ajouter produit</h1>
+
+
+
+{% if app.user %}
+            
+    {{ form(formAddProduit)}}
+
+{% else %}
+
+    <p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
+
+{% endif %}
+
+
+
+
+{% endblock %}

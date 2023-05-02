@@ -11,6 +11,7 @@
         {% for produit in produits %}
        
         <li>
+            <img src="{{ asset('uploads/images/aquarium.jpg') }}" height="auto" width="300px" alt="Mon image">
             <p>{{ produit.nomProduit }}</p>
             <p>{{ produit.prix }}€</p>
             <div><a href="">Acheter</a></div>

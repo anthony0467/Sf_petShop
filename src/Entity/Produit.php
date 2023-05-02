@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProduitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ProduitRepository;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -24,7 +26,7 @@ class Produit
     private ?string $prix = null;
 
     #[ORM\Column]
-    private ?int $disponible = null;
+    private ?int $disponible = 1;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
@@ -34,8 +36,20 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $categorie = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE,   options: ["default" => "CURRENT_TIMESTAMP"])]
-    private ?\DateTimeInterface $dateCreationProduit = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true,   options: ["default" => "CURRENT_TIMESTAMP"])]
+    private ?\DateTimeInterface $dateCreationProduit;
+
+      /**
+      * @Vich\UploadableField(mapping="produit_image", fileNameProperty="imageName")
+      * @var File|null
+      */
+      private $imageFile;
+
+      /**
+       * @ORM\Column(type="string", length=255, nullable=true)
+       * @var string|null
+       */
+      private $imageName;
 
     public function getId(): ?int
     {
@@ -124,5 +138,25 @@ class Produit
         $this->dateCreationProduit = $dateCreationProduit;
 
         return $this;
+    }
+
+    public function setImageFile(?File $image = null): void
+    {
+        $this->imageFile = $image;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageName(?string $imageName): void
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
     }
 }
