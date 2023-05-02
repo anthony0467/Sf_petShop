@@ -4,4 +4,20 @@
 
 {% block body %}
  <h1>Bienvenue</h1>
+
+ <div>
+    <h2>Derniers articles</h2>
+    <ul>
+        {% for produit in produits %}
+       
+        <li>
+            <p>{{ produit.nomProduit }}</p>
+            <p>{{ produit.prix }}€</p>
+            <div><a href="">Acheter</a></div>
+        </li>
+
+        {% endfor %}
+    </ul>
+ </div>
+ 
 {% endblock %}
