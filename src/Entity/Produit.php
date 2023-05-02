@@ -34,6 +34,9 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?Categorie $categorie = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE,   options: ["default" => "CURRENT_TIMESTAMP"])]
+    private ?\DateTimeInterface $dateCreationProduit = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -107,6 +110,18 @@ class Produit
     public function setCategorie(?Categorie $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getDateCreationProduit(): ?\DateTimeInterface
+    {
+        return $this->dateCreationProduit;
+    }
+
+    public function setDateCreationProduit(\DateTimeInterface $dateCreationProduit): self
+    {
+        $this->dateCreationProduit = $dateCreationProduit;
 
         return $this;
     }
