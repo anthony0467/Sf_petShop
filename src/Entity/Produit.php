@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -22,9 +23,23 @@ class Produit
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\GreaterThanOrEqual(
+     * value = 0.1,
+     *  message = "Le prix  doit être supérieur à {{ compared_value }}.")
+     */
+
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2')]
     private ?string $prix = null;
 
+
+     /**
+     * @ORM\Column(type="integer")
+     * @Assert\GreaterThanOrEqual(
+     * value = 1,
+     *  message = "La quantité disponible doit être d'au moins {{ compared_value }}.")
+     */
     #[ORM\Column]
     private ?int $disponible = 1;
 

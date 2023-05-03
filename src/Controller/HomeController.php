@@ -31,10 +31,9 @@ class HomeController extends AbstractController
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
     public function add(ManagerRegistry $doctrine, Produit $produit = null,  Request $request): Response{
         
-         //$user_id = $this->getUser()->getId();
          $user = $this->getUser(); // récupérer objet user 
-   
-        //dd($user_id);
+     
+    
         
 
         if(!$produit){ // edit
@@ -46,6 +45,12 @@ class HomeController extends AbstractController
         $form->handleRequest($request); // analyse the request
 
         if($form->isSubmitted() && $form->isValid()){ // valid respecter les contraintes
+            if($produit->getDisponible() < 1){
+                $this->addFlash('error', 'Le champ "disponible" doit être supérieur ou égal à 1.');
+            }
+
+
+
             $produit = $form->getData();
 
             $produit->setUser($user); // install mon user

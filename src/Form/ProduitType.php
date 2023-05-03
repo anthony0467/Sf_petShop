@@ -23,7 +23,10 @@ class ProduitType extends AbstractType
             ->add('nomProduit', TextType::class)
             ->add('description', TextareaType::class)
             ->add('prix', NumberType::class)
-            ->add('disponible')
+            ->add('disponible', NumberType::class,  [
+                'attr' => [
+                    'min' => 1 // Valeur minimale
+                ]])
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 "choice_label" => 'nomCategorie',

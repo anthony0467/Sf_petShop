@@ -10,7 +10,22 @@
 
 {% if app.user %}
             
-    {{ form(formAddProduit)}}
+    
+    {{ form_start(formAddProduit) }}
+        {{ form_row(formAddProduit.nomProduit) }}
+        {{ form_row(formAddProduit.description) }}
+        {{ form_row(formAddProduit.disponible) }}
+        {{ form_row(formAddProduit.categorie) }}
+        {{ form_row(formAddProduit.prix) }}
+    {{ form_end(formAddProduit) }}
+
+    {% if app.flashes('error') is not empty %}
+    <div class="alert alert-danger">
+        {% for message in app.flashes('error') %}
+            {{ message }}
+        {% endfor %}
+    </div>
+{% endif %}
 
 {% else %}
 
