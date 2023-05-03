@@ -3,14 +3,16 @@
 namespace App\Controller;
 
 use doctrine;
+use App\Entity\User;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -27,22 +29,29 @@ class HomeController extends AbstractController
 
     #[Route('/home/add', name: 'add_produit')] // ajouter un produit
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
-    public function add(ManagerRegistry $doctrine, Produit $produit = null, Request $request): Response{
-
-       // $user = $produit->getUser()->getId();
-
-        //var_dump($user);die;
+    public function add(ManagerRegistry $doctrine, Produit $produit = null,  Request $request): Response{
+        
+         //$user_id = $this->getUser()->getId();
+         $user = $this->getUser(); // récupérer objet user 
+   
+        //dd($user_id);
+        
 
         if(!$produit){ // edit
             $produit = new Produit();
-            
         } //add
 
-        $form = $this->createForm(ProduitType::class, $produit);
+
+        $form = $this->createForm(ProduitType::class, $produit,  []);
         $form->handleRequest($request); // analyse the request
 
         if($form->isSubmitted() && $form->isValid()){ // valid respecter les contraintes
             $produit = $form->getData();
+
+            $produit->setUser($user); // install mon user
+            $now = new \DateTime(); // objet date
+            $produit->setDateCreationProduit($now); // installe ma date
+
             $entityManager = $doctrine->getManager(); // on récupère les ressources
             $entityManager->persist($produit); // on enregistre la ressource
             $entityManager->flush(); // on envoie la ressource insert into
