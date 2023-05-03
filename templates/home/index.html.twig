@@ -11,7 +11,11 @@
         {% for produit in produits %}
        
         <li>
+            {% if produit.imageFile %}
+            <img src="{{ asset('uploads/images/' ~ produit.imageFile) }}" height="auto" width="300px" alt="Image de {{ produit.nomProduit }}">
+        {% else %}
             <img src="{{ asset('uploads/images/aquarium.jpg') }}" height="auto" width="300px" alt="Mon image">
+            {% endif %}
             <p>{{ produit.nomProduit }}</p>
             <p>{{ produit.prix }}€</p>
             <div><a href="">Acheter</a></div>
