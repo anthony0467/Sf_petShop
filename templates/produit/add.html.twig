@@ -3,8 +3,12 @@
 {% block title %}Ajouter votre article{% endblock %}
 
 {% block body %}
-
-    <h1>Ajouter produit</h1>
+    {% if edit %}
+        <h1>Modifier l'annonce</h1>
+        {% else %}
+        <h1>Ajouter produit</h1>
+    {% endif %}
+    
 
 
 
@@ -12,6 +16,15 @@
             
     
     {{ form_start(formAddProduit) }}
+        {% if edit %}
+            <h2>Images</h2>
+            {% for image in produits.images %}
+                <div>
+                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="300px" alt="Image de {{ image.nomImage }}">
+                    <a href="{{path('delete_image', {'id': image.id })}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}" >Supprimer</a>
+                </div>
+            {% endfor %}
+        {% endif %}
         {{ form_row(formAddProduit.images) }}
         {{ form_row(formAddProduit.nomProduit) }}
         {{ form_row(formAddProduit.description) }}

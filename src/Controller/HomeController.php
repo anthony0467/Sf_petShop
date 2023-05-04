@@ -12,8 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 
 class HomeController extends AbstractController
 {
@@ -83,8 +85,26 @@ class HomeController extends AbstractController
         return $this->render('produit/add.html.twig', [
             'formAddProduit' => $form->createView(), // généré le visuel du form
             "edit" => $produit->getId(),
+            "produits" => $produit
            
         ]);
 
+    }
+
+    #[Route('/home/delete/image/{id}', name: 'delete_image')] // supprimer image produit
+    public function deleteImage(ManagerRegistry $doctrine, Images $image, Request $request) {
+        $entityManager = $doctrine->getManager();
+        $data = json_decode($request->getContent(), true);
+
+            // on recupere le nom de l'image
+            $nom = $image->getNomImage();
+            // on supprime le fichier
+            unlink($this->getParameter('images_directory').'/'.$nom);
+            // on supprime l'entrer de la base
+            $entityManager->remove($image);
+            $entityManager->flush();
+
+            return $this->redirect($request->headers->get('referer'));
+          
     }
 }
