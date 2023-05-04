@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ProduitRepository;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
@@ -54,17 +55,15 @@ class Produit
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true,   options: ["default" => "CURRENT_TIMESTAMP"])]
     private ?\DateTimeInterface $dateCreationProduit;
 
-      /**
-      * @Vich\UploadableField(mapping="produit_image", fileNameProperty="imageName")
-      * @var File|null
-      */
-      private $imageFile;
 
-      /**
-       * @ORM\Column(type="string", length=255, nullable=true)
-       * @var string|null
-       */
-      private $imageName;
+
+      #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Images::class, cascade:["persist"])]
+      private Collection $images;
+
+      public function __construct()
+      {
+          $this->images = new ArrayCollection();
+      }
 
     public function getId(): ?int
     {
@@ -173,5 +172,35 @@ class Produit
     public function getImageName(): ?string
     {
         return $this->imageName;
+    }
+
+    /**
+     * @return Collection<int, Images>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Images $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Images $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getProduit() === $this) {
+                $image->setProduit(null);
+            }
+        }
+
+        return $this;
     }
 }

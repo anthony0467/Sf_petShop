@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use doctrine;
 use App\Entity\User;
+use App\Entity\Images;
 use App\Entity\Produit;
 use App\Form\ProduitType;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,11 +46,26 @@ class HomeController extends AbstractController
         $form->handleRequest($request); // analyse the request
 
         if($form->isSubmitted() && $form->isValid()){ // valid respecter les contraintes
-            if($produit->getDisponible() < 1){
-                $this->addFlash('error', 'Le champ "disponible" doit être supérieur ou égal à 1.');
-            }
+           // on recupere les images transmisse
+           $images = $form->get('images')->getData();
 
+           // on boucle sur les tableaux
+           foreach($images as $image){
+            // on genere un nouveau nom de fichier
+            $fichier = md5(uniqid()) . '.' . $image->guessExtension();
 
+            //on copie le fichier dans le dossier uploads
+            $image->move(
+                $this->getParameter('images_directory'),
+                $fichier
+            );
+
+            //on stocke l'image dans la base de données
+            $img = new Images();
+            $img->setNomImage($fichier);
+            $produit->addImage($img);
+
+           }
 
             $produit = $form->getData();
 

@@ -21,8 +21,11 @@ class ProduitType extends AbstractType
     {
         
         $builder
-            ->add('imageFile', FileType::class, [
-                'label' => 'Photos'
+        //mapped false pour ne pas le lier a la base de données
+            ->add('images', FileType::class, [
+                'label' => 'Photos',
+                'multiple' => true,
+                'mapped' => false,
             ])
             ->add('nomProduit', TextType::class, [
                 'label' => 'Nom du produit'
