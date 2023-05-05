@@ -30,6 +30,8 @@ class HomeController extends AbstractController
         ]);
     }
 
+    
+
     #[Route('/home/add', name: 'add_produit')] // ajouter un produit
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
     public function add(ManagerRegistry $doctrine, Produit $produit = null,  Request $request): Response{
@@ -106,5 +108,20 @@ class HomeController extends AbstractController
 
             return $this->redirect($request->headers->get('referer'));
           
+    }
+
+    #[Route('/home/show', name: 'show_home')] // vue profil de l'utilisateur
+    public function show(ManagerRegistry $doctrine): Response
+    {
+
+        $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"], 5); // uniquement les 5 derniers articles ajoutés
+
+         return $this->render('home/profil.html.twig', [
+             'controller_name' => 'HomeController',
+             'produits' => $produits,
+             
+         ]);
+
+        return $this->render('home/index.html.twig', []);
     }
 }

@@ -10,6 +10,7 @@
     <a href="{{path('app_login')}}">Se connecter</a>
     {% else %}
     <a href="{{path('app_logout')}}">Se déconnecter</a>
+    <a href="{{path('show_home')}}">{{ app.user }}</a>
     {% endif %}
     <a href="{{path('add_produit')}}">Vends tes articles</a>
     

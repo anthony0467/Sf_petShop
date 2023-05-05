@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil : {{ app.user }}{% endblock %}
+
+{% block body %}
+
+
+{% if app.user %}
+
+<h1>Bienvenue {{ app.user }}</h1>
+
+<h2>Mes annonces</h2>
+
+
+<table>
+    <thead>
+        <tr class="title-table">
+            <th>Photos</th>
+            <th>Titre</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Categorie</th>
+
+            {% if is_granted('ROLE_ADMIN') %}
+            <th>Editer</th>
+            <th>Supprimer</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for produit in app.user.produits %}
+        <tr>
+            <td>
+                {% if produit.images is not empty %}
+                <!--récupérer la 1er image uniquement -->
+                {% set image = produit.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+                    alt="Image de {{ image.nomImage }}">
+
+
+                {% else %}
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="auto" width="2git00px" alt="Mon image">
+                {% endif %}
+            </td>
+            <td>{{ produit.nomProduit }}</td>
+            <td>{{ produit.description }}</td>
+            <td>{{ produit.prix }} €</td>
+            <td>{{ produit.categorie }}</td>
+
+
+
+
+        </tr>
+        {% endfor %}
+
+
+
+
+    </tbody>
+</table>
+
+
+{% else %}
+
+<p>Vous devez vous connectez pour avoir accès à cette page</p>
+
+{% endif %}
+
+
+
+
+{% endblock %}
