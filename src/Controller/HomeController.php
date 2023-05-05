@@ -93,6 +93,30 @@ class HomeController extends AbstractController
 
     }
 
+    #[Route('/home/delete/{id}', name: 'delete_produit')] // supprimer la session
+    public function delete(ManagerRegistry $doctrine, Produit $produit = null): Response
+{
+    if ($produit) {
+        $entityManager = $doctrine->getManager();
+
+        // Supprimer les images associées
+        $images = $produit->getImages();
+        foreach ($images as $image) {
+            $entityManager->remove($image);
+        }
+
+        // Supprimer le produit
+        $entityManager->remove($produit);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('show_home');
+    } else {
+        return $this->redirectToRoute('show_home');
+    }
+}
+
+
+
     #[Route('/home/delete/image/{id}', name: 'delete_image')] // supprimer image produit
     public function deleteImage(ManagerRegistry $doctrine, Images $image, Request $request) {
         $entityManager = $doctrine->getManager();

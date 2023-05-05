@@ -23,6 +23,7 @@
         <tr class="title-table">
             <th>Photos</th>
             <th>Titre</th>
+            <th>Date</th>
             <th>Description</th>
             <th>Prix</th>
             <th>Categorie</th>
@@ -43,14 +44,16 @@
 
 
                 {% else %}
-                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="auto" width="2git00px" alt="Mon image">
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="auto" width="200px" alt="Mon image">
                 {% endif %}
             </td>
             <td>{{ produit.nomProduit }}</td>
+            <td>{{ produit.dateCreationProduit | date("d/m/Ygit s") }}</td>
             <td>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}</td>
             <td>{{ produit.prix }} €</td>
             <td>{{ produit.categorie }}</td>
             <td><a href="{{path('edit_produit', {'id': produit.id })}}">editer</a></td>
+            <td><a href="{{path('delete_produit', {'id': produit.id })}}">supprimer</a></td>
 
 
 
