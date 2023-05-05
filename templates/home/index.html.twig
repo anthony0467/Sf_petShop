@@ -3,7 +3,7 @@
 {% block title %}World of Pets - Accueil{% endblock %}
 
 {% block body %}
- <h1>Bienvenue</h1>
+
 
  <div>
     <h2>Derniers articles</h2>
@@ -14,11 +14,11 @@
             {% if produit.images is not empty %}
                 <!--récupérer la 1er image uniquement -->
                 {% set image = produit.images.first() %}
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="300px" alt="Image de {{ image.nomImage }}">
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="300" width="300px" alt="Image de {{ image.nomImage }}">
                 
 
             {% else %}
-            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="auto" width="300px" alt="Mon image">
+            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="300px" alt="Mon image">
             {% endif %}
             <p>{{ produit.nomProduit }}</p>
             <p>{{ produit.prix }}€</p>

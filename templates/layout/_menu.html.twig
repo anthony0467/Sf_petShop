@@ -3,29 +3,16 @@
         <a href="{{path('app_home')}}">Accueil</a>
     </li>
 
-    <li>
-        <a href="">Chiens</a>
-    </li>
+    {% for categorie in categories %}
 
     <li>
-        <a href="">Chats</a>
+        <a href="{{path('show_categorie', {'id': categorie.id })}}">{{ categorie.nomCategorie }}</a>
     </li>
+        
+    {% endfor %}
+   
 
-    <li>
-        <a href="">Rongeurs</a>
-    </li>
-
-    <li>
-        <a href="">Poissons</a>
-    </li>
-
-    <li>
-        <a href="">Oiseaux</a>
-    </li>
-
-    <li>
-        <a href="">Reptile</a>
-    </li>
+  
 
     <li>
         <a href="">Evénements</a>

@@ -6,7 +6,9 @@ use doctrine;
 use App\Entity\User;
 use App\Entity\Images;
 use App\Entity\Produit;
+use App\Entity\Categorie;
 use App\Form\ProduitType;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
@@ -15,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Doctrine\ORM\EntityManagerInterface;
 
 class HomeController extends AbstractController
 {
@@ -23,10 +24,12 @@ class HomeController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"], 5); // uniquement les 5 derniers articles ajoutés
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produits,
+            'categories' => $categories,
         ]);
     }
 
@@ -35,12 +38,11 @@ class HomeController extends AbstractController
     #[Route('/home/add', name: 'add_produit')] // ajouter un produit
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
     public function add(ManagerRegistry $doctrine, Produit $produit = null,  Request $request): Response{
+
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
         
          $user = $this->getUser(); // récupérer objet user 
      
-    
-        
-
         if(!$produit){ // edit
             $produit = new Produit();
         } //add
@@ -87,7 +89,8 @@ class HomeController extends AbstractController
         return $this->render('produit/add.html.twig', [
             'formAddProduit' => $form->createView(), // généré le visuel du form
             "edit" => $produit->getId(),
-            "produits" => $produit
+            "produits" => $produit,
+            "categories" => $categories
            
         ]);
 
@@ -137,12 +140,15 @@ class HomeController extends AbstractController
     #[Route('/home/show', name: 'show_home')] // vue profil de l'utilisateur
     public function show(ManagerRegistry $doctrine): Response
     {
+        $user = $this->getUser();
 
-        $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"], 5); // uniquement les 5 derniers articles ajoutés
+        $produits = $doctrine->getRepository(Produit::class)->findBy(['user' => $user], ["dateCreationProduit"=> "DESC"]); // uniquement les 5 derniers articles ajoutés
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
 
          return $this->render('home/profil.html.twig', [
              'controller_name' => 'HomeController',
              'produits' => $produits,
+             'categories' => $categories
              
          ]);
 

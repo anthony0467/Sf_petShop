@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}World of Pets - produits{% endblock %}
+
+{% block body %}
+
+<h1>Liste des produits</h1>
+
+<ul style="display: flex;">
+    {% for produit in produits %}
+   
+    <li>
+        {% if produit.images is not empty %}
+            <!--récupérer la 1er image uniquement -->
+            {% set image = produit.images.first() %}
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="300" width="300px" alt="Image de {{ image.nomImage }}">
+            
+
+        {% else %}
+        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="300px" alt="Mon image">
+        {% endif %}
+        <p>{{ produit.nomProduit }}</p>
+        <p>{{ produit.prix }}€</p>
+        <div><a href="">Acheter</a></div>
+    </li>
+
+    {% endfor %}
+</ul>
+ 
+{% endblock %}

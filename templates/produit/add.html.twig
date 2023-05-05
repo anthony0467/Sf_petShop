@@ -36,7 +36,7 @@
           
             // définir une taille pour l'image
             image_element.style.width = "200px";
-            image_element.style.height = "auto";
+            image_element.style.height = "250px";
           
             figure_element.appendChild(image_element);
             container.appendChild(figure_element);
@@ -62,7 +62,7 @@
     {{ form_start(formAddProduit) }}
         
             <h2>Images</h2>
-            <div id="images-preview"></div>
+            <div id="images-preview" style="display:flex;"></div>
             {% for image in produits.images %}
                 <div>
                     <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="300px" alt="Image de {{ image.nomImage }}">
