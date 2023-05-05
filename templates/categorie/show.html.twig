@@ -6,9 +6,13 @@
 
 <h1>Liste des produits</h1>
 
+{% if produits is not empty %}
+    
+
+
 <ul style="display: flex;">
     {% for produit in produits %}
-   
+        
     <li>
         {% if produit.images is not empty %}
             <!--récupérer la 1er image uniquement -->
@@ -26,5 +30,11 @@
 
     {% endfor %}
 </ul>
+
+{% else %}
+
+<p>Aucune annonce pour cette catégorie.</p>
+
+{% endif %}
  
 {% endblock %}
