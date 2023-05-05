@@ -81,7 +81,7 @@ class HomeController extends AbstractController
             $entityManager->persist($produit); // on enregistre la ressource
             $entityManager->flush(); // on envoie la ressource insert into
 
-            return $this->redirectToRoute('app_produit');
+            return $this->redirectToRoute('show_home');
         }
 
         return $this->render('produit/add.html.twig', [

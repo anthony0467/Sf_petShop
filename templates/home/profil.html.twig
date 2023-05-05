@@ -5,9 +5,15 @@
 {% block body %}
 
 
+
 {% if app.user %}
 
 <h1>Bienvenue {{ app.user }}</h1>
+
+<h2>Mon profil</h2>
+<p>Pseudo : {{ app.user }} </p>
+<p>Email : {{ app.user.email}}</p>
+<p>Annonce en cours : {{ app.user.produits | length }}</p>
 
 <h2>Mes annonces</h2>
 
@@ -20,11 +26,9 @@
             <th>Description</th>
             <th>Prix</th>
             <th>Categorie</th>
-
-            {% if is_granted('ROLE_ADMIN') %}
             <th>Editer</th>
             <th>Supprimer</th>
-            {% endif %}
+            
         </tr>
     </thead>
     <tbody>
@@ -43,9 +47,10 @@
                 {% endif %}
             </td>
             <td>{{ produit.nomProduit }}</td>
-            <td>{{ produit.description }}</td>
+            <td>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}</td>
             <td>{{ produit.prix }} €</td>
             <td>{{ produit.categorie }}</td>
+            <td><a href="{{path('edit_produit', {'id': produit.id })}}">editer</a></td>
 
 
 
