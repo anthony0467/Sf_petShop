@@ -13,5 +13,8 @@
     <a href="{{path('show_home')}}">{{ app.user }}</a>
     {% endif %}
     <a href="{{path('add_produit')}}">Vends tes articles</a>
+    {% if is_granted('ROLE_ADMIN') %}
+    <a href="{{path('show_admin')}}">Panneau administrateur</a>   
+    {% endif %}
     
 </nav>

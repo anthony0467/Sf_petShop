@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil : {{ app.user }}{% endblock %}
+
+{% block body %}
+
+
+{% if is_granted('ROLE_ADMIN') %}
+
+<h1>Bienvenue sur le panneau d'administrateur {{ app.user }}</h1>
+
+{% include "admin/_annonces.html.twig" %}
+
+
+{% else %}
+
+<p>Vous n'avez pas les droits pour accèder à cette page.</p>
+    
+{% endif %}
+
+
+
+
+{% endblock %}

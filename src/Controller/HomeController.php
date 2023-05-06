@@ -154,4 +154,22 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', []);
     }
+
+    #[Route('/home/admin', name: 'show_admin')] // vue profil de l'utilisateur
+    public function admin(ManagerRegistry $doctrine): Response
+    {
+        $user = $this->getUser();
+
+        $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); // uniquement les 5 derniers articles ajoutés
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+
+         return $this->render('home/admin.html.twig', [
+             'controller_name' => 'HomeController',
+             'produits' => $produits,
+             'categories' => $categories
+             
+         ]);
+
+        return $this->render('home/index.html.twig', []);
+    }
 }
