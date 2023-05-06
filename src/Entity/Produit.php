@@ -60,6 +60,9 @@ class Produit
       #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Images::class, cascade:["persist"])]
       private Collection $images;
 
+      #[ORM\Column]
+      private ?bool $etat = null;
+
       public function __construct()
       {
           $this->images = new ArrayCollection();
@@ -154,25 +157,7 @@ class Produit
         return $this;
     }
 
-    public function setImageFile(?File $image = null): void
-    {
-        $this->imageFile = $image;
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    public function setImageName(?string $imageName): void
-    {
-        $this->imageName = $imageName;
-    }
-
-    public function getImageName(): ?string
-    {
-        return $this->imageName;
-    }
+  
 
     /**
      * @return Collection<int, Images>
@@ -200,6 +185,18 @@ class Produit
                 $image->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isEtat(): ?bool
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(bool $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

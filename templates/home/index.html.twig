@@ -9,7 +9,11 @@
     <h2>Derniers articles</h2>
     <ul style="display: flex;">
         {% for produit in produits %}
-       
+        
+        {# verifier l'état avant de mettre en ligne #}
+        {% if produit.etat == false %}
+             {# Ne rien retourner #}
+        {% else %}
         <li>
             {% if produit.images is not empty %}
                 <!--récupérer la 1er image uniquement -->
@@ -24,6 +28,7 @@
             <p>{{ produit.prix }}€</p>
             <div><a href="">Acheter</a></div>
         </li>
+        {% endif %}
 
         {% endfor %}
     </ul>

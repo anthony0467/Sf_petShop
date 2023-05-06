@@ -6,13 +6,15 @@
 
 <h1>Liste des produits</h1>
 
-{% if produits is not empty %}
-    
+
 
 
 <ul style="display: flex;">
+    {% set all_products_false = true %} {# verifier l'état de tous les produits #}
     {% for produit in produits %}
-        
+         {# verifier l'état avant de mettre en ligne #}
+         {% if produit.etat == true %}
+         {% set all_products_false = false %}
     <li>
         {% if produit.images is not empty %}
             <!--récupérer la 1er image uniquement -->
@@ -27,12 +29,13 @@
         <p>{{ produit.prix }}€</p>
         <div><a href="">Acheter</a></div>
     </li>
-
+    {% endif %}
+    
     {% endfor %}
 </ul>
 
-{% else %}
-
+{% if all_products_false  %}
+    
 <p>Aucune annonce pour cette catégorie.</p>
 
 {% endif %}
