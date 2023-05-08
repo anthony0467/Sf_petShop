@@ -8,6 +8,7 @@ use App\Entity\Images;
 use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Form\ProduitType;
+use App\Form\EtatAnnonceType;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 
 class HomeController extends AbstractController
 {
@@ -96,6 +98,7 @@ class HomeController extends AbstractController
 
     }
 
+
     #[Route('/home/delete/{id}', name: 'delete_produit')] // supprimer la session
     public function delete(ManagerRegistry $doctrine, Produit $produit = null): Response
 {
@@ -148,7 +151,8 @@ class HomeController extends AbstractController
          return $this->render('home/profil.html.twig', [
              'controller_name' => 'HomeController',
              'produits' => $produits,
-             'categories' => $categories
+             'categories' => $categories,
+             
              
          ]);
 
@@ -156,20 +160,46 @@ class HomeController extends AbstractController
     }
 
     #[Route('/home/admin', name: 'show_admin')] // vue profil de l'utilisateur
-    public function admin(ManagerRegistry $doctrine): Response
-    {
-        $user = $this->getUser();
-
-        $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); // uniquement les 5 derniers articles ajoutés
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-
-         return $this->render('home/admin.html.twig', [
-             'controller_name' => 'HomeController',
-             'produits' => $produits,
-             'categories' => $categories
-             
-         ]);
-
-        return $this->render('home/index.html.twig', []);
+    public function admin(ManagerRegistry $doctrine, Request $request): Response
+{
+    $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); 
+    $categories = $doctrine->getRepository(Categorie::class)->findBy([], []); // menu categorie
+   
+    
+    $forms = array();
+    
+    foreach ($produits as $prod) {
+        $form = $this->createForm(EtatAnnonceType::class, $prod, );
+        $forms[$prod->getId()] = $form->createView();
     }
+       
+        $form->handleRequest($request);
+ 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $etat = $form->getData();
+            $etat->setEtat($form->get('etat')->getData());
+            $entityManager = $doctrine->getManager();
+            $produit = $entityManager->getRepository(Produit::class)->find($prod->getId());
+            $produit->isEtat($etat);
+           dd($produit);
+           // $entityManager->persist($produit);
+            $entityManager->flush();
+            
+            // Afficher un message de confirmation ou rediriger l'utilisateur
+            
+        }
+        //dd($prod);
+        // Définir l'état du produit directement dans la boucle
+       // $prod->setEtat($prod->isEtat());
+    
+    
+
+    return $this->render('home/admin.html.twig', [
+        'controller_name' => 'HomeController',
+        'produits' => $produits,
+        'categories' => $categories,
+        'formChangeEtat' => $forms,
+    ]);
+}
+
 }

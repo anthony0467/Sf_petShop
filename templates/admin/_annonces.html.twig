@@ -40,11 +40,12 @@
             <td>{{ produit.prix }} €</td>
             <td>{{ produit.categorie }}</td>
 
-            {% if produit.etat == false %}
-                <td>En attente</td>
-                {% else %}
-                <td>Ok</td>
-            {% endif %}
+            <td>
+                {{ form_start(formChangeEtat[produit.id]) }}
+                {{ form_widget(formChangeEtat[produit.id].etat) }}
+                {{ form_end(formChangeEtat[produit.id]) }}
+            </td>
+           
             
             <td><a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a></td>
             <td><a href="{{path('delete_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
