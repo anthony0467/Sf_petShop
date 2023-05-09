@@ -1,0 +1,69 @@
+<h2>Toutes les annnonces en cours de validation</h2>
+
+
+<table>
+    <thead>
+        <tr class="title-table">
+            <th>Utilisateur</th>
+            <th>Photos</th>
+            <th>Titre</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Categorie</th>
+            <th>Etat</th>
+            <th>Editer</th>
+            <th>Supprimer</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for produit in produits %}
+       
+       
+        <tr>
+            <td>{{produit.user}}</td>
+            <td>
+                {% if produit.images is not empty %}
+                <!--récupérer la 1er image uniquement -->
+                {% set image = produit.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+                    alt="Image de {{ image.nomImage }}">
+
+
+                {% else %}
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
+                {% endif %}
+            </td>
+            <td>{{ produit.nomProduit }}</td>
+            <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
+            <td width='350px'>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}</td>
+            <td>{{ produit.prix }} €</td>
+            <td>{{ produit.categorie }}</td>
+
+            <td>
+                
+                <a href="{{path('publish_annonce', {'id': produit.id })}}">{% if produit.etat == false %}
+                    <p style="color:red;">Inactif</p>
+                    {% else %}
+                    <p style="color:green;">Actif</p>
+                {% endif %}</a>
+            </td>
+           
+            
+            <td><a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a></td>
+            <td><a href="{{path('delete_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
+
+
+
+
+        </tr>
+        {% endfor %}
+
+
+
+
+    </tbody>
+</table>
+
+

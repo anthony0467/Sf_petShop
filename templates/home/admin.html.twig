@@ -9,7 +9,9 @@
 
 <h1>Bienvenue sur le panneau d'administrateur {{ app.user }}</h1>
 
-{% include "admin/_annonces.html.twig" %}
+{% include "admin/_annonces_inactifs.html.twig" %}
+
+{% include "admin/_annonces_actif.html.twig" %}
 
 
 {% else %}

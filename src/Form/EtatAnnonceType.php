@@ -22,6 +22,7 @@ class EtatAnnonceType extends AbstractType
             'false_values' => [false],
             'label' => 'Actif',
             'label_attr' => ['class' => 'switch-custom'],
+            
         ])
        
         ->add('Valider', SubmitType::class)

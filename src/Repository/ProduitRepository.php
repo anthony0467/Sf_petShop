@@ -39,6 +39,36 @@ class ProduitRepository extends ServiceEntityRepository
         }
     }
 
+    public function annonceInactif()
+{
+    
+    $em = $this->getEntityManager();
+ 
+
+    $query = $em->createQueryBuilder();
+    $query->select('p')
+        ->from(Produit::class, 'p')
+        ->where('p.etat = 0')
+        ->orderBy('p.dateCreationProduit', 'DESC');
+
+    return $query->getQuery()->getResult();
+}
+
+public function annonceActif()
+{
+    
+    $em = $this->getEntityManager();
+ 
+
+    $query = $em->createQueryBuilder();
+    $query->select('p')
+        ->from(Produit::class, 'p')
+        ->where('p.etat = 1')
+        ->orderBy('p.dateCreationProduit', 'DESC');
+
+    return $query->getQuery()->getResult();
+}
+
 
 
 //    /**

@@ -9,6 +9,7 @@ use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Form\ProduitType;
 use App\Form\EtatAnnonceType;
+use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -80,6 +81,7 @@ class HomeController extends AbstractController
             $produit->setUser($user); // install mon user
             $now = new \DateTime(); // objet date
             $produit->setDateCreationProduit($now); // installe ma date
+            $produit->setEtat(false);
 
             $entityManager = $doctrine->getManager(); // on récupère les ressources
             $entityManager->persist($produit); // on enregistre la ressource
@@ -160,46 +162,44 @@ class HomeController extends AbstractController
     }
 
     #[Route('/home/admin', name: 'show_admin')] // vue profil de l'utilisateur
-    public function admin(ManagerRegistry $doctrine, Request $request): Response
+    public function admin(ManagerRegistry $doctrine, ProduitRepository $pi): Response
 {
-    $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); 
+    //$produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); 
     $categories = $doctrine->getRepository(Categorie::class)->findBy([], []); // menu categorie
-   
-    
-    $forms = array();
-    
-    foreach ($produits as $prod) {
-        $form = $this->createForm(EtatAnnonceType::class, $prod, );
-        $forms[$prod->getId()] = $form->createView();
-    }
-       
-        $form->handleRequest($request);
- 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $etat = $form->getData();
-            $etat->setEtat($form->get('etat')->getData());
-            $entityManager = $doctrine->getManager();
-            $produit = $entityManager->getRepository(Produit::class)->find($prod->getId());
-            $produit->isEtat($etat);
-           dd($produit);
-           // $entityManager->persist($produit);
-            $entityManager->flush();
-            
-            // Afficher un message de confirmation ou rediriger l'utilisateur
-            
-        }
-        //dd($prod);
-        // Définir l'état du produit directement dans la boucle
-       // $prod->setEtat($prod->isEtat());
-    
-    
 
+    $produitInactif = $pi->annonceInactif(); // requete dql
+    $produitActif = $pi->annonceActif(); // requete dql
+    
     return $this->render('home/admin.html.twig', [
         'controller_name' => 'HomeController',
-        'produits' => $produits,
+        'produits' => $produitInactif,
+        'produitsActif' => $produitActif,
         'categories' => $categories,
-        'formChangeEtat' => $forms,
+
+        
     ]);
 }
+
+#[Route('/home/admin/publish/{id}', name: 'publish_annonce')] // publier annonce
+//#[IsGranted('ROLE_ADMIN')]
+    public function publishAnnonce(ManagerRegistry $doctrine, Produit $produit )
+{
+  
+ 
+    if($produit->isEtat()){
+        $produit->setEtat(false);
+    }else{
+        $produit->setEtat(true);
+    }
+    
+    $em = $doctrine->getManager();
+    $em->flush();
+    
+    return $this->redirectToRoute('show_admin');
+}
+
+    
+
+    
 
 }

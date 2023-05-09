@@ -1,4 +1,5 @@
-<h2>Toutes les annnonces</h2>
+<h2>Toutes les annnonces validées</h2>
+
 
 <table>
     <thead>
@@ -17,7 +18,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for produit in produits %}
+        {% for produit in produitsActif %}
        
        
         <tr>
@@ -41,9 +42,12 @@
             <td>{{ produit.categorie }}</td>
 
             <td>
-                {{ form_start(formChangeEtat[produit.id]) }}
-                {{ form_widget(formChangeEtat[produit.id].etat) }}
-                {{ form_end(formChangeEtat[produit.id]) }}
+                
+                <a href="{{path('publish_annonce', {'id': produit.id })}}">{% if produit.etat == false %}
+                    <p style="color:red;">Inactif</p>
+                    {% else %}
+                    <p style="color:green;">Actif</p>
+                {% endif %}</a>
             </td>
            
             
