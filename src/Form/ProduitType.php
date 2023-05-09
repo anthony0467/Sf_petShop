@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -55,6 +56,13 @@ class ProduitType extends AbstractType
             ->add('description', TextareaType::class)
             ->add('prix', NumberType::class, [
                 'label' => 'Prix Unitaire'
+            ])
+            ->add('statut', ChoiceType::class, [
+                'choices' => [
+                    'Neuf' => 'neuf',
+                    'Occasion' => 'occasion',
+                    'Usagés' => 'usagé',
+                ]
             ])
             ->add('disponible', NumberType::class,  [
                 'attr' => [

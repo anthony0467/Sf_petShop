@@ -63,6 +63,9 @@ class Produit
       #[ORM\Column]
       private ?bool $etat = null;
 
+      #[ORM\Column(length: 100)]
+      private ?string $statut = null;
+
       public function __construct()
       {
           $this->images = new ArrayCollection();
@@ -197,6 +200,23 @@ class Produit
     public function setEtat(bool $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nomProduit;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }

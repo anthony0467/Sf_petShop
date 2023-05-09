@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil : {{ app.user }}{% endblock %}
+
+{% block body %}
+
+
+<h1>Produit détaillé : {{ produit }}</h1>
+
+
+<div>
+    <div>
+        <h2>{{produit}}</h2>
+        <p>Categorie : <a href="{{path('show_categorie', {'id': produit.categorie.id })}}">{{ produit.categorie.nomCategorie }}</a></p>
+        <p>Etat : {{ produit.statut }}</p>
+        <p>Vendeur : <a href="{{path('show_user', {'id': produit.user.id })}}">{{ produit.user.pseudo }}</a></p>
+    </div>
+</div>
+
+
+{% endblock %}

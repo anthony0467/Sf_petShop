@@ -27,7 +27,7 @@
         {% endif %}
         <p>{{ produit.nomProduit }}</p>
         <p>{{ produit.prix }}€</p>
-        <div><a href="">Acheter</a></div>
+        <div><a href="{{ path('show_produit',{'id':produit.id})}}">Acheter</a></div>
     </li>
     {% endif %}
     

@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Profil : {{ app.user }}{% endblock %}
+
+{% block body %}
+
+
+
+{% if app.user %}
+
+<h1>Profil : {{ userProfil }} </h1>
+
+<p>Pseudo : {{ userProfil }} </p>
+<p>Email : {{ userProfil.email}}</p>
+<p>Annonce(s) en cours :
+  {{ nbProduitsActifs }}
+     
+    
+    
+ </p>
+
+<h2>Ses annonces en cours</h2>
+{% if userProfil.getProduits() is not empty  %}
+    
+
+<table>
+    <thead>
+        <tr class="title-table">
+            <th>Photos</th>
+            <th>Titre</th>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Prix</th>
+            <th>Categorie</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for produit in userProfil.getProduits() %}
+            {% if  produit.etat == true %}
+                
+            
+        <tr>
+            <td>
+                {% if produit.images is not empty %}
+                <!--récupérer la 1er image uniquement -->
+                {% set image = produit.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+                    alt="Image de {{ image.nomImage }}">
+
+
+                {% else %}
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
+                {% endif %}
+            </td>
+            <td>{{ produit.nomProduit }}</td>
+            <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
+            <td>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}</td>
+            <td>{{ produit.prix }} €</td>
+            <td>{{ produit.categorie }}</td>
+
+
+        </tr>
+            {% endif %}
+        {% endfor %}
+
+
+
+        
+    </tbody>
+</table>
+
+
+{% else %}
+<p>Vous n'avez pas encore créé d'annonces.</p>
+{% endif %}
+
+{% else %}
+
+<p>Vous devez vous connectez pour avoir accès à cette page</p>
+
+{% endif %}
+
+
+
+
+{% endblock %}

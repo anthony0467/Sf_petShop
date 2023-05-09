@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Produit;
+use App\Entity\Categorie;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ProduitController extends AbstractController
 {
@@ -14,5 +17,22 @@ class ProduitController extends AbstractController
         return $this->render('produit/index.html.twig', [
             'controller_name' => 'ProduitController',
         ]);
+    }
+
+    #[Route('/produit/show/{id}', name: 'show_produit')] // vue detaillé du produit
+    public function show(ManagerRegistry $doctrine, Produit $produit): Response
+    {
+        
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+
+         return $this->render('produit/show.html.twig', [
+             'controller_name' => 'HomeController',
+             'produit' => $produit,
+             'categories' => $categories,
+             
+             
+         ]);
+
+        return $this->render('home/index.html.twig', []);
     }
 }
