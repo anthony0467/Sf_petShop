@@ -53,7 +53,9 @@ class ProduitType extends AbstractType
                 'label' => 'Nom du produit'
             ])
             ->add('description', TextareaType::class)
-            ->add('prix', NumberType::class)
+            ->add('prix', NumberType::class, [
+                'label' => 'Prix Unitaire'
+            ])
             ->add('disponible', NumberType::class,  [
                 'attr' => [
                     'min' => 1 // Valeur minimale,
