@@ -1,21 +1,32 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profil : {{ app.user }}{% endblock %}
+{% block title %}Produit : {{ produit }}{% endblock %}
 
 {% block body %}
 
+{% include "produit/_detail_produit.html.twig" %}
 
-<h1>Produit détaillé : {{ produit }}</h1>
+{% include "produit/_avis_client.html.twig" %}
 
+<h2>Articles qui pourrait vous interessé</h2>
 
-<div>
-    <div>
-        <h2>{{produit}}</h2>
-        <p>Categorie : <a href="{{path('show_categorie', {'id': produit.categorie.id })}}">{{ produit.categorie.nomCategorie }}</a></p>
-        <p>Etat : {{ produit.statut }}</p>
-        <p>Vendeur : <a href="{{path('show_user', {'id': produit.user.id })}}">{{ produit.user.pseudo }}</a></p>
-    </div>
-</div>
+<ul>
+    {% for produitCategorie in produit.categorie.produits %}
+    <li>
+        <a href="{{ path('show_produit',{'id':produitCategorie.id})}}">
+            <figure>
+                {% set image = produitCategorie.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px" alt="Image de {{ image.nomImage }}">
+                <figcaption>
+                    <p>{{ produitCategorie.nomProduit }}</p>
+                    <p>{{ produitCategorie.prix }} €</p>
+                </figcaption>
+            </figure>
+        </a>
+    </li>
+    {% endfor %}
+   
+</ul>
 
 
 {% endblock %}

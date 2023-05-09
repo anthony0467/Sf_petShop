@@ -1,0 +1,36 @@
+<h1>Produit détaillé : {{ produit }}</h1>
+
+
+<div>
+    <div>
+        <h2>{{produit}}</h2>
+        <p>Categorie : <a href="{{path('show_categorie', {'id': produit.categorie.id })}}">{{ produit.categorie.nomCategorie }}</a></p>
+        <p>Etat : {{ produit.statut }}</p>
+        <p>Vendeur : <a href="{{path('show_user', {'id': produit.user.id })}}">{{ produit.user.pseudo }}</a></p>
+        <p>Avis vendeur : </p>
+        <p>Description : {{ produit.description }}</p>
+        <p>Stock : {{ produit.disponible }}</p>
+        <p>Prix : {{ produit.prix }} €</p>
+        <ul>
+            <li>
+                <a href="">Acheter</a>
+            </li>
+
+            <li>
+                <a href="">Faire une offre</a>
+            </li>
+
+            <li>
+                <a href="">Contacter le vendeur</a>
+            </li>
+        </ul>
+    </div>
+    <div class="galerie">
+            {% for image in produit.images %}
+               
+               <figure>
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px" alt="Image de {{ image.nomImage }}">
+            </figure>
+            {% endfor %}
+    </div>
+</div>

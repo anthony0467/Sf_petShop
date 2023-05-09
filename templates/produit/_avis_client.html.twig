@@ -1,0 +1,10 @@
+<h2>Avis clients</h2>
+
+<div>
+    <figure>
+        {% set image = produit.images.first() %}
+        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px" alt="Image de {{ image.nomImage }}">
+    </figure>
+    <p>Avis vendeur : </p>
+    <a href="">Donné nous votre avis !</a>
+</div>

@@ -20,9 +20,9 @@ class ProduitController extends AbstractController
     }
 
     #[Route('/produit/show/{id}', name: 'show_produit')] // vue detaillé du produit
-    public function show(ManagerRegistry $doctrine, Produit $produit): Response
+    public function show(ManagerRegistry $doctrine, Produit $produit = null): Response
     {
-        
+        if($produit){
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
 
          return $this->render('produit/show.html.twig', [
@@ -32,7 +32,9 @@ class ProduitController extends AbstractController
              
              
          ]);
+        }else{
+            return $this->redirectToRoute('app_home');
+        }
 
-        return $this->render('home/index.html.twig', []);
     }
 }
