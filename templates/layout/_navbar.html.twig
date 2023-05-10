@@ -1,10 +1,6 @@
 <nav style="display: flex;">
     <p><strong>World of Pets</strong></p>
-    <form action="">
-        <input id="searchbar"  type="text"
-        name="searchbar" placeholder="Rechercher un produit">
-        <input type="submit" name="submit" id="" value="Chercher">
-    </form>
+    
     {% if not app.user %}
     <a href="{{path('app_register')}}">S'inscrire</a>
     <a href="{{path('app_login')}}">Se connecter</a>

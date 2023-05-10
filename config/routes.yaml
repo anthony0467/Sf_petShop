@@ -3,3 +3,6 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+search_results:
+    path: /search
+    controller: App\Controller\SearchController::index

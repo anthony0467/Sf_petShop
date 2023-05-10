@@ -69,6 +69,24 @@ public function annonceActif()
     return $query->getQuery()->getResult();
 }
 
+public function search($mots= null, $categorie = null){ // recherche les produits
+    $query = $this->createQueryBuilder('p');
+    $query->where('p.etat = 1');
+
+    if($mots != null){
+        $query->andWhere('MATCH_AGAINST(p.nomProduit, p.description) AGAINST (:mots boolean)>0')->setParameter('mots', $mots);
+    }
+    if($categorie != null){
+        $query->leftJoin('p.categorie', 'c')
+        ->andWhere('c.id = :id')
+        ->setParameter('id', $categorie);
+    }
+
+    return $query->getQuery()->getResult();
+
+
+}
+
 
 
 //    /**

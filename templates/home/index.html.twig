@@ -4,6 +4,7 @@
 
 {% block body %}
 
+{{form(form)}}
 
  <div>
     <h2>Derniers articles</h2>
@@ -26,7 +27,7 @@
             {% endif %}
             <p>{{ produit.nomProduit }}</p>
             <p>{{ produit.prix }}€</p>
-            <div><a href="{{ path('show_produit',{'id':produit.id})}}">Acheter</a></div>
+            <div><a href="{{ path('show_produit',{'id':produit.id})}}">Go</a></div>
         </li>
         {% endif %}
 

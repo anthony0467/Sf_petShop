@@ -15,6 +15,7 @@
 <p>Email : {{ app.user.email}}</p>
 <p>Annonce(s) en cours : {{ app.user.produits | length }}</p>
 
+
 <h2>Mes annonces</h2>
 {% if produits is not empty %}
     
@@ -57,9 +58,9 @@
             <td>{{ produit.categorie }}</td>
 
             {% if produit.etat == false %}
-                <td>En attente</td>
+                <td style="color:red">En attente</td>
                 {% else %}
-                <td>Ok</td>
+                <td style="color: green">Ok</td>
             {% endif %}
             
             <td><a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a></td>

@@ -9,6 +9,7 @@ use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Form\ProduitType;
 use App\Form\EtatAnnonceType;
+use App\Form\SearchProduitType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -24,15 +25,25 @@ use Symfony\Component\Form\FormInterface;
 class HomeController extends AbstractController
 {
     #[Route('/home', name: 'app_home')]
-    public function index(ManagerRegistry $doctrine): Response
+    public function index(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
     {
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 5); // uniquement les 5 derniers articles ajoutés
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+
+        $form = $this->createForm(SearchProduitType::class);
+
+        $search = $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()){
+            //on recherche les produits correspondant au mots clef
+            $produits = $Pr->search($search->get('mots')->getData(), $search->get('categorie')->getData());
+        }
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produits,
             'categories' => $categories,
+            'form' => $form->createView()
         ]);
     }
 
@@ -148,6 +159,8 @@ class HomeController extends AbstractController
 
         $produits = $doctrine->getRepository(Produit::class)->findBy(['user' => $user], ["dateCreationProduit" => "DESC"]); // uniquement les 5 derniers articles ajoutés
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+
+        
 
         return $this->render('home/profil.html.twig', [
             'controller_name' => 'HomeController',

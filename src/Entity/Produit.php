@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[ORM\Table(name: "produit"), ORM\Index(columns: ["nom_produit", "description"], flags: ["fulltext"])]
+
 class Produit
 {
     #[ORM\Id]
@@ -204,10 +206,6 @@ class Produit
         return $this;
     }
 
-    public function __toString()
-    {
-        return $this->nomProduit;
-    }
 
     public function getStatut(): ?string
     {
@@ -219,5 +217,10 @@ class Produit
         $this->statut = $statut;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->nomProduit;
     }
 }
