@@ -9,6 +9,11 @@
 
 <h1>Bienvenue sur le panneau d'administrateur {{ app.user }}</h1>
 
+<h2>Gérer les événements</h2>
+
+<a href="{{path('app_evenement')}}">Voir les événements</a>
+<a href="{{path('add_evenement')}}">Ajouter un évenement</a>
+
 {% include "admin/_annonces_inactifs.html.twig" %}
 
 {% include "admin/_annonces_actif.html.twig" %}

@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter votre article{% endblock %}
+
+{% block body %}
+    
+
+{% if is_granted('ROLE_ADMIN')%}
+    <h1>Ajouter un évenement</h1>
+            
+    {{ form_start(formAddEvenement) }}
+    {{ form_widget(formAddEvenement) }}
+    {{ form_end(formAddEvenement) }}
+
+
+{% else %}
+
+    <p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
+
+{% endif %}
+
+
+
+
+{% endblock %}

@@ -22,8 +22,11 @@ class Evenement
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
-    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Images::class)]
+    #[ORM\OneToMany(mappedBy: 'evenement', targetEntity: Images::class, cascade:["persist"])]
     private Collection $images;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateEvenement = null;
 
     public function __construct()
     {
@@ -87,6 +90,18 @@ class Evenement
                 $image->setEvenement(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDateEvenement(): ?\DateTimeInterface
+    {
+        return $this->dateEvenement;
+    }
+
+    public function setDateEvenement(\DateTimeInterface $dateEvenement): self
+    {
+        $this->dateEvenement = $dateEvenement;
 
         return $this;
     }

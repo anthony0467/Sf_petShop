@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello EvenementController!{% endblock %}
+
+{% block body %}
+<h1>Liste des événements</h1>
+
+<ul>
+    {% for evenement in evenements %}
+
+    <li class="relative">
+        <span>Le {{ evenement.dateEvenement | date("d/m/Y") }}</span>
+        {% if evenement.images is not empty %}
+            <!--récupérer la 1er image uniquement -->
+            {% set image = evenement.images.first() %}
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="355px" width="100%" alt="Image de {{ image.nomImage }}">
+        {% else %}
+        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="355px" width="100%" alt="Mon image">
+        {% endif %}
+        <div class="absolute evenement-titre">
+            <h2>{{ evenement.titre }} le {{ evenement.dateEvenement | date("d/m/Y") }}</h2>
+            <div><a href="">En savoir plus</a></div>
+        </div>
+    </li>
+        
+    {% endfor %}
+</ul>
+
+{% endblock %}
