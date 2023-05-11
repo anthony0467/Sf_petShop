@@ -85,6 +85,8 @@ public function allProduits()
 }
 
 public function search($mots= null, $categorie = null){ // recherche les produits
+   // var_dump($mots, $categorie); // Affiche les valeurs des paramètres
+
     $query = $this->createQueryBuilder('p');
     $query->where('p.etat = 1');
 

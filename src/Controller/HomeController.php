@@ -30,15 +30,19 @@ class HomeController extends AbstractController
     {
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 5); // uniquement les 5 derniers articles ajoutés
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-        $evenements = $doctrine->getRepository(Evenement::class)->findBy([],["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
+        $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
         $allProduits = $Pr->allProduits();
         $form = $this->createForm(SearchProduitType::class);
 
         $search = $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //on recherche les produits correspondant au mots clef
             $produits = $Pr->search($search->get('mots')->getData(), $search->get('categorie')->getData());
+         /*   return $this->redirectToRoute('search_result', [
+                'mots' => $search->get('mots')->getData(),
+                'categorie' => $search->get('categorie')->getData()
+            ]);*/
         }
 
         return $this->render('home/index.html.twig', [
@@ -50,6 +54,26 @@ class HomeController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/search-result', name: 'search_result')]
+    
+public function searchResult(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
+{
+    $mots = $request->query->get('mots');
+    $categorie = $request->query->get('categorie');
+    dd($categorie);
+    $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+    $produits = $Pr->search($mots, $categorie);
+    //dd($produits);
+    
+    return $this->render('home/search_result.html.twig', [
+        'produits' => $produits,
+        'categories' => $categories
+    ]);
+}
+
+    
+
 
 
 
@@ -164,7 +188,7 @@ class HomeController extends AbstractController
         $produits = $doctrine->getRepository(Produit::class)->findBy(['user' => $user], ["dateCreationProduit" => "DESC"]); // uniquement les 5 derniers articles ajoutés
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
 
-        
+
 
         return $this->render('home/profil.html.twig', [
             'controller_name' => 'HomeController',
@@ -227,7 +251,7 @@ class HomeController extends AbstractController
                     $nbProduitsActifs++;
                 }
             }
-           
+
             return $this->render('home/profilOtherUser.html.twig', [
                 'userProfil' => $user,
                 'categories' => $categories,
