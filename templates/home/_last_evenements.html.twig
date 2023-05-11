@@ -1,0 +1,21 @@
+<div>
+    <h2>Évenement à suivre</h2>
+    <ul style="display:flex;">
+        {% for evenement in evenements %}
+        <li>
+            {% if evenement.images is not empty %}
+            <!--récupérer la 1er image uniquement -->
+            {% set image = evenement.images.first() %}
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="250px" width="550px" alt="Image de {{ image.nomImage }}">
+        {% else %}
+        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="250px" width="550px" alt="Mon image">
+        {% endif %}
+        <h3>{{ evenement }}</h3>
+        <span>Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
+        <p>{{ evenement.description|length > 100 ? evenement.description|slice(0, 150) ~ '...' : evenement.description }}</p>
+        <div><a href="{{ path('show_evenement',{'id':evenement.id})}}">En savoir plus</a></div>
+        </li>
+            
+        {% endfor %}
+    </ul>
+</div>

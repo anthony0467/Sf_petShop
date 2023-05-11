@@ -64,6 +64,14 @@ img {
   position: absolute;
 }
 
+.flex {
+  display: flex;
+}
+
+.wrap {
+  flex-wrap: wrap;
+}
+
 .evenement-titre {
   top: 50%;
   text-align: center;

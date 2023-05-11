@@ -6,33 +6,14 @@
 
 {{form(form)}}
 
- <div>
-    <h2>Derniers articles</h2>
-    <ul style="display: flex;">
-        {% for produit in produits %}
-        
-        {# verifier l'état avant de mettre en ligne #}
-        {% if produit.etat == false %}
-             {# Ne rien retourner #}
-        {% else %}
-        <li>
-            {% if produit.images is not empty %}
-                <!--récupérer la 1er image uniquement -->
-                {% set image = produit.images.first() %}
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="300" width="300px" alt="Image de {{ image.nomImage }}">
-                
+{#Derniers articles#}
+ {% include "home/_last_articles.html.twig" %}
 
-            {% else %}
-            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="300px" alt="Mon image">
-            {% endif %}
-            <p>{{ produit.nomProduit }}</p>
-            <p>{{ produit.prix }}€</p>
-            <div><a href="{{ path('show_produit',{'id':produit.id})}}">Go</a></div>
-        </li>
-        {% endif %}
+ {#Derniers evenements#}
+ {% include "home/_last_evenements.html.twig" %}
 
-        {% endfor %}
-    </ul>
- </div>
+  {#Tous les articles#}
+
+  {% include "home/_all_articles.html.twig" %}
  
 {% endblock %}

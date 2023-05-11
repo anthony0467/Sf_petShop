@@ -69,6 +69,21 @@ public function annonceActif()
     return $query->getQuery()->getResult();
 }
 
+public function allProduits()
+{
+    
+    $em = $this->getEntityManager();
+ 
+
+    $query = $em->createQueryBuilder();
+    $query->select('p')
+        ->from(Produit::class, 'p')
+        ->where('p.etat = 1')
+        ->orderBy('p.nomProduit', 'ASC');
+
+    return $query->getQuery()->getResult();
+}
+
 public function search($mots= null, $categorie = null){ // recherche les produits
     $query = $this->createQueryBuilder('p');
     $query->where('p.etat = 1');

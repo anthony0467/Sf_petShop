@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Images;
 use App\Entity\Produit;
 use App\Entity\Categorie;
+use App\Entity\Evenement;
 use App\Form\ProduitType;
 use App\Form\EtatAnnonceType;
 use App\Form\SearchProduitType;
@@ -29,7 +30,8 @@ class HomeController extends AbstractController
     {
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 5); // uniquement les 5 derniers articles ajoutés
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-
+        $evenements = $doctrine->getRepository(Evenement::class)->findBy([],["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
+        $allProduits = $Pr->allProduits();
         $form = $this->createForm(SearchProduitType::class);
 
         $search = $form->handleRequest($request);
@@ -42,7 +44,9 @@ class HomeController extends AbstractController
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produits,
+            'allProduits' => $allProduits,
             'categories' => $categories,
+            'evenements' => $evenements,
             'form' => $form->createView()
         ]);
     }
