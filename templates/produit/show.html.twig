@@ -8,15 +8,28 @@
 
 {% include "produit/_avis_client.html.twig" %}
 
+{% if produit.categorie.produits is not empty %}
+    
+
 <h2>Articles qui pourrait vous interessé</h2>
 
 <ul>
     {% for produitCategorie in produit.categorie.produits %}
+        {% if produitCategorie.etat == true  %} {# afficher si produit valider #}
+            
     <li>
         <a href="{{ path('show_produit',{'id':produitCategorie.id})}}">
             <figure>
-                {% set image = produitCategorie.images.first() %}
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px" alt="Image de {{ image.nomImage }}">
+                {% if produitCategorie.images is not empty %} {# si il y a une image #}
+                        
+                        <!--récupérer la 1er image uniquement -->
+                        {% set image = produitCategorie.images.first() %}
+                        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="300" width="300px" alt="Image de {{ image.nomImage }}">
+                        
+
+                    {% else %}
+                    <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="300px" alt="Mon image">
+                {% endif %}
                 <figcaption>
                     <p>{{ produitCategorie.nomProduit }}</p>
                     <p>{{ produitCategorie.prix }} €</p>
@@ -24,9 +37,10 @@
             </figure>
         </a>
     </li>
+    {% endif %}
     {% endfor %}
    
 </ul>
-
+{% endif %}
 
 {% endblock %}
