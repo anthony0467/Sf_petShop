@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class EvenementType extends AbstractType
 {
@@ -43,7 +44,7 @@ class EvenementType extends AbstractType
         ])
                 ],
             ])
-            ->add('description', TextType::class)
+            ->add('description', TextareaType::class)
             ->add('dateEvenement',  DateType::class, [
                 'widget' =>'single_text' // calendrier
             ])

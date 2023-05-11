@@ -89,4 +89,46 @@ class EvenementController extends AbstractController
 
         ]);
     }
+
+    #[Route('/evenement/delete/{id}', name: 'delete_evenement')] // supprimer evenement
+    public function delete(ManagerRegistry $doctrine, Evenement $evenement = null): Response
+    {
+        if ($evenement) {
+            $entityManager = $doctrine->getManager();
+
+            // Supprimer les images associées
+            $images = $evenement->getImages();
+            foreach ($images as $image) {
+                $entityManager->remove($image);
+            }
+
+            // Supprimer le produit
+            $entityManager->remove($evenement);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_evenement');
+        } else {
+            return $this->redirectToRoute('app_evenement');
+        }
+    }
+
+    #[Route('/evenement/show/{id}', name: 'show_evenement')] // afficher evenement detail
+    public function showUser(ManagerRegistry $doctrine, Evenement $evenement = null): Response
+    {
+       
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+        $evenements = $doctrine->getRepository(Evenement::class)->findBy([]);
+        if ($evenement) {
+
+            
+           
+            return $this->render('evenement/show.html.twig', [
+                'evenement' => $evenement,
+                'categories' => $categories,
+                'evenements' => $evenements
+            ]);
+        } else {
+            return $this->redirectToRoute('app_evenement');
+        }
+    }
 }

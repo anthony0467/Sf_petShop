@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello EvenementController!{% endblock %}
+{% block title %}Worl of pets : les évenements{% endblock %}
 
 {% block body %}
 <h1>Liste des événements</h1>
@@ -10,6 +10,10 @@
 
     <li class="relative">
         <span>Le {{ evenement.dateEvenement | date("d/m/Y") }}</span>
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{path('edit_evenement', {'id': evenement.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+        <a href="{{path('delete_evenement', {'id': evenement.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a>   
+        {% endif %}
         {% if evenement.images is not empty %}
             <!--récupérer la 1er image uniquement -->
             {% set image = evenement.images.first() %}
@@ -19,7 +23,7 @@
         {% endif %}
         <div class="absolute evenement-titre">
             <h2>{{ evenement.titre }} le {{ evenement.dateEvenement | date("d/m/Y") }}</h2>
-            <div><a href="">En savoir plus</a></div>
+            <div><a href="{{path('show_evenement', {'id': evenement.id })}}">En savoir plus</a></div>
         </div>
     </li>
         

@@ -111,7 +111,7 @@ class HomeController extends AbstractController
     }
 
 
-    #[Route('/home/delete/{id}', name: 'delete_produit')] // supprimer la session
+    #[Route('/home/delete/{id}', name: 'delete_produit')] // supprimer le produit
     public function delete(ManagerRegistry $doctrine, Produit $produit = null): Response
     {
         if ($produit) {
@@ -210,7 +210,7 @@ class HomeController extends AbstractController
         return $this->redirectToRoute('show_admin');
     }
 
-    #[Route('/user/show/{id}', name: 'show_user')] // afficher prodtuis par categorie
+    #[Route('/user/show/{id}', name: 'show_user')] // afficher autre utilisateur
     public function showUser(ManagerRegistry $doctrine, User $user = null): Response
     {
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"]);
