@@ -28,26 +28,31 @@ class HomeController extends AbstractController
     #[Route('/home', name: 'app_home')]
     public function index(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
     {
+        $produitSearch = null;//  recherche produits
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 5); // uniquement les 5 derniers articles ajoutés
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []); // recupérer les categories dans le sous menu
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
         $allProduits = $Pr->allProduits();
         $form = $this->createForm(SearchProduitType::class);
 
         $search = $form->handleRequest($request);
-
+        //dd($search);
         if ($form->isSubmitted() && $form->isValid()) {
             //on recherche les produits correspondant au mots clef
-            $produits = $Pr->search($search->get('mots')->getData(), $search->get('categorie')->getData());
-         /*   return $this->redirectToRoute('search_result', [
+           
+            $produitSearch = $Pr->search($search->get('mots')->getData(), $search->get('categorie')->getData());
+            //dd($produitSearch);
+           /* return $this->redirectToRoute('search_result', [
                 'mots' => $search->get('mots')->getData(),
-                'categorie' => $search->get('categorie')->getData()
+                'categorie' => $search->get('categorie')->getData(),
+                
             ]);*/
         }
 
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produits,
+            'produitSearch' => $produitSearch,
             'allProduits' => $allProduits,
             'categories' => $categories,
             'evenements' => $evenements,
@@ -55,22 +60,23 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/search-result', name: 'search_result')]
-    
-public function searchResult(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
-{
-    $mots = $request->query->get('mots');
-    $categorie = $request->query->get('categorie');
-    dd($categorie);
-    $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-    $produits = $Pr->search($mots, $categorie);
-    //dd($produits);
-    
-    return $this->render('home/search_result.html.twig', [
-        'produits' => $produits,
-        'categories' => $categories
-    ]);
-}
+   /* #[Route('/search-result', name: 'search_result')]
+      public function searchResult(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
+    {
+        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+        $mots = $request->query->get('mots');
+        $categorie = $request->query->get('categorie');
+        
+        dd($categorie);
+       
+        $produits = $Pr->search($mots, $categorie);
+        //dd($produits);
+        
+        return $this->render('home/search_result.html.twig', [
+            'produits' => $produits,
+            'categories' => $categories
+        ]);
+    }*/
 
     
 

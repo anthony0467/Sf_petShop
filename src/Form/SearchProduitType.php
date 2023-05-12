@@ -26,6 +26,7 @@ class SearchProduitType extends AbstractType
                 'class' => Categorie::class,
                 "choice_label" => 'nomCategorie',
                 'placeholder' => 'Toutes catégories', 
+               // 'choice_value' => 'id',
                 'required' => false, 
             ])
             ->add('Rechercher', SubmitType::class)
