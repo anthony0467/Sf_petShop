@@ -14,11 +14,11 @@
           {% if produit.images is not empty %}
               <!--récupérer la 1er image uniquement -->
               {% set image = produit.images.first() %}
-              <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="400px" width="300px" alt="Image de {{ image.nomImage }}">
+              <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200px" width="150px" alt="Image de {{ image.nomImage }}">
               
 
           {% else %}
-          <img src="{{ asset('uploads/images/defaut.jpg') }}" height="400px" width="300px" alt="Mon image">
+          <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="150px" alt="Mon image">
           {% endif %}
           <p>{{ produit.nomProduit }}</p>
           <p>{{ produit.prix }}€</p>

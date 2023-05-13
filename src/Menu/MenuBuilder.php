@@ -29,14 +29,21 @@ class MenuBuilder
         
         $categories = $this->em->getRepository(Categorie::class)->findBy([], []);
 
-        $categoryMenu = $this->createCategoryMenu($categories);
-        $menu->addChild($categoryMenu);
+        //$categoryMenu = $this->createCategoryMenu($categories); autre maniere, sous menu catégories
+       // $menu->addChild($categoryMenu);
+
+       foreach ($categories as $category) {
+        $menu->addChild($category->getNomCategorie(), [
+            'route' => 'show_categorie',
+            'routeParameters' => ['id' => $category->getId()]
+        ]);
+    }
         $menu->addChild('Evenements', ['route' => 'app_evenement']);
 
         return $menu;
     }
 
-    public function createCategoryMenu(array $categories): ItemInterface
+  /*  public function createCategoryMenu(array $categories): ItemInterface
 {
     $menu = $this->factory->createItem('categories');
 
@@ -48,6 +55,6 @@ class MenuBuilder
     }
 
     return $menu;
-}
+}*/
 
 }
