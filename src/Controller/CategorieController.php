@@ -26,7 +26,7 @@ class CategorieController extends AbstractController
     #[Route('/categorie/show/{id}', name: 'show_categorie')] // afficher prodtuis par categorie
     public function show(ManagerRegistry $doctrine, ProduitRepository $Pr, Categorie $categorie = null, Request $request): Response
     {
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+  
         $form = $this->createForm(SearchProduitType::class);
 
         $search = $form->handleRequest($request);
@@ -41,7 +41,6 @@ class CategorieController extends AbstractController
             return $this->render('categorie/show.html.twig', [
                 'categorie' => $categorie,
                 'produits' => $produits,
-                'categories' => $categories,
                 'form' => $form->createView()
             ]);
         }else{

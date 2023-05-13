@@ -30,7 +30,6 @@ class HomeController extends AbstractController
     {
         $produitSearch = null;//  recherche produits
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 5); // uniquement les 5 derniers articles ajoutés
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []); // recupérer les categories dans le sous menu
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
         $allProduits = $Pr->allProduits();
         $form = $this->createForm(SearchProduitType::class);
@@ -54,41 +53,18 @@ class HomeController extends AbstractController
             'produits' => $produits,
             'produitSearch' => $produitSearch,
             'allProduits' => $allProduits,
-            'categories' => $categories,
             'evenements' => $evenements,
             'form' => $form->createView()
         ]);
     }
 
-   /* #[Route('/search-result', name: 'search_result')]
-      public function searchResult(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
-    {
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-        $mots = $request->query->get('mots');
-        $categorie = $request->query->get('categorie');
-        
-        dd($categorie);
-       
-        $produits = $Pr->search($mots, $categorie);
-        //dd($produits);
-        
-        return $this->render('home/search_result.html.twig', [
-            'produits' => $produits,
-            'categories' => $categories
-        ]);
-    }*/
-
     
-
-
-
 
     #[Route('/home/add', name: 'add_produit')] // ajouter un produit
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
     public function add(ManagerRegistry $doctrine, Produit $produit = null,  Request $request): Response
     {
 
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
 
         $user = $this->getUser(); // récupérer objet user 
 
@@ -139,7 +115,7 @@ class HomeController extends AbstractController
             'formAddProduit' => $form->createView(), // généré le visuel du form
             "edit" => $produit->getId(),
             "produits" => $produit,
-            "categories" => $categories
+
 
         ]);
     }
@@ -211,7 +187,7 @@ class HomeController extends AbstractController
     public function admin(ManagerRegistry $doctrine, ProduitRepository $pi): Response
     {
         //$produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); 
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []); // menu categorie
+       
 
         $produitInactif = $pi->annonceInactif(); // requete dql
         $produitActif = $pi->annonceActif(); // requete dql
@@ -220,7 +196,7 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'produits' => $produitInactif,
             'produitsActif' => $produitActif,
-            'categories' => $categories,
+       
 
 
         ]);
@@ -248,7 +224,7 @@ class HomeController extends AbstractController
     public function showUser(ManagerRegistry $doctrine, User $user = null): Response
     {
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"]);
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+   
         if ($user) {
 
             $nbProduitsActifs = 0; // compter le nombre d'annonce avec etat actif
@@ -260,7 +236,6 @@ class HomeController extends AbstractController
 
             return $this->render('home/profilOtherUser.html.twig', [
                 'userProfil' => $user,
-                'categories' => $categories,
                 'produits' => $produits,
                 'nbProduitsActifs' => $nbProduitsActifs,
             ]);

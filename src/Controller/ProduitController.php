@@ -23,12 +23,11 @@ class ProduitController extends AbstractController
     public function show(ManagerRegistry $doctrine, Produit $produit = null): Response
     {
         if($produit){
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+    
 
          return $this->render('produit/show.html.twig', [
              'controller_name' => 'HomeController',
              'produit' => $produit,
-             'categories' => $categories,
              
              
          ]);

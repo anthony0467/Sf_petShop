@@ -1,20 +1,2 @@
-<ul>
-    <li>
-        <a href="{{path('app_home')}}">Accueil</a>
-    </li>
-
-    {% for categorie in categories %}
-
-    <li>
-        <a href="{{path('show_categorie', {'id': categorie.id })}}">{{ categorie.nomCategorie }}</a>
-    </li>
-        
-    {% endfor %}
-   
-
-  
-
-    <li>
-        <a href="{{path('app_evenement')}}">Evénements</a>
-    </li>
-</ul>
+{# menu gerer par menu builder #}
+{{ knp_menu_render('main') }}

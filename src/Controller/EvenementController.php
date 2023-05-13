@@ -17,12 +17,11 @@ class EvenementController extends AbstractController
     #[Route('/evenement', name: 'app_evenement')]
     public function index(ManagerRegistry $doctrine): Response
     {
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
+     
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 5);
 
         return $this->render('evenement/index.html.twig', [
             'controller_name' => 'EvenementController',
-            'categories' => $categories,
             'evenements' => $evenements
         ]);
     }
@@ -34,9 +33,6 @@ class EvenementController extends AbstractController
     public function add(ManagerRegistry $doctrine, Evenement $evenement = null,  Request $request): Response
     {
 
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-
-        //$user = $this->getUser(); // récupérer objet user 
 
         if (!$evenement) { // edit
             $evenement = new Evenement();
@@ -85,7 +81,6 @@ class EvenementController extends AbstractController
             'formAddEvenement' => $form->createView(), // généré le visuel du form
             "edit" => $evenement->getId(),
             "evenements" => $evenement,
-            "categories" => $categories
 
         ]);
     }
@@ -116,15 +111,11 @@ class EvenementController extends AbstractController
     public function showUser(ManagerRegistry $doctrine, Evenement $evenement = null): Response
     {
        
-        $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([]);
         if ($evenement) {
 
-            
-           
             return $this->render('evenement/show.html.twig', [
                 'evenement' => $evenement,
-                'categories' => $categories,
                 'evenements' => $evenements
             ]);
         } else {
