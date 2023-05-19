@@ -21,6 +21,9 @@ class EvenementType extends AbstractType
     {
         $builder
             ->add('Titre', TextType::class)
+            ->add('localisation', TextType::class,[
+            'attr' => ['placeholder' => 'Saisissez votre adresse ici'],
+            ])
             ->add('images', FileType::class, [
                 'label' => 'Photos',
                 'multiple' => true,
@@ -56,6 +59,9 @@ class EvenementType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Evenement::class,
+            'attr' => [
+                'id' => 'evenement_form',
+            ],
         ]);
     }
 }

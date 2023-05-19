@@ -25,7 +25,7 @@ use Symfony\Component\Form\FormInterface;
 
 class HomeController extends AbstractController
 {
-    #[Route('/home', name: 'app_home')]
+    #[Route('', name: 'app_home')]
     public function index(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
     {
         $produitSearch = null;//  recherche produits

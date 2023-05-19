@@ -18,6 +18,11 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        scoped_clients:
+            nominatim:
+                base_uri: https://nominatim.openstreetmap.org
+
 when@test:
     framework:
         test: true

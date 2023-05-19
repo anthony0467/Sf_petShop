@@ -6,6 +6,7 @@ use App\Entity\Images;
 use App\Entity\Categorie;
 use App\Entity\Evenement;
 use App\Form\EvenementType;
+use App\HttpClient\NominatimHttpClient;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,7 +31,7 @@ class EvenementController extends AbstractController
 
     #[Route('/evenement/add', name: 'add_evenement')] // ajouter un evenement
     #[Route('/evenement/{id}/edit', name: 'edit_evenement')] // modifier un evenement
-    public function add(ManagerRegistry $doctrine, Evenement $evenement = null,  Request $request): Response
+    public function add(ManagerRegistry $doctrine, Evenement $evenement = null, NominatimHttpClient $nominatim,  Request $request): Response
     {
 
 
@@ -38,14 +39,31 @@ class EvenementController extends AbstractController
             $evenement = new Evenement();
         } //add
 
-
+        
         $form = $this->createForm(EvenementType::class, $evenement,  []);
         $form->handleRequest($request); // analyse the request
-
+        
+        
         if ($form->isSubmitted() && $form->isValid()) { // valid respecter les contraintes
             // on recupere les images transmisse
             $images = $form->get('images')->getData();
 
+            $adresse = urlencode($form->get('localisation')->getData());
+            
+            // On passe les données a nominatim
+            $coordinates = $nominatim->getCoordinates($adresse);
+            //dd($coordinates);
+            if (!empty($coordinates)) {
+                $evenement->setLatitude($coordinates[0]['lat']);
+                $evenement->setLongitude($coordinates[0]['lon']);
+            } else {
+                // Gérer le cas où les coordonnées ne sont pas trouvées
+                // Par exemple, définir des valeurs par défaut ou afficher un message d'erreur
+                $evenement->setLatitude(0); // Valeur par défaut pour la latitude
+                $evenement->setLongitude(0); // Valeur par défaut pour la longitude
+                // Autres actions à prendre
+            }
+            
             // on boucle sur les tableaux
             foreach ($images as $image) {
                 // on genere un nouveau nom de fichier
@@ -81,6 +99,7 @@ class EvenementController extends AbstractController
             'formAddEvenement' => $form->createView(), // généré le visuel du form
             "edit" => $evenement->getId(),
             "evenements" => $evenement,
+            
 
         ]);
     }
@@ -114,9 +133,18 @@ class EvenementController extends AbstractController
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([]);
         if ($evenement) {
 
+            $latitude = $evenement->getLatitude();
+            $longitude = $evenement->getLongitude();
+            // Ajoutez les coordonnées à un tableau
+            $coordinates[] = [
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+            ];
+
             return $this->render('evenement/show.html.twig', [
                 'evenement' => $evenement,
-                'evenements' => $evenements
+                'evenements' => $evenements,
+                'coordinates' => $coordinates,
             ]);
         } else {
             return $this->redirectToRoute('app_evenement');

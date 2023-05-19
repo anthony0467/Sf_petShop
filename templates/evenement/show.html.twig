@@ -2,6 +2,13 @@
 
 {% block title %}évenement : {{ evenement }}{% endblock %}
 
+
+{% block javascripts %}
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="{{ asset('js/leaflet.js')}}"></script>
+{% endblock javascripts %}
+
+
 {% block body %}
 
 <h1>{{ evenement }} le {{ evenement.dateEvenement | date('d/m/y')}}</h1>
@@ -52,6 +59,11 @@
 
 <div>
     <h2>Localisation</h2>
+    <div id="mapid"></div>
 </div>
+
+<script>
+    const coordinates = JSON.parse('{{ coordinates | json_encode | raw }}');
+</script>
 
 {% endblock %}
