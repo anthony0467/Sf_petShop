@@ -37,6 +37,12 @@ class Evenement
     #[ORM\Column(nullable: true)]
     private ?float $longitude = null;
 
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $ville = null;
+
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $cp = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -152,6 +158,30 @@ class Evenement
     public function setLongitude(?float $longitude): self
     {
         $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getCp(): ?string
+    {
+        return $this->cp;
+    }
+
+    public function setCp(?string $cp): self
+    {
+        $this->cp = $cp;
 
         return $this;
     }

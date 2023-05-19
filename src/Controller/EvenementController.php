@@ -49,9 +49,11 @@ class EvenementController extends AbstractController
             $images = $form->get('images')->getData();
 
             $adresse = urlencode($form->get('localisation')->getData());
+            $ville = urlencode($form->get('ville')->getData());
+            $cp = $form->get('cp')->getData();
             
             // On passe les données a nominatim
-            $coordinates = $nominatim->getCoordinates($adresse);
+            $coordinates = $nominatim->getCoordinates($adresse,  $ville, $cp);
             //dd($coordinates);
             if (!empty($coordinates)) {
                 $evenement->setLatitude($coordinates[0]['lat']);

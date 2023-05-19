@@ -24,6 +24,8 @@ class EvenementType extends AbstractType
             ->add('localisation', TextType::class,[
             'attr' => ['placeholder' => 'Saisissez votre adresse ici'],
             ])
+            ->add('ville', TextType::class)
+            ->add('cp', TextType::class)
             ->add('images', FileType::class, [
                 'label' => 'Photos',
                 'multiple' => true,

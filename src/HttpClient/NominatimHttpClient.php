@@ -32,10 +32,10 @@ class NominatimHttpClient extends AbstractController
     }
 
     // Récuperer les coordronées d'un lieu
-    public function getCoordinates($adresse)
+    public function getCoordinates($adresse, $ville, $cp)
     {   
         // Search avec adresse, ville, cp. Renvoie un seul résulat en JSON. 
-        $response = $this->httpClient->request('GET', "/search?street=$adresse&limit=1&format=json", [
+        $response = $this->httpClient->request('GET', "/search?street=$adresse&city=$ville&postalcode=$cp&limit=1&format=json", [
             'verify_peer' => false, 
         ]);
 

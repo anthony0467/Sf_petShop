@@ -24,6 +24,9 @@
     {% endif %}
     <span>Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
     <p>{{ evenement.description }}</p>
+    <p>Adresse : {{ evenement.Localisation }}</p>
+    <p>Ville : {{ evenement.ville }}</p>
+    <p>Code postal : {{ evenement.cp }}</p>
     <div>
         <a href="">Accèder au site dédié</a>
     </div>
