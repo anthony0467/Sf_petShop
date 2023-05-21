@@ -207,7 +207,7 @@ img {
   width: 100%;
   background: rgba(0, 0, 0, 0.4784313725);
   color: white;
-  padding: 1rem 0;
+  bottom: 10%;
 }
 
 .evenement-titre a {

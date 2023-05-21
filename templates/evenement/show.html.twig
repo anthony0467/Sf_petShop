@@ -26,9 +26,11 @@
         <div class="evenement-text">
             <span>Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
             <p class="mh-2">{{ evenement.description }}</p>
+            {% if evenement.lien is not empty %}
             <div class="mh-2 text-center">
-                <a href="" class="btn">Accèder au site dédié</a>
+                <a href="{{ evenement.lien }}" class="btn" target="_blank">Accèder au site dédié</a>
             </div>
+            {% endif %}  
             <div class="text-center">
                 <div class="mh-2">
                     <p>Adresse : {{ evenement.Localisation }}</p>

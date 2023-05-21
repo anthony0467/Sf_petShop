@@ -6,9 +6,11 @@ use App\Entity\Evenement;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Count;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -53,6 +55,12 @@ class EvenementType extends AbstractType
             ->add('dateEvenement',  DateType::class, [
                 'widget' =>'single_text' // calendrier
             ])
+            ->add('lien', UrlType::class, [
+                'label' => 'URL',
+                'required' => true,
+                'constraints' => [
+                    new Url(),
+                ], ])
             ->add('Ajouter', SubmitType::class)
         ;
     }

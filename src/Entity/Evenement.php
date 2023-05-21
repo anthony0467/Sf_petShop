@@ -43,6 +43,9 @@ class Evenement
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $cp = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lien = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -182,6 +185,18 @@ class Evenement
     public function setCp(?string $cp): self
     {
         $this->cp = $cp;
+
+        return $this;
+    }
+
+    public function getLien(): ?string
+    {
+        return $this->lien;
+    }
+
+    public function setLien(?string $lien): self
+    {
+        $this->lien = $lien;
 
         return $this;
     }
