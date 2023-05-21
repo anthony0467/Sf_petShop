@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+
+$menu-color: #c6538c;
+
+#first_menu nav  a{
+    padding: 1rem .5rem;
+    color: $menu-color;
+}
+
+
+
+#second_menu ul{
+display: flex;
+flex-wrap: wrap;
+flex-direction: row;
+justify-content: space-around;
+}
+
+#second_menu ul li{
+    padding: 1rem;
+}
+
+#second_menu ul li:last-child{
+    border-left: 1px solid white;
+}
+
+#second_menu ul li a{
+    color: white;
+    }
+

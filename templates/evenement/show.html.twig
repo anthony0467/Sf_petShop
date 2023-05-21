@@ -14,56 +14,62 @@
 <h1>{{ evenement }} le {{ evenement.dateEvenement | date('d/m/y')}}</h1>
 
 <div>
-    {% if evenement.images is not empty %}
-    <!--récupérer la 1er image uniquement -->
-    {% set image = evenement.images.first() %}
-    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="355px" width="100%"
-        alt="Image de {{ image.nomImage }}">
-    {% else %}
-    <img src="{{ asset('uploads/images/defaut.jpg') }}" height="355px" width="100%" alt="Mon image">
-    {% endif %}
-    <span>Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
-    <p>{{ evenement.description }}</p>
-    <p>Adresse : {{ evenement.Localisation }}</p>
-    <p>Ville : {{ evenement.ville }}</p>
-    <p>Code postal : {{ evenement.cp }}</p>
+    <div class="evenement-container">
+        {% if evenement.images is not empty %}
+        <!--récupérer la 1er image uniquement -->
+        {% set image = evenement.images.first() %}
+        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="355px" width="100%"
+            alt="Image de {{ image.nomImage }}">
+        {% else %}
+        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="355px" width="100%" alt="Mon image">
+        {% endif %}
+        <div class="evenement-text">
+            <span>Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
+            <p class="mh-2">{{ evenement.description }}</p>
+            <div class="mh-2 text-center">
+                <a href="" class="btn">Accèder au site dédié</a>
+            </div>
+            <div class="text-center">
+                <div class="mh-2">
+                    <p>Adresse : {{ evenement.Localisation }}</p>
+                    <p>Ville : {{ evenement.ville }}</p>
+                    <p>Code postal : {{ evenement.cp }}</p>
+                </div>
+                <div id="mapid"></div>
+            </div>
+            
+        </div>
+    </div>
+
     <div>
-        <a href="">Accèder au site dédié</a>
+        <h2 class="text-center">Autres évenements</h2>
+        <ul class="flex justify-center gap wrap">
+            {% for otherEvenement in evenements %}
+            {% if otherEvenement.id != evenement.id and otherEvenement is not empty %}
+            <li>
+                <a href="{{path('show_evenement', {'id': otherEvenement.id })}}">
+                    {% if otherEvenement.images is not empty %}
+                    <!--récupérer la 1er image uniquement -->
+                    {% set image = otherEvenement.images.first() %}
+                    <figure>
+                        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200px" width="200px"
+                            alt="Image de {{ image.nomImage }}">
+                        <figcaption>{{ otherEvenement.Titre }}</figcaption>
+                    </figure>
+                    {% else %}
+                    <figure>
+                        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="200px" alt="Mon image">
+                        <figcaption>{{ otherEvenement.Titre }}</figcaption>
+                    </figure>
+                    {% endif %}
+                </a>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
     </div>
 </div>
 
-<div>
-    <h2>Autres évenements</h2>
-    <ul>
-        {% for otherEvenement in evenements %}
-        {% if otherEvenement.id != evenement.id and otherEvenement is not empty %}
-        <li>
-            <a href="{{path('show_evenement', {'id': otherEvenement.id })}}">
-                {% if otherEvenement.images is not empty %}
-                <!--récupérer la 1er image uniquement -->
-                {% set image = otherEvenement.images.first() %}
-                <figure>
-                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200px" width="200px"
-                        alt="Image de {{ image.nomImage }}">
-                    <figcaption>{{ otherEvenement.Titre }}</figcaption>
-                </figure>
-                {% else %}
-                <figure>
-                    <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="200px" alt="Mon image">
-                    <figcaption>{{ otherEvenement.Titre }}</figcaption>
-                </figure>
-                {% endif %}
-             </a>
-        </li>
-        {% endif %}
-        {% endfor %}
-    </ul>
-</div>
-
-<div>
-    <h2>Localisation</h2>
-    <div id="mapid"></div>
-</div>
 
 <script>
     const coordinates = JSON.parse('{{ coordinates | json_encode | raw }}');

@@ -1,6 +1,6 @@
 // RESET 
 
-/** {
+ *{
 	margin: 0;
 	padding: 0;
 	border: 0;
@@ -15,9 +15,11 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 }
-ol, ul {
+
+ol, ul, li {
 	list-style: none;
 }
+
 blockquote, q {
 	quotes: none;
 }
@@ -37,14 +39,28 @@ a{
 
 h1{
     font-size: 35px;
+	margin: 2rem 0;
+	text-align: center;
 }
 
 h2{
     font-size: 30px;
+	margin: 2rem 0;
 }
-*/
+
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+$color-font : #c6538c;
+$menu-color: #c6538c;
+$button-color: #c6538c;
+$button-color-hover: #a63b71;
+
+.logo strong{
+    font-family: 'Caveat', cursive !important;
+    font-size: 28px;
+    color: $menu-color;
+	padding: 0 1rem;
+}
 
 *{
     font-family: 'Open Sans', sans-serif;
@@ -68,10 +84,101 @@ img {
 	position: absolute;
 }
 
+.w-50{
+	width: 50%;
+}
+
+.w-75{
+	width: 75%;
+}
+
+.w-100{
+	width: 100%;
+}
+
+.mh-2{
+	margin: 2rem 0;
+}
+
+.color-primary{
+	color: $color-font;
+}
+
+.text-center{
+	text-align: center;
+}
+
+/*----------------------------------------------------------------FLEX- ----------------------------------------------------------------*/
+
 .flex{
 	display: flex;
+}
+.wrap{
+	flex-wrap: wrap;
+}
+.flex-col{
+	flex-direction: column;
+}
+
+.justify-center{
+	justify-content: center;
+}
+.justify-between{
+	justify-content: space-between;
+}
+
+.justify-end{
+	justify-content: flex-end;
+}
+
+.gap{
+	gap: 1rem;
+}
+
+.gap-x3{
+	gap: 3rem;
 }
 
 .wrap{
 	flex-wrap: wrap;
 }
+
+.items-center{
+	align-items: center;
+}
+
+/* ----------------------------------------------------------------ENDFLEX- ----------------------------------------------------------------*/
+
+.bg-menu{
+	background-color: $menu-color;
+}
+
+
+.btn{
+	background-color: $button-color;
+	padding: .5rem 2rem;
+	text-decoration: none;
+	transition: .35s;
+	color: white;
+}
+
+.btn:hover{
+	background-color: $button-color-hover;
+}
+
+
+#footer{
+margin-top: 2rem;
+padding: 1rem;
+color: white;
+}
+
+#footer li{
+	padding: .25rem 1rem;
+	border-right: 1px solid white;
+}
+
+#footer a{
+	
+	color: white;
+	}

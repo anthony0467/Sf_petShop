@@ -1,16 +1,19 @@
-<nav style="display: flex;">
-    <p><strong>World of Pets</strong></p>
+<div id="first_menu" class="flex items-center w-100 wrap justify-between">
+    <p class=" logo"><strong>World of Pets</strong></p>
+    <nav class="flex  justify-end gap">
     
-    {% if not app.user %}
-    <a href="{{path('app_register')}}">S'inscrire</a>
-    <a href="{{path('app_login')}}">Se connecter</a>
-    {% else %}
-    <a href="{{path('app_logout')}}">Se déconnecter</a>
-    <a href="{{path('show_home')}}">{{ app.user }}</a>
-    {% endif %}
-    <a href="{{path('add_produit')}}">Vends tes articles</a>
-    {% if is_granted('ROLE_ADMIN') %}
-    <a href="{{path('show_admin')}}">Panneau administrateur</a>   
-    {% endif %}
-    
-</nav>
+        
+        {% if not app.user %}
+        <a href="{{path('app_register')}}">S'inscrire</a>
+        <a href="{{path('app_login')}}">Se connecter</a>
+        {% else %}
+        <a href="{{path('app_logout')}}">Se déconnecter</a>
+        <a href="{{path('show_home')}}">{{ app.user }}</a>
+        {% endif %}
+        <a href="{{path('add_produit')}}">Vends tes articles</a>
+        {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{path('show_admin')}}">Panneau administrateur</a>   
+        {% endif %}
+        
+    </nav>
+</div>

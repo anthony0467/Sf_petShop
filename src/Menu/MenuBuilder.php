@@ -38,7 +38,7 @@ class MenuBuilder
             'routeParameters' => ['id' => $category->getId()]
         ]);
     }
-        $menu->addChild('Evenements', ['route' => 'app_evenement']);
+        $menu->addChild('Évenements', ['route' => 'app_evenement']);
 
         return $menu;
     }
