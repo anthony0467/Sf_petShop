@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contacter le vendeur{% endblock %}
+
+{% block body %}
+
+{% if app.user %}
+
+<h2>Ma messagerie</h2>
+{% if messages | length is empty  %}
+    <p>Vous n'avez pas de messages</p>
+    {% else %}
+ 
+
+    <table>
+        <thead>
+            <tr class="title-table">
+                <th >Expéditeur</th>
+                <th >Date</th>
+                <th>Message</th>
+                <th>Voir la discussion</th>
+            </tr>
+        </thead>
+        <tbody>
+                {% for message in messages %}
+                <tr>
+                    <td>{{ message.destinataire }}</td>
+                    <td>{{ message.date | date('d/m/Y') }}</td>
+                    <td>{{ message.text |length > 100 ? message.text|slice(0, 150) ~ '...' : message.text  }}</td>
+                    <td><a href="">Go</a></td>
+                </tr>
+                {% endfor %}
+    
+    
+                
+          
+        </tbody>
+    </table>
+{% endif %}
+
+ {% else %}
+ <p>Veuillez vous connecter pour avoir accès à cette page.</p>   
+{% endif %}
+
+{% endblock %}

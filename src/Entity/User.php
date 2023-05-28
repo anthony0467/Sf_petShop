@@ -41,9 +41,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class, orphanRemoval: true)]
     private Collection $produits;
 
+    #[ORM\OneToMany(mappedBy: 'expediteur', targetEntity: Message::class)]
+    private Collection $messages;
+
+    #[ORM\OneToMany(mappedBy: 'destinataire', targetEntity: Message::class)]
+    private Collection $messagesDestinataire;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
+        $this->messages = new ArrayCollection();
+        $this->messagesDestinataire = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -173,5 +181,65 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString()
     {
         return $this->pseudo;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages->add($message);
+            $message->setExpediteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getExpediteur() === $this) {
+                $message->setExpediteur(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Message>
+     */
+    public function getMessagesDestinataire(): Collection
+    {
+        return $this->messagesDestinataire;
+    }
+
+    public function addMessagesDestinataire(Message $messagesDestinataire): self
+    {
+        if (!$this->messagesDestinataire->contains($messagesDestinataire)) {
+            $this->messagesDestinataire->add($messagesDestinataire);
+            $messagesDestinataire->setDestinataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessagesDestinataire(Message $messagesDestinataire): self
+    {
+        if ($this->messagesDestinataire->removeElement($messagesDestinataire)) {
+            // set the owning side to null (unless already changed)
+            if ($messagesDestinataire->getDestinataire() === $this) {
+                $messagesDestinataire->setDestinataire(null);
+            }
+        }
+
+        return $this;
     }
 }
