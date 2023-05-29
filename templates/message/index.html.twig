@@ -27,7 +27,7 @@
                     <td>{{ message.destinataire }}</td>
                     <td>{{ message.date | date('d/m/Y') }}</td>
                     <td>{{ message.text |length > 100 ? message.text|slice(0, 150) ~ '...' : message.text  }}</td>
-                    <td><a href="">Go</a></td>
+                    <td><a href="{{path('show_message',{'destinataireId':message.destinataire.id})}}">Go</a></td>
                 </tr>
                 {% endfor %}
     

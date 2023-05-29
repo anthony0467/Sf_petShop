@@ -2,9 +2,10 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Message;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Message>
@@ -38,6 +39,24 @@ class MessageRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findByConversation(User $expediteur, User $destinataire)
+{
+    $em = $this->getEntityManager();
+
+    $query = $em->createQueryBuilder();
+    $query->select('m')
+        ->from(Message::class, 'm')
+        ->where('m.expediteur = :expediteur AND m.destinataire = :destinataire')
+        ->orWhere('m.expediteur = :destinataire AND m.destinataire = :expediteur')
+        ->setParameter('expediteur', $expediteur)
+        ->setParameter('destinataire', $destinataire)
+        ->orderBy('m.date', 'ASC');
+
+    return $query->getQuery()->getResult();
+}
+
+
 
 //    /**
 //     * @return Message[] Returns an array of Message objects

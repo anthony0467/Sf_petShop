@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block body %}
+<h1>Conversation</h1>
+{% if app.user %}
+{% for message in messages %}
+       
+    <div class="mh-2">
+        <span class="flex justify-between">
+            <strong>{{ message.expediteur }}</strong>
+            <p>{{ message.date | date('d/m/Y H:i:s')}}</p>
+        </span>
+        {{ message.text }}
+    </div>
+    
+{% endfor %}
+<a href="{{ path('add_message', {'destinataireId': destinataire.id}) }}" class="btn">Envoyer un message</a>
+{% else %}
+<p>Merci de vous connecter pour avoir accès à cette page.</p>
+{% endif %}
+
+
+{% endblock %}
