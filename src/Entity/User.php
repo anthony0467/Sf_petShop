@@ -41,17 +41,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Produit::class, orphanRemoval: true)]
     private Collection $produits;
 
-    #[ORM\OneToMany(mappedBy: 'expediteur', targetEntity: Message::class)]
-    private Collection $messages;
 
-    #[ORM\OneToMany(mappedBy: 'destinataire', targetEntity: Message::class)]
-    private Collection $messagesDestinataire;
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Messages::class, orphanRemoval: true)]
+    private Collection $sent;
+
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Messages::class, orphanRemoval: true)]
+    private Collection $received;
 
     public function __construct()
     {
         $this->produits = new ArrayCollection();
-        $this->messages = new ArrayCollection();
-        $this->messagesDestinataire = new ArrayCollection();
+        $this->sent = new ArrayCollection();
+        $this->received = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -153,7 +154,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getProduits(): Collection
     {
-        return $this->produits;
+        return $this->produits ;
     }
 
     public function addProduit(Produit $produit): self
@@ -183,30 +184,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->pseudo;
     }
 
+   
+
     /**
-     * @return Collection<int, Message>
+     * @return Collection<int, Messages>
      */
-    public function getMessages(): Collection
+    public function getSent(): Collection
     {
-        return $this->messages;
+        return $this->sent;
     }
 
-    public function addMessage(Message $message): self
+    public function addSent(Messages $sent): self
     {
-        if (!$this->messages->contains($message)) {
-            $this->messages->add($message);
-            $message->setExpediteur($this);
+        if (!$this->sent->contains($sent)) {
+            $this->sent->add($sent);
+            $sent->setSender($this);
         }
 
         return $this;
     }
 
-    public function removeMessage(Message $message): self
+    public function removeSent(Messages $sent): self
     {
-        if ($this->messages->removeElement($message)) {
+        if ($this->sent->removeElement($sent)) {
             // set the owning side to null (unless already changed)
-            if ($message->getExpediteur() === $this) {
-                $message->setExpediteur(null);
+            if ($sent->getSender() === $this) {
+                $sent->setSender(null);
             }
         }
 
@@ -214,29 +217,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Message>
+     * @return Collection<int, Messages>
      */
-    public function getMessagesDestinataire(): Collection
+    public function getReceived(): Collection
     {
-        return $this->messagesDestinataire;
+        return $this->received;
     }
 
-    public function addMessagesDestinataire(Message $messagesDestinataire): self
+    public function addReceived(Messages $received): self
     {
-        if (!$this->messagesDestinataire->contains($messagesDestinataire)) {
-            $this->messagesDestinataire->add($messagesDestinataire);
-            $messagesDestinataire->setDestinataire($this);
+        if (!$this->received->contains($received)) {
+            $this->received->add($received);
+            $received->setRecipient($this);
         }
 
         return $this;
     }
 
-    public function removeMessagesDestinataire(Message $messagesDestinataire): self
+    public function removeReceived(Messages $received): self
     {
-        if ($this->messagesDestinataire->removeElement($messagesDestinataire)) {
+        if ($this->received->removeElement($received)) {
             // set the owning side to null (unless already changed)
-            if ($messagesDestinataire->getDestinataire() === $this) {
-                $messagesDestinataire->setDestinataire(null);
+            if ($received->getRecipient() === $this) {
+                $received->setRecipient(null);
             }
         }
 

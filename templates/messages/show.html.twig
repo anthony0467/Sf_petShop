@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Conversation{% endblock %}
+
+{% block body %}
+{% if app.user %}
+<h1>Message de {{ message.sender.pseudo }}</h1>
+<section class="messagerie-container">
+<div class="mh-2 message">
+    <div class="mh-2">
+        <p>De: {{ message.sender.pseudo}}</p>
+        <p>Email: {{ message.sender.email}}</p>
+        <p>Date: {{ message.date | date('d/m/Y H:i:s')}}</p>
+    </div>
+    <p class="mes">{{ message}}</p>
+</div>
+
+<p><a href="{{path('send', {'vendorId': message.sender.id })}}" class="btn">Répondre</a>
+    <a href="{{path('app_messages')}}" class="btn">Retour sur la messagerie</a></p>
+</section>
+{% else %}
+<p>Merci de vous connecter pour avoir accès à cette page.</p>
+{% endif %}
+
+
+{% endblock %}

@@ -27,6 +27,12 @@
 
         {% include "layout/_menu.html.twig" %}
 
+        {% for message in app.flashes("message") %}
+            <div>
+                {{ message }}
+            </div>
+        {% endfor %}
+
         <div class="container">
             {% block body %}{% endblock %}
         </div>

@@ -9,6 +9,10 @@
         {% else %}
         <a href="{{path('app_logout')}}">Se déconnecter</a>
         <a href="{{path('show_home')}}">{{ app.user }}</a>
+        <a href="{{ path('app_messages')}}"><i class="fa-regular fa-envelope"></i>
+            {% set unreadMessages = app.user.received | filter(item => item.isRead == false) %}
+            {{ unreadMessages | length }}
+        </a>
         {% endif %}
         <a href="{{path('add_produit')}}">Vends tes articles</a>
         {% if is_granted('ROLE_ADMIN') %}

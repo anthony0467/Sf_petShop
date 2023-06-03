@@ -15,7 +15,7 @@
 <p>Email : {{ app.user.email}}</p>
 <p>Annonce(s) en cours : {{ app.user.produits | length }}</p>
 <div class="mh-2">
-    <a href="{{ path('app_message')}}" class="btn">Ma messagerie</a>
+    <a href="{{ path('app_messages')}}" class="btn">Ma messagerie</a>
 </div>
 <h2>Mes annonces</h2>
 {% if produits is not empty %}

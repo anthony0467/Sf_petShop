@@ -1,0 +1,116 @@
+$bg-mess : rgba(198, 83, 140, .5);
+
+
+.messagerie-container{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.messagerie {
+    width: 100%; /* Largeur totale du tableau */
+    border-collapse: collapse; /* Fusionner les bordures des cellules */
+  }
+
+  .messagerie th{
+    padding: 10px;
+    font-weight: bold;
+  }
+ 
+  .messagerie td {
+    border: 1px solid rgba(0, 0, 0, 0.432); /* Bordure des cellules */
+    padding: 10px; /* Espacement interne des cellules */
+    text-align: center;
+  }
+  
+  .messagerie td:nth-child(2) {
+    max-width: 200px; /* Largeur de la troisième colonne */
+  }
+
+  .bold{
+	font-weight: bold;
+    background-color: $bg-mess;
+}
+
+.message{
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.459);
+    background: #0000000a;;
+    padding: 1rem;
+    line-height: 1.5;
+}
+
+.message :last-child{
+    padding-bottom: 1rem;
+}
+
+
+/* Styles pour les écrans de petite taille */
+@media (max-width: 767px) {
+    table.messagerie {
+      width: 100%;
+    }
+  
+    table.messagerie thead,
+    table.messagerie tbody,
+    table.messagerie th,
+    table.messagerie td,
+    table.messagerie tr {
+      display: block;
+    }
+  
+    table.messagerie thead tr {
+      position: absolute;
+      top: -9999px;
+      left: -9999px;
+    }
+  
+    table.messagerie tr {
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+  
+    table.messagerie td {
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  
+    table.messagerie td:before {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 45%;
+      padding-right: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      
+    }
+  
+    table.messagerie td:nth-of-type(1):before {
+      content: "Expéditeur";
+    }
+  
+    table.messagerie td:nth-of-type(2):before {
+      content: "Date";
+    }
+  
+    table.messagerie td:nth-of-type(3):before {
+      content: "Message";
+    }
+  
+    table.messagerie td:nth-of-type(4):before {
+      content: "Voir la discussion";
+    }
+  
+    table.messagerie td:nth-of-type(5):before {
+      content: "Action";
+    }
+  }
+  

@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messagerie
+{% endblock %}
+
+{% block body %}
+{% if app.user %}
+<section class="messagerie-container">
+    <div class="row">
+        <div class="mh-2">
+            <h1>Messagerie</h1>
+            <p>Résumé de la messagerie</p>
+            <p>Reçus : {{ app.user.received|length }}</p>
+            <p>Envoyés : {{ app.user.sent|length }}</p>
+        </div>
+        <a href="{{path('sent_messages')}}" class="btn">Voir les messages envoyés</a>
+
+        <table class="mh-2 messagerie">
+            <thead>
+                <tr class="title-table">
+                    <th>Expéditeur</th>
+                    <th>Date</th>
+                    <th>Message</th>
+                    <th>Voir le message</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in app.user.received %}
+                    
+                    {% set bold = message.isRead ? '' : 'bold' %}
+                    <tr>
+                        <td class="{{bold}}">{{ message.sender.email }}</td>
+                        <td class="{{bold}}">{{ message.date | date('d/m/Y') }}</td>
+                        <td class="{{bold}}">{{ message|length > 40 ? message|slice(0, 40) ~ '...' : message }}</td>
+                        <td class="{{bold}}"><a href="{{path("show_messages", {id: message.id} )}}">Go</a></td>
+                        <td class="{{bold}}"><a href="{{path("delete_messages", {id: message.id} )}}"><i class="fa-solid fa-trash"></i></a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+    </div>
+</section>
+{% else %}
+<p>Vous devez être connecté pour accéder à cette page.</p>
+{% endif %}
+	
+
+{% endblock %}

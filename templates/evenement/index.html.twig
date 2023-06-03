@@ -7,26 +7,24 @@
 
 <ul class="flex flex-col gap-x3">
     {% for evenement in evenements %}
-
-    <li class="relative">
-        <span class="evenement-date">Le {{ evenement.dateEvenement | date("d/m/Y") }}</span>
-        {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{path('edit_evenement', {'id': evenement.id })}}"><i class="fa-sharp fa-solid fa-pen color-primary"></i></a>
-        <a href="{{path('delete_evenement', {'id': evenement.id })}}"><i class="fa-sharp fa-solid fa-trash color-primary"></i></a>   
-        {% endif %}
-        {% if evenement.images is not empty %}
-            <!--récupérer la 1er image uniquement -->
-            {% set image = evenement.images.first() %}
-            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="355px" width="100%" alt="Image de {{ image.nomImage }}">
-        {% else %}
-        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="355px" width="100%" alt="Mon image">
-        {% endif %}
-        <div class="absolute evenement-titre">
-            <h2>{{ evenement.titre }} le {{ evenement.dateEvenement | date("d/m/Y") }}</h2>
-            <div><a href="{{path('show_evenement', {'id': evenement.id })}}" class="btn" >En savoir plus</a></div>
-        </div>
-    </li>
-        
+        <li class="relative">
+            <span class="evenement-date">Le {{ evenement.dateEvenement | date("d/m/Y") }}</span>
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{path('edit_evenement', {'id': evenement.id })}}"><i class="fa-sharp fa-solid fa-pen color-primary"></i></a>
+            <a href="{{path('delete_evenement', {'id': evenement.id })}}"><i class="fa-sharp fa-solid fa-trash color-primary"></i></a>   
+            {% endif %}
+            {% if evenement.images is not empty %}
+                <!--récupérer la 1er image uniquement -->
+                {% set image = evenement.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="355px" width="100%" alt="Image de {{ image.nomImage }}">
+            {% else %}
+            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="355px" width="100%" alt="Mon image">
+            {% endif %}
+            <div class="absolute evenement-titre">
+                <h2>{{ evenement.titre }} le {{ evenement.dateEvenement | date("d/m/Y") }}</h2>
+                <div><a href="{{path('show_evenement', {'id': evenement.id })}}" class="btn" >En savoir plus</a></div>
+            </div>
+        </li>
     {% endfor %}
 </ul>
 
