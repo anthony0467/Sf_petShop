@@ -1,4 +1,23 @@
 $bg-mess : rgba(198, 83, 140, .5);
+// message flash
+
+@mixin flash-style($message) {
+  @if $message == "Message envoyé avec succès" {
+    .custom-flash {
+      background-color: #4CAF50;
+      color: #ffffff;
+      padding: 10px;
+      // Autres styles pour le message de succès
+    }
+  } @else {
+    .custom-flash {
+      background-color: rgb(149, 20, 20);
+      // Autres styles pour les autres types de messages
+    }
+  }
+}
+
+@include flash-style("Message envoyé avec succès");
 
 
 .messagerie-container{

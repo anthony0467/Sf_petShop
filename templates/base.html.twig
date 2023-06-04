@@ -28,7 +28,7 @@
         {% include "layout/_menu.html.twig" %}
 
         {% for message in app.flashes("message") %}
-            <div>
+            <div class="custom-flash">
                 {{ message }}
             </div>
         {% endfor %}

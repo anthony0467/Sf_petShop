@@ -48,7 +48,7 @@ class MessagesController extends AbstractController
             $em->persist($message);
             $em->flush();
 
-            $this->addFlash("message","Message envoyé avec succès");
+            $this->addFlash("message","Message envoyé avec succès", "success");
             return $this->redirectToRoute('app_messages');
         }
 
