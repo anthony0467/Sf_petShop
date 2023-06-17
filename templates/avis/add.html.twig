@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Donner votre avis{% endblock %}
+
+
+
+{% block body %}
+    
+
+{% if app.user %}
+    <h1>Ajouter un avis</h1>
+            
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+    
+{% else %}
+
+    <p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
+
+{% endif %}
+
+
+
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Avis{% endblock %}
+
+{% block body %}
+{% if app.user %}
+<div class="messagerie-container">
+    <h1>Profil de {{ vendeur.pseudo }} </h1>
+
+    <div>
+        <p>Pseudo: {{vendeur.pseudo }}</p>
+        <p>Email: {{vendeur.email }}</p>
+        <p>Nombre de produits en vente: {{ vendeur.produits | length }}</p>
+        <p>Nombre de commentaires: {{ avis |length }}</p>
+        <div class="mh-2">
+            <a class="btn" href="{{path('add_avis', {'vendorId': vendeur.id })}}">Laisser un commentaire à {{ vendeur.pseudo }} </a>
+        </div>
+    </div>
+
+    {% if avis is empty %}
+        <p>Ce vendeur ne dispose pas encore de commentaires.</p>
+    {% else %}
+    <h2>Commentaires clients :</h2>
+    <ul>
+        {% for commentaire in avis %}
+        <li class="comment">
+            <div class="flex justify-between">
+                <p>De {{commentaire.users}}</p>
+                <p>{{commentaire.dateAvis | date('d/m/Y')}}</p>
+            </div>
+            <p>Note :       
+                {% for i in 1..5 %}
+                    {% if i <= commentaire.note %}
+                        <i class="fa fa-star"></i>
+                    {% else %}
+                        <i class="fa-regular fa-star"></i>
+                    {% endif %}
+                {% endfor %}
+            </p>
+            <p>{{ commentaire}}</p>
+            {% if app.user == commentaire.users.pseudo %}
+                <p class="text-right"><a href="{{path('delete_avis', {'id': commentaire.id, 'vendorId': commentaire.vendeur.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></p>
+            {% endif %}
+        </li>
+        {% endfor %}
+
+    </ul>
+    {% endif %}
+    {% else %}
+    <p>Merci de vous connecter pour avoir accès à cette page.</p>
+    {% endif %}
+</div>
+{% endblock %}

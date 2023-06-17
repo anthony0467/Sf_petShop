@@ -5,6 +5,10 @@
         {% set image = produit.images.first() %}
         <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px" alt="Image de {{ image.nomImage }}">
     </figure>
+    <p>Voir le profil du vendeur: 
+        <a href="{{path('show_avis', {'vendorId': produit.user.id })}}">Par ici</a>
+    </p>
     <p>Avis vendeur : </p>
-    <a href="">Donné nous votre avis !</a>
+    <a href="{{path('add_avis', {'vendorId': produit.user.id })}}">Donné nous votre avis !</a>
+    
 </div>
