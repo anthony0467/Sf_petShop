@@ -56,8 +56,8 @@ class EvenementType extends AbstractType
                 'widget' =>'single_text' // calendrier
             ])
             ->add('lien', UrlType::class, [
-                'label' => 'URL',
-                'required' => true,
+                'label' => 'URL(facultatif)',
+                'required' => false,
                 'constraints' => [
                     new Url(),
                 ], ])

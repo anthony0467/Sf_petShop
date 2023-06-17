@@ -48,11 +48,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Messages::class, orphanRemoval: true)]
     private Collection $received;
 
+    #[ORM\OneToMany(mappedBy: 'users', targetEntity: Avis::class)]
+    private Collection $avis;
+
+    #[ORM\OneToMany(mappedBy: 'Vendeur', targetEntity: Avis::class)]
+    private Collection $vendeur;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
         $this->sent = new ArrayCollection();
         $this->received = new ArrayCollection();
+        $this->avis = new ArrayCollection();
+        $this->vendeur = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -240,6 +248,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($received->getRecipient() === $this) {
                 $received->setRecipient(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Avis>
+     */
+    public function getAvis(): Collection
+    {
+        return $this->avis;
+    }
+
+    public function addAvi(Avis $avi): self
+    {
+        if (!$this->avis->contains($avi)) {
+            $this->avis->add($avi);
+            $avi->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAvi(Avis $avi): self
+    {
+        if ($this->avis->removeElement($avi)) {
+            // set the owning side to null (unless already changed)
+            if ($avi->getUsers() === $this) {
+                $avi->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Avis>
+     */
+    public function getVendeur(): Collection
+    {
+        return $this->vendeur;
+    }
+
+    public function addVendeur(Avis $vendeur): self
+    {
+        if (!$this->vendeur->contains($vendeur)) {
+            $this->vendeur->add($vendeur);
+            $vendeur->setVendeur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVendeur(Avis $vendeur): self
+    {
+        if ($this->vendeur->removeElement($vendeur)) {
+            // set the owning side to null (unless already changed)
+            if ($vendeur->getVendeur() === $this) {
+                $vendeur->setVendeur(null);
             }
         }
 
