@@ -12,6 +12,8 @@ $bg-mess : rgba(198, 83, 140, .5);
   } @else {
     .custom-flash {
       background-color: rgb(149, 20, 20);
+      color: #ffffff;
+      padding: 10px;
       // Autres styles pour les autres types de messages
     }
   }
