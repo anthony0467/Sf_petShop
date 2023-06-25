@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Avis;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\User;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Avis>
@@ -81,4 +82,44 @@ class AvisRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    public function actifReplyParent($parentId)
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQueryBuilder();
+        $query->select('a')
+            ->from(Avis::class, 'a')
+            ->where('a.actif = 1')
+            ->andWhere('a.Parent = :parentId')
+            ->orderBy('a.dateAvis', 'ASC')
+            ->setParameter('parentId', $parentId);
+
+        return $query->getQuery()->getResult();
+    }
+
+    //    /**
+    //     * @return Avis[] Returns an array of Avis objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('a.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?Avis
+    //    {
+    //        return $this->createQueryBuilder('a')
+    //            ->andWhere('a.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }
