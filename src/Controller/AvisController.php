@@ -106,6 +106,19 @@ class AvisController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
     }
+
+    #[Route('/avis/admin', name: 'admin_avis')] // gerer les avis admin
+    public function adminAvis(ManagerRegistry $doctrine, AvisRepository $Ar): Response
+    {
+        $avisInactif = $Ar->inactifAvis();
+        $avisActif = $Ar->actifAvis();
+
+        return $this->render('avis/admin.html.twig', [
+            'controller_name' => 'AvisController',
+            'avisInactif' => $avisInactif,
+            'avisActif' => $avisActif
+        ]);
+    }
     #[Route('/avis/delete-reply/{vendorId}/{parentId}', name: 'delete_reply')]
     public function deleteReply(ManagerRegistry $doctrine, $vendorId, $parentId): Response
     {
