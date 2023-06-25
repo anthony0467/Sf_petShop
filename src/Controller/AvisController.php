@@ -119,6 +119,44 @@ class AvisController extends AbstractController
             'avisActif' => $avisActif
         ]);
     }
+    #[Route('/avis/add-reply/{vendorId}/{parentId}', name: 'add_reply')] // reponse commentaire
+    public function addReply(ManagerRegistry $doctrine, $vendorId, $parentId, Request $request): Response
+    {
+        $user = $this->getUser();
+        $vendor = $doctrine->getRepository(User::class)->find($vendorId);
+        $parentAvis = $doctrine->getRepository(Avis::class)->find($parentId);
+
+        if (!$vendor) {
+            throw $this->createNotFoundException('Le vendeur spécifié n\'existe pas.');
+        }
+
+        if (!$parentAvis) {
+            throw $this->createNotFoundException('Le commentaire parent spécifié n\'existe pas.');
+        }
+
+        $avis = new Avis();
+        $form = $this->createForm(AvisType::class, $avis);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $avis->setActif(0);
+            $avis->setUsers($user);
+            $avis->setVendeur($vendor);
+            $avis->setDateAvis(new \DateTime());
+            $avis->setActif(false);
+            $parentAvis->addReponse($avis);
+
+            $em = $doctrine->getManager();
+            $em->persist($avis);
+            $em->flush();
+
+            return $this->redirectToRoute('show_avis', ['vendorId' => $vendorId]);
+        }
+
+        return $this->render('avis/add.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
     #[Route('/avis/delete-reply/{vendorId}/{parentId}', name: 'delete_reply')]
     public function deleteReply(ManagerRegistry $doctrine, $vendorId, $parentId): Response
     {
