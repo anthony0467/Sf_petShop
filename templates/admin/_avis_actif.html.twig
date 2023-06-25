@@ -1,0 +1,31 @@
+<table>
+    <thead>
+        <tr class="title-table">
+            <th>Utilisateur</th>
+            <th>Date</th>
+            <th>Commentaire</th>
+            <th>Etat</th>
+            <th>Supprimer</th>
+            
+        </tr>
+    </thead>
+    <tbody>
+        {% for avis in avisActif %}
+      
+       
+        <tr>
+            <td>{{ avis.users.pseudo}}</td>
+            <td>{{ avis.dateAvis | date('d/m/Y')}}</td>
+            <td>{{ avis.commentaire }}</td>
+            <td><a href="{{path('publish_avis', {'id': avis.id })}}">Inactif</a></td>
+            
+            <td><a href="{{path('delete_avis', {'id': avis.id, 'vendorId': avis.vendeur.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
+
+        </tr>
+        {% endfor %}
+
+
+
+
+    </tbody>
+</table>

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion avis{% endblock %}
+
+{% block body %}
+
+{% if is_granted('ROLE_ADMIN') %}
+<h1>Gestion des avis clients</h1>
+<h2>Commentaires en cours de publication</h2>
+
+{% include "admin/_avis_inactif.html.twig" %}
+
+<h2>Commentaires publiés</h2>
+
+{% include "admin/_avis_actif.html.twig" %}
+
+{% else %}
+<p>Vous n'avez pas les droits d'accès à cette page.</p>
+{% endif %}
+
+{% endblock %}
