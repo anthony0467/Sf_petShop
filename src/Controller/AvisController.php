@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Avis;
 use App\Entity\User;
 use App\Form\AvisType;
+use App\Repository\AvisRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,17 +23,26 @@ class AvisController extends AbstractController
     }
 
     #[Route('/avis/add/{vendorId}', name: 'add_avis')]
-    public function addAvis(ManagerRegistry $doctrine, $vendorId, Request $request): Response
+    public function addAvis(ManagerRegistry $doctrine, Avis $avis = null, $vendorId, Request $request): Response
     {
+
+
         $user = $this->getUser();
         $vendor = $doctrine->getRepository(User::class)->find($vendorId);
-        // dd($vendor);
 
-        $avis = new Avis();
+        if (!$vendor) { // si le vendeur n'existe pas
+            throw $this->createNotFoundException('Le vendeur spécifié n\'existe pas.');
+        }
+        // dd($vendor);
+        if (!$avis) {
+            $avis = new Avis();
+        }
+
         $form = $this->createForm(AvisType::class, $avis);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $avis->setUsers($user);
             $avis->setVendeur($vendor);
             $avis->setDateAvis(new \DateTime);
@@ -70,19 +80,21 @@ class AvisController extends AbstractController
     }
 
 
+
     #[Route('/avis/show/{vendorId}', name: 'show_avis')]
-    public function showAvis(ManagerRegistry $doctrine, $vendorId, $vendeur = null): Response
+    public function showAvis(ManagerRegistry $doctrine, $vendorId, AvisRepository $Ar, $vendeur = null): Response
     {
 
         $vendeur = $doctrine->getRepository(User::class)->find($vendorId); // info du vendeur
 
-        $avis = $doctrine->getRepository(Avis::class)->findBy(['Vendeur' => $vendorId], ["dateAvis" => "ASC"]);
+        //$avis = $doctrine->getRepository(Avis::class)->findBy(['Vendeur' => $vendorId], ["dateAvis" => "ASC"]);
+        $avisActif = $Ar->actifAvisVendor($vendorId);
 
         if ($vendeur) {
 
             return $this->render('avis/show.html.twig', [
                 'controller_name' => 'AvisController',
-                'avis' => $avis,
+                'avis' => $avisActif,
                 'vendeur' => $vendeur
             ]);
         } else {
@@ -91,13 +103,13 @@ class AvisController extends AbstractController
     }
 
     #[Route('/home/delete/{id}/{vendorId}', name: 'delete_avis')] // supprimer le commentaire
-    public function delete(ManagerRegistry $doctrine, $vendorId,  Avis $avis = null): Response
+    public function deleteAvis(ManagerRegistry $doctrine, $vendorId,  Avis $avis = null): Response
     {
 
         if ($avis) {
             $entityManager = $doctrine->getManager();
 
-            // Supprimer le produit
+            // Supprimer le avis
             $entityManager->remove($avis);
             $entityManager->flush();
 
@@ -119,6 +131,7 @@ class AvisController extends AbstractController
             'avisActif' => $avisActif
         ]);
     }
+
     #[Route('/avis/add-reply/{vendorId}/{parentId}', name: 'add_reply')] // reponse commentaire
     public function addReply(ManagerRegistry $doctrine, $vendorId, $parentId, Request $request): Response
     {
@@ -157,6 +170,7 @@ class AvisController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
     #[Route('/avis/delete-reply/{vendorId}/{parentId}', name: 'delete_reply')]
     public function deleteReply(ManagerRegistry $doctrine, $vendorId, $parentId): Response
     {
