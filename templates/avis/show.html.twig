@@ -23,10 +23,11 @@
     <h2>Commentaires clients :</h2>
     <ul>
         {% for commentaire in avis %}
+        
         <li class="comment">
             <div class="flex justify-between">
                 <p>De {{commentaire.users}}</p>
-                <p>{{commentaire.dateAvis | date('d/m/Y')}}</p>
+                <p>{{commentaire.dateAvis | date('d/m/Y H:i:s')}}</p>
             </div>
             <p>Note :       
                 {% for i in 1..5 %}
@@ -41,6 +42,28 @@
             {% if app.user == commentaire.users.pseudo %}
                 <p class="text-right"><a href="{{path('delete_avis', {'id': commentaire.id, 'vendorId': commentaire.vendeur.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></p>
             {% endif %}
+            {% if app.user == vendeur.pseudo %}
+                <p><a href="{{ path('add_reply', {'vendorId': commentaire.vendeur.id, 'parentId': commentaire.id}) }}" class="btn" data-reply data-id="{{ commentaire.id }}">Répondre</a></p>
+            {% endif %}
+            
+
+            <!-- Affichage des réponses -->
+            {% for reply in commentaire.getReponse() %}
+               {% if reply.actif == true %}
+                <ul class="reply">
+                    <li class="comment">
+                        <div class="flex justify-between">
+                            <p>De {{reply.users}}</p>
+                            <p>{{reply.dateAvis | date('d/m/Y H:i:s')}}</p>
+                        </div>
+                       <p>{{ reply.commentaire }}</p>
+                       <p class="text-right"><a href="{{path('delete_reply', { 'vendorId': reply.vendeur.id, 'parentId' : reply.id})}}"><i class="fa-sharp fa-solid fa-trash"></i></a></p>
+            
+                    </li>
+                    <!-- Affichez les autres informations de la réponse -->
+                </ul>
+               {% endif %}
+            {% endfor %}
         </li>
         {% endfor %}
 
