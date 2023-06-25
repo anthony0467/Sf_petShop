@@ -39,20 +39,21 @@ class AvisRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return Avis[] Returns an array of Avis objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('a.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function actifAvisVendor($vendorId)
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQueryBuilder();
+        $query->select('a')
+            ->from(Avis::class, 'a')
+            ->where('a.actif = 1')
+            ->andWhere('a.Vendeur = :vendorId')
+            ->andWhere('a.parent IS NULL')
+            ->orderBy('a.dateAvis', 'ASC')
+            ->setParameter('vendorId', $vendorId);
+
+        return $query->getQuery()->getResult();
+    }
 
 //    public function findOneBySomeField($value): ?Avis
 //    {
