@@ -68,4 +68,17 @@ class AvisRepository extends ServiceEntityRepository
 
         return $query->getQuery()->getResult();
     }
+
+    public function actifAvis()
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQueryBuilder();
+        $query->select('a')
+            ->from(Avis::class, 'a')
+            ->where('a.actif = 1')
+            ->orderBy('a.dateAvis', 'ASC');
+
+        return $query->getQuery()->getResult();
+    }
 }
