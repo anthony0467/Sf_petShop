@@ -88,4 +88,21 @@ class AvisController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
     }
+    #[Route('/avis/delete-reply/{vendorId}/{parentId}', name: 'delete_reply')]
+    public function deleteReply(ManagerRegistry $doctrine, $vendorId, $parentId): Response
+    {
+        $parentAvis = $doctrine->getRepository(Avis::class)->find($parentId);
+        //dd($parentAvis);
+        if ($parentAvis) {
+            $entityManager = $doctrine->getManager();
+
+            // Supprimer le commentaire parent
+            $entityManager->remove($parentAvis);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('show_avis', ['vendorId' => $vendorId]);
+        } else {
+            return $this->redirectToRoute('app_home');
+        }
+    }
 }
