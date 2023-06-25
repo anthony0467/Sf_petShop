@@ -51,6 +51,24 @@ class AvisController extends AbstractController
         ]);
     }
 
+    #[Route('/avis/publish/{id}', name: 'publish_avis')] // publier commentaire
+    //#[IsGranted('ROLE_ADMIN')]
+    public function publishAvis(ManagerRegistry $doctrine, Avis $avis)
+    {
+
+
+        if ($avis->isActif()) {
+            $avis->setActif(false);
+        } else {
+            $avis->setActif(true);
+        }
+
+        $em = $doctrine->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('admin_avis');
+    }
+
 
     #[Route('/avis/show/{vendorId}', name: 'show_avis')]
     public function showAvis(ManagerRegistry $doctrine, $vendorId, $vendeur = null): Response
