@@ -55,13 +55,17 @@ class AvisRepository extends ServiceEntityRepository
         return $query->getQuery()->getResult();
     }
 
-//    public function findOneBySomeField($value): ?Avis
-//    {
-//        return $this->createQueryBuilder('a')
-//            ->andWhere('a.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+
+    public function inactifAvis()
+    {
+        $em = $this->getEntityManager();
+
+        $query = $em->createQueryBuilder();
+        $query->select('a')
+            ->from(Avis::class, 'a')
+            ->where('a.actif = 0')
+            ->orderBy('a.dateAvis', 'ASC');
+
+        return $query->getQuery()->getResult();
+    }
 }
