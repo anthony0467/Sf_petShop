@@ -16,11 +16,11 @@ class Avis
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
-    
+    #[ORM\Column(nullable: true)]
+
     private ?int $note = null;
 
-    #[ORM\Column(type:'text', nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $commentaire = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, options: ["default" => "CURRENT_TIMESTAMP"])]
