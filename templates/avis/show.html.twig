@@ -57,7 +57,11 @@
                             <p>{{reply.dateAvis | date('d/m/Y H:i:s')}}</p>
                         </div>
                        <p>{{ reply.commentaire }}</p>
-                       <p class="text-right"><a href="{{path('delete_reply', { 'vendorId': reply.vendeur.id, 'parentId' : reply.id})}}"><i class="fa-sharp fa-solid fa-trash"></i></a></p>
+               
+                       {% if reply.users.pseudo == app.user %}
+                        <p class="text-right"><a href="{{path('delete_reply', { 'vendorId': reply.vendeur.id, 'parentId' : reply.id})}}"><i class="fa-sharp fa-solid fa-trash"></i></a></p>
+                       {% endif %}
+                       
             
                     </li>
                     <!-- Affichez les autres informations de la réponse -->
