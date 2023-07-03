@@ -22,7 +22,7 @@ class RouteNotFoundSubscriber implements EventSubscriberInterface{
         $exception = $event->getThrowable();
 
         if($exception instanceof NotFoundHttpException){
-            $redirectUrl = $this->urlGenerator->generate('app_home');
+            $redirectUrl = $this->urlGenerator->generate('error_page');
 
             $response = new RedirectResponse($redirectUrl);
 
@@ -36,5 +36,3 @@ class RouteNotFoundSubscriber implements EventSubscriberInterface{
         ];
     }
 }
-
- ?>
