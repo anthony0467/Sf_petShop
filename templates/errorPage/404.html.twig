@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %} {% block title %}Oups !{% endblock %} {% block
+body %}
+<div class="container-error">
+  <div class="flex justify-center">
+    <img
+      src="https://img.freepik.com/vecteurs-libre/oops-erreur-404-illustration-concept-robot-casse_114360-5529.jpg?w=500"
+      alt="erreur 404"
+    />
+  </div>
+  <h2 class="text-center">
+    Oups ! Cette page n'existe pas, merci de retourner sur la page d'accueil.
+  </h2>
+  <div class="text-center">
+    <a href="{{ path('app_home') }}" class="btn">Retour à l'accueil</a>
+  </div>
+</div>
+{% endblock %}
