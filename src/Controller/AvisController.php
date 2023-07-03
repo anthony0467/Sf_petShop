@@ -30,6 +30,7 @@ class AvisController extends AbstractController
         $user = $this->getUser();
         $vendor = $doctrine->getRepository(User::class)->find($vendorId);
 
+
         if (!$vendor) { // si le vendeur n'existe pas
             throw $this->createNotFoundException('Le vendeur spécifié n\'existe pas.');
         }
@@ -57,7 +58,8 @@ class AvisController extends AbstractController
         }
 
         return $this->render('avis/add.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'avis' => $avis->getParent(),
         ]);
     }
 
@@ -167,7 +169,8 @@ class AvisController extends AbstractController
         }
 
         return $this->render('avis/add.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'avis' => $parentId,
         ]);
     }
 
