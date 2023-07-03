@@ -243,4 +243,9 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
     }
+    #[Route('/error', name: 'error_page')] // afficher autre utilisateur
+    public function errorRedirection(): Response
+    {
+        return $this->render('errorPage/404.html.twig', []);
+    }
 }
