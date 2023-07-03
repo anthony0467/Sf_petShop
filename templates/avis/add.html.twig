@@ -1,27 +1,38 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}Donner votre avis{% endblock %}
+{% block body %} {% if app.user %}
+<h1>Ajouter un avis</h1>
 
-{% block title %}Donner votre avis{% endblock %}
+{{ form_start(form) }}
 
+{% if avis is null %}
+<div>
+  {{ form_label(form.note) }}
+  {{ form_widget(form.note) }}
+  {{ form_errors(form.note) }}
+</div>
 
-
-{% block body %}
-    
-
-{% if app.user %}
-    <h1>Ajouter un avis</h1>
-            
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
-
-    
 {% else %}
-
-    <p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
-
+<div style="display: none">
+  {{ form_label(form.note) }}
+  {{ form_widget(form.note) }}
+  {{ form_errors(form.note) }}
+</div>
 {% endif %}
 
+<div>
+  {{ form_label(form.commentaire) }}
+  {{ form_widget(form.commentaire) }}
+  {{ form_errors(form.commentaire) }}
+</div>
 
+<div>
+  {{ form_widget(form.Envoyer) }}
+</div>
 
+{{ form_end(form) }}
 
-{% endblock %}
+{% else %}
+
+<p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
+
+{% endif %} {% endblock %}
