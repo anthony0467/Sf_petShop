@@ -17,22 +17,22 @@ class AvisType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-        ->add('note', NumberType::class, [
-            'constraints' => [
-                new Range([
-                    'min' => 1,
-                    'max' => 5,
-                    'minMessage' => 'La note doit être d\'au moins {{ limit }}',
-                    'maxMessage' => 'La note ne peut pas dépasser {{ limit }}'
-                ])
-            ]
-        ])
+            ->add('note', NumberType::class, [
+                'required' => false,
+                'constraints' => [
+                    new Range([
+                        'min' => 1,
+                        'max' => 5,
+                        'minMessage' => 'La note doit être d\'au moins {{ limit }}',
+                        'maxMessage' => 'La note ne peut pas dépasser {{ limit }}'
+                    ])
+                ]
+            ])
             ->add('commentaire', TextareaType::class)
             ->add('parentid', HiddenType::class, [
-                'mapped' =>false,
+                'mapped' => false,
             ])
-            ->add('Envoyer', SubmitType::class)
-        ;
+            ->add('Envoyer', SubmitType::class);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
