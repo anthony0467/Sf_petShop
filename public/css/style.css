@@ -77,6 +77,10 @@ img {
   min-height: 77vh;
 }
 
+.container-error {
+  min-height: 80.1vh;
+}
+
 .relative {
   position: relative;
 }
