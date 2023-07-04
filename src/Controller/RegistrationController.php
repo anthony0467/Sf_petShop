@@ -91,6 +91,29 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('app_register');
     }
+
+    #[Route('/registration/edit', name: 'edit_user')] // user supprime son compte
+    public function editUser(ManagerRegistry $doctrine, Request $request): Response
+    {
+        $user = $this->getUser();
+        $form = $this->createForm(EditProfileType::class, $this->getUser());
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $doctrine->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('message', 'Profil mis à jour');
+            return $this->redirectToRoute('show_home');
+        }
+
+        return $this->render('registration/editProfile.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
     #[Route('/home/delete', name: 'delete_user')] // user supprime son compte
     public function deleteUser(ManagerRegistry $doctrine, SessionInterface $session, User $user = null): Response
     {
