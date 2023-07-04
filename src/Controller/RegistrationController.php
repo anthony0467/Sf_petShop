@@ -91,4 +91,26 @@ class RegistrationController extends AbstractController
 
         return $this->redirectToRoute('app_register');
     }
+    #[Route('/home/delete', name: 'delete_user')] // user supprime son compte
+    public function deleteUser(ManagerRegistry $doctrine, SessionInterface $session, User $user = null): Response
+    {
+
+        $user = $this->getUser();
+
+        if ($user) {
+            $entityManager = $doctrine->getManager();
+
+            // Vider la session
+            $session = new Session();
+            $session->invalidate();
+
+            // Supprimer le user
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('app_home');
+        } else {
+            return $this->redirectToRoute('app_home');
+        }
+    }
 }
