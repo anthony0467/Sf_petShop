@@ -1,94 +1,99 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Profil : {{ app.user }}{% endblock %}
-
-{% block body %}
-
-
-
-{% if app.user %}
+{% extends 'base.html.twig' %} {% block title %}Profil : {{ app.user }}{%
+endblock %} {% block body %} {% if app.user %}
 
 <h1>Bienvenue {{ app.user }}</h1>
 
 <h2>Mon profil</h2>
-<p>Pseudo : {{ app.user }} </p>
-<p>Email : {{ app.user.email}}</p>
+<a href="{{ path('edit_user') }}">Modifier mes informations personnelles</a>
+<p>Pseudo : {{ app.user }}</p>
+<p>Email : {{ app.user.email }}</p>
 <p>Annonce(s) en cours : {{ app.user.produits | length }}</p>
 <div class="mh-2">
-    <a href="{{ path('app_messages')}}" class="btn">Ma messagerie</a>
+  <a href="{{ path('app_messages') }}" class="btn">Ma messagerie</a>
 </div>
 <h2>Mes annonces</h2>
 {% if produits is not empty %}
-    
 
 <table>
-    <thead>
-        <tr class="title-table">
-            <th>Photos</th>
-            <th>Titre</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Prix</th>
-            <th>Categorie</th>
-            <th>Etat</th>
-            <th>Editer</th>
-            <th>Supprimer</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        {% for produit in produits %}
-       
-        <tr>
-            <td>
-                {% if produit.images is not empty %}
-                <!--récupérer la 1er image uniquement -->
-                {% set image = produit.images.first() %}
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
-                    alt="Image de {{ image.nomImage }}">
+  <thead>
+    <tr class="title-table">
+      <th>Photos</th>
+      <th>Titre</th>
+      <th>Date</th>
+      <th>Description</th>
+      <th>Prix</th>
+      <th>Categorie</th>
+      <th>Etat</th>
+      <th>Editer</th>
+      <th>Supprimer</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for produit in produits %}
 
+    <tr>
+      <td>
+        {% if produit.images is not empty %}
+        <!--récupérer la 1er image uniquement -->
+        {% set image = produit.images.first() %}
+        <img
+          src="{{ asset('uploads/images/' ~ image.nomImage) }}"
+          height="auto"
+          width="200px"
+          alt="Image de {{ image.nomImage }}"
+        />
 
-                {% else %}
-                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
-                {% endif %}
-            </td>
-            <td>{{ produit.nomProduit }}</td>
-            <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
-            <td>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}</td>
-            <td>{{ produit.prix }} €</td>
-            <td>{{ produit.categorie }}</td>
+        {% else %}
+        <img
+          src="{{ asset('uploads/images/defaut.jpg') }}"
+          height="300px"
+          width="200px"
+          alt="Mon image"
+        />
+        {% endif %}
+      </td>
+      <td>{{ produit.nomProduit }}</td>
+      <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
+      <td>
+        {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
+      </td>
+      <td>{{ produit.prix }} €</td>
+      <td>{{ produit.categorie }}</td>
 
-            {% if produit.etat == false %}
-                <td style="color:red">En attente</td>
-                {% else %}
-                <td style="color: green">Ok</td>
-            {% endif %}
-            
-            <td><a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a></td>
-            <td><a href="{{path('delete_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
+      {% if produit.etat == false %}
+      <td style="color: red">En attente</td>
+      {% else %}
+      <td style="color: green">Ok</td>
+      {% endif %}
 
-
-
-
-        </tr>
-        {% endfor %}
-
-
-
-
-    </tbody>
+      <td>
+        <a href="{{ path('edit_produit', { id: produit.id }) }}"
+          ><i class="fa-sharp fa-solid fa-pen"></i
+        ></a>
+      </td>
+      <td>
+        <a href="{{ path('delete_produit', { id: produit.id }) }}"
+          ><i class="fa-sharp fa-solid fa-trash"></i
+        ></a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
 </table>
+
 {% else %}
 <p>Vous n'avez pas encore créé d'annonces.</p>
 {% endif %}
 
+<div>
+  <a href="{{ path('delete_user') }}">Supprimer mon compte</a>
+  <p>
+    Attention! Si le compte est supprimé, vous perdrez toutes les informations
+    liés à celui-ci.
+  </p>
+</div>
 {% else %}
 
 <p>Vous devez vous connectez pour avoir accès à cette page</p>
 
-{% endif %}
-
-
-
-
-{% endblock %}
+{% endif %} {% endblock %}
