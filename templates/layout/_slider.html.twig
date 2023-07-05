@@ -1,0 +1,47 @@
+<!-- Swiper -->
+<div class="swiper mySwiper">
+  <div class="slider-pop-up">
+    <p>Votre chats ne veut plus de sa paté? Il n'utilise plus ses jouets ?</p>
+    <a href="{{ path('add_produit') }}" class="btn">Vendez tous</a>
+  </div>
+  <div class="swiper-wrapper">
+    <div class="swiper-slide">
+      <img
+        src="https://img.passeportsante.net/1200x675/2021-03-04/i100128-chat-et-chien-cohabitation.jpeg"
+        alt="image de chiens et chats"
+        width="100%"
+        height="400px"
+      />
+    </div>
+    <div class="swiper-slide">
+      <img
+        src="https://www.lauren-kimminn.fr/wp-content/uploads/2015/08/Gala-Banniere-Chat-Lifestyle-1-2.jpg"
+        alt=" chats"
+        width="100%"
+        height="400px"
+      />
+    </div>
+    <div class="swiper-slide">
+      <img
+        src="https://www.fishipedia.fr/wp-content/uploads/2021/04/banniere_reptile.jpg"
+        alt=" chats"
+        width="100%"
+        height="400px"
+      />
+    </div>
+  </div>
+  <div class="swiper-pagination"></div>
+</div>
+
+<script>
+  var swiper = new Swiper(".mySwiper", {
+    pagination: {
+      el: ".swiper-pagination",
+      dynamicBullets: true,
+    },
+    autoplay: {
+      delay: 2500, // Temps en millisecondes entre chaque slide
+      disableOnInteraction: false, // Permet à l'autoplay de continuer même si l'utilisateur interagit avec le slider
+    },
+  });
+</script>
