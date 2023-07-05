@@ -1,24 +1,31 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}World of Pets - Accueil{%
+endblock %} {% block body %}
+<div class="form_search">
+  {{ form_start(form) }}
+  <div id="search_produit">
+    <!-- Champ "mots" -->
+    <div>
+      {{ form_label(form.mots) }}
+      {{ form_widget(form.mots) }}
+      {{ form_errors(form.mots) }}
+    </div>
 
-{% block title %}World of Pets - Accueil{% endblock %}
+    <!-- Champ "categorie" -->
+    <div>
+      {{ form_widget(form.categorie) }}
+      {{ form_errors(form.categorie) }}
+    </div>
 
-{% block body %}
+    <!-- Champ "Rechercher" -->
+    <div>
+      {{ form_widget(form.Rechercher) }}
+    </div>
+  </div>
 
-{{ form_start(form) }}
-{{ form_widget(form) }}
-{{ form_end(form) }}
+  {{ form_end(form) }}
+</div>
 
-{#resultat de recherche#}
-{% include "home/_search_articles.html.twig" %}
-
-{#Derniers articles#}
- {% include "home/_last_articles.html.twig" %}
-
- {#Derniers evenements#}
- {% include "home/_last_evenements.html.twig" %}
-
-  {#Tous les articles#}
-
-  {% include "home/_all_articles.html.twig" %}
- 
-{% endblock %}
+{#resultat de recherche#} {% include "home/_search_articles.html.twig" %}
+{#Derniers articles#} {% include "home/_last_articles.html.twig" %} {#Derniers
+evenements#} {% include "home/_last_evenements.html.twig" %} {#Tous les
+articles#} {% include "home/_all_articles.html.twig" %} {% endblock %}
