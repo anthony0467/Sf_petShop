@@ -22,6 +22,9 @@ class Images
     #[ORM\ManyToOne(inversedBy: 'images')]
     private ?Evenement $evenement = null;
 
+    #[ORM\ManyToOne(inversedBy: 'image')]
+    private ?Slider $slider = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Images
     public function setEvenement(?Evenement $evenement): self
     {
         $this->evenement = $evenement;
+
+        return $this;
+    }
+
+    public function getSlider(): ?Slider
+    {
+        return $this->slider;
+    }
+
+    public function setSlider(?Slider $slider): self
+    {
+        $this->slider = $slider;
 
         return $this;
     }
