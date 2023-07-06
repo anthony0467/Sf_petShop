@@ -1,0 +1,12 @@
+// Définition de la mixin pour la couleur primaire
+@mixin primary-background-color {
+  background-color:#c6538c; 
+}
+
+@mixin primary-background-color-hover {
+  background-color:#a63b71; 
+}
+
+@mixin primary-color{
+	color:#c6538c; 
+}
