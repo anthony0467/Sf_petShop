@@ -1,5 +1,7 @@
-{% extends 'base.html.twig' %} {% block title %}World of Pets - Accueil{%
-endblock %} {% block body %}
+{% extends 'base.html.twig' %} {% block title %}World of Pets - Accueil{% endblock %} 
+{% block body %} 
+
+{% include "layout/_slider.html.twig" %}
 <div class="form_search">
   {{ form_start(form) }}
   <div id="search_produit">
@@ -25,7 +27,12 @@ endblock %} {% block body %}
   {{ form_end(form) }}
 </div>
 
-{#resultat de recherche#} {% include "home/_search_articles.html.twig" %}
-{#Derniers articles#} {% include "home/_last_articles.html.twig" %} {#Derniers
-evenements#} {% include "home/_last_evenements.html.twig" %} {#Tous les
-articles#} {% include "home/_all_articles.html.twig" %} {% endblock %}
+{#resultat de recherche#} 
+{% include "home/_search_articles.html.twig" %}
+{#Derniers articles#}
+ {% include "home/_last_articles.html.twig" %}
+  {#Derniers evenements#}
+   {% include "home/_last_evenements.html.twig" %}
+    {#Tous les articles#} 
+   {% include "home/_all_articles.html.twig" %} 
+   {% endblock %}
