@@ -86,3 +86,32 @@ class SliderController extends AbstractController
 
         ]);
     }
+
+    #[Route('/slider/delete/{id}', name: 'delete_slider')] // supprimer evenement
+    public function delete(ManagerRegistry $doctrine, Slider $slider = null): Response
+    {
+        if ($slider) {
+            $entityManager = $doctrine->getManager();
+
+            // Supprimer les images associées
+            $images = $slider->getImage();
+            foreach ($images as $image) {
+                // Supprimer le fichier du dossier
+                $imagePath = $this->getParameter('images_directory') . '/' . $image->getNomImage();
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+
+                $entityManager->remove($image);
+            }
+
+            // Supprimer le produit
+            $entityManager->remove($slider);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('show_admin');
+        } else {
+            return $this->redirectToRoute('show_admin');
+        }
+    }
+}
