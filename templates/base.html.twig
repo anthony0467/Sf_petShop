@@ -49,8 +49,8 @@
 
     <!--Menu-->
 
-    {% include "layout/_menu.html.twig" %} {% include "layout/_slider.html.twig"
-    %} {% for message in app.flashes("message") %}
+    {% include "layout/_menu.html.twig" %} 
+     {% for message in app.flashes("message") %}
     <div class="custom-flash">
       {{ message }}
     </div>
