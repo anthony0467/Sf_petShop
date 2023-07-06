@@ -50,15 +50,13 @@ h2{
 
 
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
-$color-font : #c6538c;
-$menu-color: #c6538c;
-$button-color: #c6538c;
-$button-color-hover: #a63b71;
+@import 'mixins';
+
 
 .logo strong{
     font-family: 'Caveat', cursive !important;
     font-size: 28px;
-    color: $menu-color;
+    @include primary-color;
 	padding: 0 1rem;
 }
 
@@ -109,7 +107,7 @@ img {
 }
 
 .color-primary{
-	color: $color-font;
+	@include primary-color;
 }
 
 .text-center{
@@ -168,12 +166,12 @@ img {
 /* ----------------------------------------------------------------ENDFLEX- ----------------------------------------------------------------*/
 
 .bg-menu{
-	background-color: $menu-color;
+	@include primary-background-color;
 }
 
 
 .btn{
-	background-color: $button-color;
+	@include primary-background-color;
 	padding: .5rem 2rem;
 	text-decoration: none;
 	transition: .35s;
@@ -182,7 +180,7 @@ img {
 }
 
 .btn:hover{
-	background-color: $button-color-hover;
+	@include primary-background-color-hover;
 }
 
 

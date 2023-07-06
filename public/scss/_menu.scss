@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400&display=swap');
+@import 'mixins';
 
-$menu-color: #c6538c;
 
 #first_menu nav  a{
     padding: 1rem .5rem;
-    color: $menu-color;
+    @include primary-color;
 }
 
 
