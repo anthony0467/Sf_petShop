@@ -5,6 +5,7 @@ namespace App\Controller;
 use doctrine;
 use App\Entity\User;
 use App\Entity\Images;
+use App\Entity\Slider;
 use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Entity\Evenement;
@@ -14,6 +15,7 @@ use App\Form\SearchProduitType;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,14 +23,14 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 
 class HomeController extends AbstractController
 {
     #[Route('', name: 'app_home')]
     public function index(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
     {
-        $produitSearch = null;//  recherche produits
+        $produitSearch = null; //  recherche produits
+        $slider = $doctrine->getRepository(Slider::class)->findBy([], ["id" => "DESC"]);
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 5); // uniquement les 5 derniers articles ajoutés
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
         $allProduits = $Pr->allProduits();
@@ -38,10 +40,10 @@ class HomeController extends AbstractController
         //dd($search);
         if ($form->isSubmitted() && $form->isValid()) {
             //on recherche les produits correspondant au mots clef
-           
+
             $produitSearch = $Pr->search($search->get('mots')->getData(), $search->get('categorie')->getData());
             //dd($produitSearch);
-           /* return $this->redirectToRoute('search_result', [
+            /* return $this->redirectToRoute('search_result', [
                 'mots' => $search->get('mots')->getData(),
                 'categorie' => $search->get('categorie')->getData(),
                 
@@ -54,11 +56,12 @@ class HomeController extends AbstractController
             'produitSearch' => $produitSearch,
             'allProduits' => $allProduits,
             'evenements' => $evenements,
+            'slide' => $slider,
             'form' => $form->createView()
         ]);
     }
 
-    
+
 
     #[Route('/home/add', name: 'add_produit')] // ajouter un produit
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
@@ -187,8 +190,8 @@ class HomeController extends AbstractController
     public function admin(ManagerRegistry $doctrine, ProduitRepository $pi): Response
     {
         //$produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); 
-       
 
+        $slider = $doctrine->getRepository(Slider::class)->findBy([]);
         $produitInactif = $pi->annonceInactif(); // requete dql
         $produitActif = $pi->annonceActif(); // requete dql
 
@@ -196,7 +199,8 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'produits' => $produitInactif,
             'produitsActif' => $produitActif,
-       
+            'slider' => $slider,
+
 
 
         ]);
@@ -224,7 +228,7 @@ class HomeController extends AbstractController
     public function showUser(ManagerRegistry $doctrine, User $user = null): Response
     {
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"]);
-   
+
         if ($user) {
 
             $nbProduitsActifs = 0; // compter le nombre d'annonce avec etat actif
