@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Menu;
 
@@ -26,24 +26,44 @@ class MenuBuilder
         $menu = $this->factory->createItem('root');
 
         $menu->addChild('Accueil', ['route' => 'app_home']);
-        
+
         $categories = $this->em->getRepository(Categorie::class)->findBy([], []);
 
         //$categoryMenu = $this->createCategoryMenu($categories); autre maniere, sous menu catégories
-       // $menu->addChild($categoryMenu);
+        // $menu->addChild($categoryMenu);
 
-       foreach ($categories as $category) {
-        $menu->addChild($category->getNomCategorie(), [
-            'route' => 'show_categorie',
-            'routeParameters' => ['id' => $category->getId()]
-        ]);
-    }
+        foreach ($categories as $category) {
+            $menu->addChild($category->getNomCategorie(), [
+                'route' => 'show_categorie',
+                'routeParameters' => ['id' => $category->getId()]
+            ]);
+        }
         $menu->addChild('Évenements', ['route' => 'app_evenement']);
 
         return $menu;
     }
 
-  /*  public function createCategoryMenu(array $categories): ItemInterface
+    public function createMobileMenu(array $options): ItemInterface
+    {
+        $menu = $this->factory->createItem('mobile_menu');
+
+        // Ajoutez les éléments de menu spécifiques à la version mobile
+        $menu->addChild('Accueil', ['route' => 'app_home']);
+
+        $categories = $this->em->getRepository(Categorie::class)->findBy([], []);
+
+        foreach ($categories as $category) {
+            $menu->addChild($category->getNomCategorie(), [
+                'route' => 'show_categorie',
+                'routeParameters' => ['id' => $category->getId()]
+            ]);
+        }
+        $menu->addChild('Événements', ['route' => 'app_evenement']);
+
+        return $menu;
+    }
+
+    /*  public function createCategoryMenu(array $categories): ItemInterface
 {
     $menu = $this->factory->createItem('categories');
 
@@ -56,5 +76,4 @@ class MenuBuilder
 
     return $menu;
 }*/
-
 }
