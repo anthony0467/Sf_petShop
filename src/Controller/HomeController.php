@@ -133,6 +133,11 @@ class HomeController extends AbstractController
             // Supprimer les images associées
             $images = $produit->getImages();
             foreach ($images as $image) {
+
+                $imagePath = $this->getParameter('images_directory') . '/' . $image->getNomImage();
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
                 $entityManager->remove($image);
             }
 

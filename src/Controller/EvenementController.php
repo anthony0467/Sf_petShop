@@ -18,7 +18,7 @@ class EvenementController extends AbstractController
     #[Route('/evenement', name: 'app_evenement')]
     public function index(ManagerRegistry $doctrine): Response
     {
-     
+
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 5);
 
         return $this->render('evenement/index.html.twig', [
@@ -39,11 +39,11 @@ class EvenementController extends AbstractController
             $evenement = new Evenement();
         } //add
 
-        
+
         $form = $this->createForm(EvenementType::class, $evenement,  []);
         $form->handleRequest($request); // analyse the request
-        
-        
+
+
         if ($form->isSubmitted() && $form->isValid()) { // valid respecter les contraintes
             // on recupere les images transmisse
             $images = $form->get('images')->getData();
@@ -51,7 +51,7 @@ class EvenementController extends AbstractController
             $adresse = urlencode($form->get('localisation')->getData());
             $ville = urlencode($form->get('ville')->getData());
             $cp = $form->get('cp')->getData();
-            
+
             // On passe les données a nominatim
             $coordinates = $nominatim->getCoordinates($adresse,  $ville, $cp);
             //dd($coordinates);
@@ -65,7 +65,7 @@ class EvenementController extends AbstractController
                 $evenement->setLongitude(0); // Valeur par défaut pour la longitude
                 // Autres actions à prendre
             }
-            
+
             // on boucle sur les tableaux
             foreach ($images as $image) {
                 // on genere un nouveau nom de fichier
@@ -85,10 +85,10 @@ class EvenementController extends AbstractController
 
             $evenement = $form->getData();
 
-           // $evenement->setUser($user); // install mon user
-           // $now = new \DateTime(); // objet date
+            // $evenement->setUser($user); // install mon user
+            // $now = new \DateTime(); // objet date
             //$evenement->setDateCreationevenement($now); // installe ma date
-           
+
 
             $entityManager = $doctrine->getManager(); // on récupère les ressources
             $entityManager->persist($evenement); // on enregistre la ressource
@@ -101,7 +101,7 @@ class EvenementController extends AbstractController
             'formAddEvenement' => $form->createView(), // généré le visuel du form
             "edit" => $evenement->getId(),
             "evenements" => $evenement,
-            
+
 
         ]);
     }
@@ -115,6 +115,11 @@ class EvenementController extends AbstractController
             // Supprimer les images associées
             $images = $evenement->getImages();
             foreach ($images as $image) {
+                $imagePath = $this->getParameter('images_directory') . '/' . $image->getNomImage();
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+
                 $entityManager->remove($image);
             }
 
@@ -131,7 +136,7 @@ class EvenementController extends AbstractController
     #[Route('/evenement/show/{id}', name: 'show_evenement')] // afficher evenement detail
     public function showUser(ManagerRegistry $doctrine, Evenement $evenement = null): Response
     {
-       
+
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([]);
         if ($evenement) {
 
