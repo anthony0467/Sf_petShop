@@ -45,11 +45,13 @@
   </head>
   <body>
     <!--Barre de recherche-->
-    {% include "layout/_navbar.html.twig" %}
+    <div id="menu-container">
+      {% include "layout/_navbar.html.twig" %}
 
     <!--Menu-->
-
     {% include "layout/_menu.html.twig" %} 
+    </div>
+    
      {% for message in app.flashes("message") %}
     <div class="custom-flash">
       {{ message }}
