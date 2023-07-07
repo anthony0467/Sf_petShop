@@ -2,3 +2,41 @@
 <div id="second_menu" class="bg-menu">
 {{ knp_menu_render('main') }}
 </div>
+{# menu mobile gerer par menu builder #}
+<div class="mobile-visibility">
+    <div id="burger-menu">
+    <span></span>
+    </div>
+    <div id="menu">
+    {{ knp_menu_render('mobile')}}
+    <nav class="nav-menu-mobile">
+        <div class="container-mobile">
+            {% if not app.user %}
+            <a href="{{path('app_register')}}">S'inscrire</a>
+            <a href="{{path('app_login')}}">Se connecter</a>
+            {% else %}
+            <a href="{{path('app_logout')}}">Se déconnecter</a>
+            <a href="{{path('show_home')}}">{{ app.user }}</a>
+            <a href="{{ path('app_messages')}}"><i class="fa-regular fa-envelope"></i>
+                {% set unreadMessages = app.user.received | filter(item => item.isRead == false) %}
+                {{ unreadMessages | length }}
+            </a>
+            {% endif %}
+            <a href="{{path('add_produit')}}">Vends tes articles</a>
+            {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{path('show_admin')}}">Panneau administrateur</a>   
+            {% endif %}
+            </div>
+        </nav>
+    </div>
+</div>
+<script>
+var burgerMenu = document.getElementById('burger-menu');
+
+var overlay = document.getElementById('menu');
+
+burgerMenu.addEventListener('click', function() {
+  this.classList.toggle("close");
+  overlay.classList.toggle("overlay");
+});
+</script>
