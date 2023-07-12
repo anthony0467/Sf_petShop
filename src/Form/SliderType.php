@@ -57,6 +57,7 @@ class SliderType extends AbstractType
                 ],
             ])
             ->add('nameButton', TextType::class, [
+                'label' => 'Nom du bouton(facultatif)',
                 'required' => false,
             ])
             ->add('Valider', SubmitType::class);
