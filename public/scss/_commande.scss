@@ -1,0 +1,27 @@
+// ORDER 
+
+.order-style{
+	padding: 1rem;
+	margin: 1rem 0;
+	background-color: #fff;
+	border-radius: 4px;
+	margin-left: auto;
+	margin-right: auto;
+	box-shadow: 1px 1px 0px 0px #8080802b;
+}
+
+.order-style p:first-child{
+	margin: 1rem 0;
+}
+
+.italic-grey{
+	font-style: italic;
+	color: rgb(158, 152, 152);
+}
+
+//form 
+
+#order div{
+    display: flex;
+    flex-direction: column;
+}
