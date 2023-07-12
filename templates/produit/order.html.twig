@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Votre commande{% endblock %}
+
+{% block body %}
+{% if app.user %}
+<h1>Votre commande: {{ produit.nomProduit}}</h1>
+<div class="flex wrap justify-center gap">
+    <div class="grow-05">
+        <div class="order-style m-w-800">
+            <p class="italic-grey">Commande </p>
+            <div class="flex justify-center items-center gap">
+
+                <figure>
+                    {% set image = produit.images.first() %}
+                    <img class="radius-4" src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="100px"
+                        width="100px" alt="Image de {{ image.nomImage }}">
+                </figure>
+
+                <p>{{ produit.nomProduit }} <br> <span class="italic-grey">{{ produit.statut }}</span></p>
+                <p class="grow text-right">{{ produit.prix }}€</p>
+            </div>
+
+        </div>
+        <div class="order-style m-w-800">
+            <p class="italic-grey">Adresse </p>
+            {{ form_start(formCommande) }}
+            {{ form_widget(formCommande) }}
+            {{ form_end(formCommande) }}
+        </div>
+
+        <div class="order-style m-w-800">
+            <p class="italic-grey">Livraison </p>
+        </div>
+
+        <div class="order-style m-w-800">
+            <p class="italic-grey">Moyen de paiement </p>
+        </div>
+    </div>
+    <div>
+        <div class="order-style min-w-280">
+            <p class="italic-grey">Résumé de la commande </p>
+            <div class="flex justify-between items-center ">
+                <p>Commande:</p>
+                <p>{{ produit.prix }}€</p>
+            </div>
+
+            <div class="flex justify-between items-center ">
+                <p>Frais de port:</p>
+                <p>1.25€</p>
+            </div>
+
+            <div class="flex justify-between items-center ">
+                <p>Total:</p>
+                <p>{{ produit.prix + 1.25 }}€</p>
+            </div>
+
+            <div class="text-center mh-2">
+                <a href="" class="btn">Payer maintenant</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% else %}
+<h1>Votre commande</h1>
+<p>Vous souhaitez faire un achat? Veuiller vous <a href="{{path('app_login')}}">connecter</a> ou vous <a
+        href="{{path('app_register')}}">inscrire</a> si vous n'avez
+    pas encore de compte.</p>
+{% endif %}
+
+{% endblock %}
