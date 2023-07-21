@@ -31,7 +31,7 @@ class HomeController extends AbstractController
     {
         $produitSearch = null; //  recherche produits
         $slider = $doctrine->getRepository(Slider::class)->findBy([], ["id" => "DESC"]);
-        $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 5); // uniquement les 5 derniers articles ajoutés
+        $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 4); // uniquement les 4 derniers articles ajoutés
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
         $allProduits = $Pr->allProduits();
         $form = $this->createForm(SearchProduitType::class);
