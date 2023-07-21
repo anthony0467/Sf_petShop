@@ -1,38 +1,50 @@
 {% if form.vars.submitted %}
-    {% if produitSearch is not empty %}
+{% if produitSearch is not empty %}
 
-<div>
-  <h2>Résultat de votre recherche : </h2>
-  <ul style="display: flex;">
-      {% for produit in produitSearch %}
-      
-      {# verifier l'état avant de mettre en ligne #}
-      {% if produit.etat == false %}
-           {# Ne rien retourner #}
-      {% else %}
-      <li>
-          {% if produit.images is not empty %}
-              <!--récupérer la 1er image uniquement -->
-              {% set image = produit.images.first() %}
-              <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200px" width="150px" alt="Image de {{ image.nomImage }}">
-              
+<div class="search-container">
+    <h2>Résultat de votre recherche : </h2>
+    <ul class="flex flex-col justify-between gap p-05">
+        {% for produit in produitSearch %}
+        {# verifier l'état avant de mettre en ligne #}
+        {% if produit.etat == false %}
+        {# Ne rien retourner #}
+        {% else %}
+        <li class="flex  gap05 items-center p-05 search-card">
+            {% if produit.images is not empty %}
+            <!--récupérer la 1er image uniquement -->
+            {% set image = produit.images.first() %}
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="125px" width="100px"
+                alt="Image de {{ image.nomImage }}">
 
-          {% else %}
-          <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="150px" alt="Mon image">
-          {% endif %}
-          <p>{{ produit.nomProduit }}</p>
-          <p>{{ produit.prix }}€</p>
-          <div><a href="{{ path('show_produit',{'id':produit.id})}}">Go</a></div>
-      </li>
-      {% endif %}
 
-      {% endfor %}
-  </ul>
+            {% else %}
+            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="150px" alt="Mon image">
+            {% endif %}
+            <div class="w-100 flex flex-col gap05">
+                <div class="flex justify-between w-100">
+                    <p>Titre: {{ produit.nomProduit }}</p>
+                    <p class="visibility-500 p-05">Vendeur: {{ produit.user.pseudo }} </p>
+                </div>
+                <p class="visibility-500">Description: {{ produit.description|length > 100 ?
+                    produit.description|slice(0,
+                    150) ~ '...' :
+                    produit.description }}</p>
+                <div class="flex justify-between w-100">
+                    <p>{{ produit.prix }}€</p>
+                    <div class="p-05"><a href="{{ path('show_produit',{'id':produit.id})}}">Go</a></div>
+                </div>
+            </div>
+        </li>
+        {% endif %}
+
+        {% endfor %}
+    </ul>
 </div>
 
 {% else %}
-<h2>Résultat de votre recherche : </h2>
-<p>Aucun article trouvé.</p>
-
-    {% endif %}
+<div class="search-container">
+    <h2>Résultat de votre recherche : </h2>
+    <p>Aucun article trouvé.</p>
+</div>
+{% endif %}
 {% endif %}
