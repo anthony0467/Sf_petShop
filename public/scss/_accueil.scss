@@ -1,5 +1,66 @@
 @import 'mixins';
 
+//last articles
+
+#article-container{
+    max-width: 1250px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+}
+
+#article-container ul{
+    gap: 1rem;
+}
+
+.card-article{
+    text-align: center;
+    background: white;
+}
+
+.article-name{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.781);
+    width: 100.2%;
+    transition: .5s;
+}
+
+.card-article:hover .article-name{
+    clip-path: polygon(0 100%, 100% 100%, 100% 0, 0 0);
+    height: 100px;
+    transition: .5s;
+}
+
+.title-product{
+    //font-weight: 600;
+    font-size: 16px;
+    
+}
+
+.price-product{
+    font-size: 16px;
+    color: rgb(155, 40, 40);
+}
+
+
+.card-article-mobile{
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+
 // search 
 
 .search-container{

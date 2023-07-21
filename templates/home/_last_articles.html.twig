@@ -1,31 +1,77 @@
-<div>
-  <h2>Derniers articles</h2>
-  <ul class="flex wrap">
-    {% for produit in produits %} {# verifier l'état avant de mettre en ligne #}
-    {% if produit.etat == false %} {# Ne rien retourner #} {% else %}
-    <li>
-      {% if produit.images is not empty %}
-      <!--récupérer la 1er image uniquement -->
-      {% set image = produit.images.first() %}
-      <img
-        src="{{ asset('uploads/images/' ~ image.nomImage) }}"
-        height="400px"
-        width="300px"
-        alt="Image de {{ image.nomImage }}"
-      />
+<div id="article-container">
+  <h2 class="h2-home">Derniers articles</h2>
 
+  <ul class=" wrap justify-center last-article-visibility">
+    {% for produit in produits %}
+    {% if produit.etat == false %}
+    {# Ne rien retourner #}
+    {% else %}
+    <li class="card-article">
+      {% if produit.images is not empty %}
+      {# récupérer la 1ère image uniquement #}
+      {% set image = produit.images.first() %}
+      <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="400px" width="300px"
+        alt="Image de {{ image.nomImage }}" />
       {% else %}
-      <img
-        src="{{ asset('uploads/images/defaut.jpg') }}"
-        height="400px"
-        width="300px"
-        alt="Mon image"
-      />
+      <img src="{{ asset('uploads/images/defaut.jpg') }}" height="400px" width="300px" alt="Mon image" />
       {% endif %}
-      <p>{{ produit.nomProduit }}</p>
-      <p>{{ produit.prix }}€</p>
-      <div><a href="{{ path('show_produit', { id: produit.id }) }}">Go</a></div>
+      <div class="article-name">
+        <p class="title-product">{{ produit.nomProduit }}</p>
+        <p class="price-product">{{ produit.prix }}€</p>
+        <div><a href="{{ path('show_produit', { id: produit.id }) }}" class="btn">Go</a></div>
+      </div>
     </li>
-    {% endif %} {% endfor %}
+    {% endif %}
+    {% endfor %}
   </ul>
+
+  {# VERSION MOBILE #}
+  <div class="swiper mySwiper2 swiper-container-centered last-article-mobile-visibility">
+    <div class="swiper-wrapper">
+      {% for produit in produits %}
+      {% if produit.etat == false %}
+      {# Ne rien retourner #}
+      {% else %}
+      <div class="swiper-slide">
+        <div class="flex flex-col items-center card-article-mobile">
+          {% if produit.images is not empty %}
+          {# récupérer la 1ère image uniquement #}
+          {% set image = produit.images.first() %}
+          <div class="image-container">
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="400px" width="300px"
+              alt="Image de {{ image.nomImage }}" />
+          </div>
+          {% else %}
+          <img src="{{ asset('uploads/images/defaut.jpg') }}" height="400px" width="300px" alt="Mon image" />
+          {% endif %}
+          <div class="article-name text-center">
+            <p class="title-product">{{ produit.nomProduit }}</p>
+            <p class="price-product">{{ produit.prix }}€</p>
+            <div><a href="{{ path('show_produit', { id: produit.id }) }}" class="btn">Go</a></div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+  </div>
 </div>
+
+<!-- Initialize Swiper -->
+<script>
+  var swiper2 = new Swiper(".mySwiper2", {
+    cssMode: true,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+    pagination: {
+      el: ".swiper-pagination",
+    },
+    mousewheel: true,
+    keyboard: true,
+  });
+
+</script>
