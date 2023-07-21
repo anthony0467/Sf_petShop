@@ -1,4 +1,4 @@
-$bg-mess : rgba(198, 83, 140, .5);
+@import 'mixins';
 // message flash
 
 @mixin flash-style($message) {
@@ -51,7 +51,7 @@ $bg-mess : rgba(198, 83, 140, .5);
 
   .bold{
 	font-weight: bold;
-    background-color: $bg-mess;
+  @include background-messagerie;
 }
 
 .message{
