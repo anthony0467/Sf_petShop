@@ -16,9 +16,7 @@ class SliderController extends AbstractController
     #[Route('/slider', name: 'app_slider')]
     public function index(): Response
     {
-        return $this->render('slider/index.html.twig', [
-            'controller_name' => 'SliderController',
-        ]);
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/slider/add', name: 'add_slide')] // ajouter un slide
