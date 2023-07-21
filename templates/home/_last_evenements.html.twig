@@ -1,34 +1,22 @@
-<div>
-  <h2>Évenement à suivre</h2>
-  <ul class="flex wrap">
+<div id="event-container">
+  <h2 class="h2-home">Évenement à suivre</h2>
+  <ul class="flex wrap justify-center">
     {% for evenement in evenements %}
-    <li>
+    <li class="flex flex-col gap">
       {% if evenement.images is not empty %}
       <!--récupérer la 1er image uniquement -->
       {% set image = evenement.images.first() %}
-      <img
-        src="{{ asset('uploads/images/' ~ image.nomImage) }}"
-        height="250px"
-        width="550px"
-        alt="Image de {{ image.nomImage }}"
-      />
+      <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="250px" alt="Image de {{ image.nomImage }}" />
       {% else %}
-      <img
-        src="{{ asset('uploads/images/defaut.jpg') }}"
-        height="250px"
-        width="550px"
-        alt="Mon image"
-      />
+      <img src="{{ asset('uploads/images/defaut.jpg') }}" height="250px" alt="Mon image" />
       {% endif %}
-      <h3>{{ evenement }}</h3>
-      <span>Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
+      <h3 class="title-event">{{ evenement }}</h3>
+      <span class="date-event">Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
       <p>
         {{ evenement.description|length > 100 ? evenement.description|slice(0, 150) ~ '...' : evenement.description }}
       </p>
-      <div>
-        <a href="{{ path('show_evenement', { id: evenement.id }) }}"
-          >En savoir plus</a
-        >
+      <div class="event-btn">
+        <a href="{{ path('show_evenement', { id: evenement.id }) }}" class="btn">En savoir plus</a>
       </div>
     </li>
 
