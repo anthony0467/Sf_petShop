@@ -12,6 +12,11 @@
     display: none;
 }
 
+#first_menu{
+    max-width: 98%;
+    padding: .5rem;
+}
+
 @media (min-width: 816px) {
 
     #nav-menu{
@@ -55,8 +60,8 @@
 }
 
 #first_menu nav a {
-    padding: 1rem .5rem;
-    @include primary-color;
+    padding: .5rem;
+   // @include primary-color;
 }
 
 .mobile-visibility {
