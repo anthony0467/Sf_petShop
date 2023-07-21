@@ -104,9 +104,20 @@ img {
 .w-100{
 	width: 100%;
 }
+.m-05{
+	margin: .5rem;
+}
 
 .mh-2{
 	margin: 2rem 0;
+}
+
+.p-05{
+	padding: .5rem;
+}
+
+.p-1{
+	padding: 1rem;
 }
 
 .color-primary{
@@ -121,6 +132,13 @@ img {
 	text-align: right;
 }
 
+.text-justify{
+	text-align: justify;
+}
+
+.p-05{
+	padding: 0.5rem;
+}
 
 /*----------------------------------------------------------------FLEX- ----------------------------------------------------------------*/
 
@@ -134,6 +152,10 @@ img {
 	flex-direction: column;
 }
 
+.flex-row{
+	flex-direction: row;
+}
+
 .justify-center{
 	justify-content: center;
 }
@@ -143,6 +165,10 @@ img {
 
 .justify-end{
 	justify-content: flex-end;
+}
+
+.gap05{
+	gap: .5rem;
 }
 
 .gap{
@@ -190,6 +216,8 @@ img {
 	@include primary-background-color;
 }
 
+
+/* ----------------------------------------------------------------BTN- ----------------------------------------------------------------*/
 
 .btn{
 	@include primary-background-color;
