@@ -1,8 +1,8 @@
 <div id="first_menu" class="flex items-center w-100 wrap justify-between">
     <p class=" logo"><strong>World of Pets</strong></p>
     <nav id="nav-menu" class="flex  justify-end gap">
-    
-        
+
+
         {% if not app.user %}
         <a href="{{path('app_register')}}">S'inscrire</a>
         <a href="{{path('app_login')}}">Se connecter</a>
@@ -14,10 +14,10 @@
             {{ unreadMessages | length }}
         </a>
         {% endif %}
-        <a href="{{path('add_produit')}}">Vends tes articles</a>
+        <a href="{{path('add_produit')}}" class="btn-menu">Vends tes articles</a>
         {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{path('show_admin')}}">Panneau administrateur</a>   
+        <a href="{{path('show_admin')}}">Panneau administrateur</a>
         {% endif %}
-        
+
     </nav>
 </div>

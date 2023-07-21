@@ -204,6 +204,18 @@ img {
 	@include primary-background-color-hover;
 }
 
+.btn-menu{
+	border: 1px solid;
+	@include primary-color;
+	border-radius: 4px;
+	transition: .35s;
+}
+
+.btn-menu:hover{
+	color: white;
+	@include primary-background-color;
+	transition: .35s;
+}
 
 #footer{
 margin-top: 2rem;
