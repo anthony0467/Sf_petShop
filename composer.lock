@@ -2177,32 +2177,6 @@
             "time": "2021-10-24T07:53:34+00:00"
         },
         {
-            "name": "leaflet/leaflet",
-            "version": "v1.4.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/aissasell/leaflet.git",
-                "reference": "7eadefcbd4d8bbb9af36a2b78186e6d068afa177"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/aissasell/leaflet/zipball/7eadefcbd4d8bbb9af36a2b78186e6d068afa177",
-                "reference": "7eadefcbd4d8bbb9af36a2b78186e6d068afa177",
-                "shasum": ""
-            },
-            "type": "library",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "description": "an open-source JavaScript library for mobile-friendly interactive maps",
-            "support": {
-                "issues": "https://github.com/aissasell/leaflet/issues",
-                "source": "https://github.com/aissasell/leaflet/tree/v1.4.0"
-            },
-            "time": "2019-03-23T14:27:52+00:00"
-        },
-        {
             "name": "monolog/monolog",
             "version": "3.3.1",
             "source": {
