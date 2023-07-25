@@ -21,6 +21,9 @@ class Categorie
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Produit::class, orphanRemoval: true)]
     private Collection $produits;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageCategorie = null;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
@@ -76,5 +79,17 @@ class Categorie
     public function __toString()
     {
         return $this->nomCategorie;
+    }
+
+    public function getImageCategorie(): ?string
+    {
+        return $this->imageCategorie;
+    }
+
+    public function setImageCategorie(?string $imageCategorie): self
+    {
+        $this->imageCategorie = $imageCategorie;
+
+        return $this;
     }
 }
