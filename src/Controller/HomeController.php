@@ -16,6 +16,7 @@ use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,13 +28,22 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class HomeController extends AbstractController
 {
     #[Route('', name: 'app_home')]
-    public function index(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request): Response
+    public function index(ManagerRegistry $doctrine, ProduitRepository $Pr, Request $request, PaginatorInterface $paginator): Response
     {
         $produitSearch = null; //  recherche produits
         $slider = $doctrine->getRepository(Slider::class)->findBy([], ["id" => "DESC"]);
         $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 4); // uniquement les 4 derniers articles ajoutés
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
-        $allProduits = $Pr->allProduits();
+
+        //pagination tous les produits 
+        $pagination = $paginator->paginate(
+            $Pr->allProduits(),
+            $request->query->get('page', 1),
+            5
+        );
+
+
+
         $form = $this->createForm(SearchProduitType::class);
 
         $search = $form->handleRequest($request);
@@ -54,7 +64,7 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
             'produits' => $produits,
             'produitSearch' => $produitSearch,
-            'allProduits' => $allProduits,
+            'paginations' => $pagination,
             'evenements' => $evenements,
             'slide' => $slider,
             'form' => $form->createView()
