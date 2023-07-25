@@ -1,0 +1,20 @@
+{
+"products": [
+{% for produit in paginations %}
+{
+"id": {{ produit.id }},
+"name": "{{ produit.nomProduit }}",
+"price": {{ produit.prix }},
+"image": "{% if produit.images is not empty %}{{ asset('uploads/images/' ~ produit.images.first().nomImage) }}{% else
+%}{{ asset('uploads/images/defaut.jpg') }}{% endif %}",
+"link": "{{ path('show_produit', {'id': produit.id}) }}"
+}{% if not loop.last %},{% endif %}
+{% endfor %}
+],
+"pagination": {
+"currentPage": {{ paginations.currentPageNumber }},
+"itemsPerPage": {{ paginations.itemNumberPerPage }},
+"totalItems": {{ paginations.totalItemCount }},
+"totalPages": {{ paginations.pageCount }}
+}
+}
