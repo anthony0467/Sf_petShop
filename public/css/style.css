@@ -111,6 +111,35 @@
   color: #fff;
 }
 
+.pagination {
+  text-align: center;
+  margin: 2rem 0;
+}
+
+.pagination .next, .last, .first, .previous {
+  margin: 0 0.5rem;
+  border: 1px solid;
+  border-color: #c6538c;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: 0.35s;
+}
+.pagination .next:hover, .last:hover, .first:hover, .previous:hover {
+  background-color: #c6538c;
+  color: #fff;
+}
+.pagination .next:hover a, .last:hover a, .first:hover a, .previous:hover a {
+  color: #fff;
+}
+
+.pagination .current {
+  padding: 0.5rem;
+  color: white;
+  background-color: #c6538c;
+  border-radius: 4px;
+  margin: 0 0.5rem;
+}
+
 /* Styles par défaut pour le paragraphe */
 .visibility-500 {
   display: none;
@@ -235,6 +264,27 @@
     font-weight: 600;
   }
 }
+#cat-container {
+  position: relative;
+  margin-bottom: 8rem;
+}
+
+#cat-container h1 {
+  background: rgba(0, 0, 0, 0.4117647059);
+  color: white;
+  padding: 1rem;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+
+.list-cat {
+  max-width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .order-style {
   padding: 1rem;
   margin: 1rem 0;
@@ -303,10 +353,6 @@
 .evenement-text {
   margin: 2rem 0;
   line-height: 1.4;
-}
-
-.evenement-article p {
-  max-width: 900px;
 }
 
 * {

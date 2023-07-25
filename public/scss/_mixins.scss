@@ -11,6 +11,10 @@
 	color:#c6538c; 
 }
 
+@mixin border-primary-color{
+	border-color:#c6538c; 
+}
+
 @mixin background-menu-color-mobile{
   background-color:#c6538cb5; 
 }
