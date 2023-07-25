@@ -123,6 +123,39 @@
     }
 }
 
+// Pagination
+
+.pagination{
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.pagination .next, .last , .first , .previous{
+    margin: 0 .5rem;
+    border: 1px solid;
+    @include border-primary-color;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: .35s;
+    &:hover{
+        @include primary-background-color;
+        color: #fff;
+
+        a{
+            color: #fff;
+        }
+    }
+}
+
+.pagination .current{
+    padding: 0.5rem;
+    color: white;
+    @include primary-background-color;
+    border-radius: 4px;
+    margin: 0 0.5rem;
+}
+
+
 /* Styles par défaut pour le paragraphe */
 .visibility-500{
   display: none;
