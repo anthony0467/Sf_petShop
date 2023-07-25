@@ -14,6 +14,7 @@
         "geocoder-php/google-maps-provider": "*",
         "guzzlehttp/guzzle": "*",
         "knplabs/knp-menu-bundle": "^3.2",
+        "knplabs/knp-paginator-bundle": "^6.2",
         "nyholm/psr7": "*",
         "php-http/curl-client": "*",
         "phpdocumentor/reflection-docblock": "^5.3",
