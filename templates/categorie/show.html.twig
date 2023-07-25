@@ -3,42 +3,51 @@
 {% block title %}World of Pets - produits {{ categorie }}{% endblock %}
 
 {% block body %}
+<div id="cat-container">
+    {% if categorie.imageCategorie is not null %}
+    <figure>
+        <img src="{{ categorie.imageCategorie }}" alt="chien" width="100%" height="400px">
+    </figure>
+    {% endif %}
+    <h1>Liste des produits pour {{ categorie }}</h1>
+</div>
 
 
-<h1>Liste des produits pour {{ categorie }}</h1>
-
-
-
-
-<ul style="display: flex;">
-    {% set all_products_false = true %} {# verifier l'état de tous les produits #}
-    {% for produit in produits %}
-         {# verifier l'état avant de mettre en ligne #}
-         {% if produit.etat == true %}
-         {% set all_products_false = false %}
-    <li>
-        {% if produit.images is not empty %}
+<div class="list-cat">
+    <h2>Articles pour {{ categorie }}</h2>
+    <ul class="flex wrap gap justify-center flex-start">
+        {% set all_products_false = true %} {# verifier l'état de tous les produits #}
+        {% for produit in produits %}
+        {# verifier l'état avant de mettre en ligne #}
+        {% if produit.etat == true %}
+        {% set all_products_false = false %}
+        <li class="card-all-article flex flex-col justify-between">
+            {% if produit.images is not empty %}
             <!--récupérer la 1er image uniquement -->
             {% set image = produit.images.first() %}
-            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="300" width="300px" alt="Image de {{ image.nomImage }}">
-            
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="352px" width="235px"
+                alt="Image de {{ image.nomImage }}">
 
-        {% else %}
-        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="300px" alt="Mon image">
+
+            {% else %}
+            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="352px" width="235px" alt="Mon image">
+            {% endif %}
+            <div class="flex flex-col justify-center gap05 p-05">
+                <p>{{ produit.nomProduit }}</p>
+                <p>{{ produit.prix }}€</p>
+                <div><a href="{{ path('show_produit',{'id':produit.id})}}">Acheter</a></div>
+            </div>
+        </li>
         {% endif %}
-        <p>{{ produit.nomProduit }}</p>
-        <p>{{ produit.prix }}€</p>
-        <div><a href="{{ path('show_produit',{'id':produit.id})}}">Acheter</a></div>
-    </li>
+
+        {% endfor %}
+    </ul>
+
+    {% if all_products_false %}
+
+    <p>Aucune annonce pour cette catégorie.</p>
+
     {% endif %}
-    
-    {% endfor %}
-</ul>
+</div>
 
-{% if all_products_false  %}
-    
-<p>Aucune annonce pour cette catégorie.</p>
-
-{% endif %}
- 
 {% endblock %}
