@@ -44,7 +44,9 @@ class HomeController extends AbstractController
 
 
 
-        $form = $this->createForm(SearchProduitType::class);
+        $form = $this->createForm(SearchProduitType::class, null, [
+            'attr' => ['id' => 'search-form'], // Ajouter l'ID "formulaire" au formulaire
+        ]);
 
         $search = $form->handleRequest($request);
         //dd($search);
@@ -52,12 +54,8 @@ class HomeController extends AbstractController
             //on recherche les produits correspondant au mots clef
 
             $produitSearch = $Pr->search($search->get('mots')->getData(), $search->get('categorie')->getData());
-            //dd($produitSearch);
-            /* return $this->redirectToRoute('search_result', [
-                'mots' => $search->get('mots')->getData(),
-                'categorie' => $search->get('categorie')->getData(),
-                
-            ]);*/
+            
+
         }
 
         return $this->render('home/index.html.twig', [
@@ -69,6 +67,30 @@ class HomeController extends AbstractController
             'slide' => $slider,
             'form' => $form->createView()
         ]);
+    }
+
+    #[Route('/search', name: 'search_results')]
+    public function searchResult(ProduitRepository $Pr, Request $request): JsonResponse
+    {
+        // Récupérer les paramètres de recherche envoyés via AJAX
+        $mots = $request->query->get('mots');
+        $categorie = $request->query->get('categorie');
+        // $mots = $request->request->get('mots');
+        // $categorie = $request->request->get('categorie');
+       
+        // Effectuer la recherche en utilisant les paramètres
+        $produitSearch = $Pr->search($mots, $categorie);
+        // dd($produitSearch);
+  
+        // Renvoyer les résultats au format JSON
+        // return new JsonResponse(['produitSearch' => $produitSearch]);
+        // return $this->render('test/test.html.twig', [
+        //     "produitSearch" => $produitSearch,
+        // ]);
+        return $this->json([
+            'result' => $this->renderView('home/_search_articles.html.twig', ['produitSearch' => $produitSearch])
+        ]);
+
     }
 
 

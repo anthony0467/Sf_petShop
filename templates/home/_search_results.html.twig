@@ -1,0 +1,17 @@
+{# Contenu des résultats de recherche #}
+{% if produitSearch is not empty %}
+    <div class="search-container">
+        <h2>Résultat de votre recherche :</h2>
+        <ul class="flex flex-col justify-between gap p-05">
+            {% for produit in produitSearch %}
+                {# Affichage des résultats de recherche... #}
+                <li>{{ produit.nomProduit }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="search-container">
+        <h2>Résultat de votre recherche :</h2>
+        <p>Aucun article trouvé.</p>
+    </div>
+{% endif %}

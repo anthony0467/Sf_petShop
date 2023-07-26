@@ -88,6 +88,11 @@
 
 .card-all-article {
   max-width: 235px;
+  transition: 0.35s;
+}
+
+.card-all-article:hover {
+  transform: translateY(-10px);
 }
 
 .search-container {
