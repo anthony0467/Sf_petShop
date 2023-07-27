@@ -67,7 +67,7 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/search', name: 'search_results')]
+    #[Route('/search', name: 'search_results')] // route pour l'ajax recherche de produit
     public function searchResult(ProduitRepository $Pr, Request $request): JsonResponse
     {
         // Récupérer les paramètres de recherche envoyés via AJAX
@@ -82,6 +82,27 @@ class HomeController extends AbstractController
     }
 
 
+    #[Route('/pagination', name: 'app_pagination')]
+    public function pagination(ProduitRepository $Pr, Request $request, PaginatorInterface $paginator): JsonResponse
+    {
+        // Récupérer la page demandée depuis la requête
+        $page = $request->query->getInt('page', 1);
+
+        // Nombre d'articles à afficher par page
+        $limit = 5;
+
+        // Effectuer la recherche en utilisant les paramètres
+        $pagination = $paginator->paginate(
+            $Pr->allProduits(),
+            $page,
+            $limit
+        );
+
+        // Renvoyer les résultats paginés au format HTML
+        return $this->json([
+            'resultProduct' => $this->renderView('home/_all_articles.html.twig', ['paginations' => $pagination])
+        ]);;
+    }
 
     #[Route('/home/add', name: 'add_produit')] // ajouter un produit
     #[Route('/home/{id}/edit', name: 'edit_produit')] // modifier un produit
