@@ -54,8 +54,6 @@ class HomeController extends AbstractController
             //on recherche les produits correspondant au mots clef
 
             $produitSearch = $Pr->search($search->get('mots')->getData(), $search->get('categorie')->getData());
-            
-
         }
 
         return $this->render('home/index.html.twig', [
@@ -75,22 +73,12 @@ class HomeController extends AbstractController
         // Récupérer les paramètres de recherche envoyés via AJAX
         $mots = $request->query->get('mots');
         $categorie = $request->query->get('categorie');
-        // $mots = $request->request->get('mots');
-        // $categorie = $request->request->get('categorie');
-       
-        // Effectuer la recherche en utilisant les paramètres
         $produitSearch = $Pr->search($mots, $categorie);
-        // dd($produitSearch);
-  
-        // Renvoyer les résultats au format JSON
-        // return new JsonResponse(['produitSearch' => $produitSearch]);
-        // return $this->render('test/test.html.twig', [
-        //     "produitSearch" => $produitSearch,
-        // ]);
+
+
         return $this->json([
             'result' => $this->renderView('home/_search_articles.html.twig', ['produitSearch' => $produitSearch])
         ]);
-
     }
 
 
