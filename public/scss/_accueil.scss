@@ -2,6 +2,27 @@
 
 //last articles
 
+#last-article-container{
+    max-width: 1250px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1rem;
+}
+
+.fade-in {
+    animation: fadeIn ease 1s;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
 #article-container{
     max-width: 1250px;
     margin-left: auto;
@@ -9,7 +30,7 @@
     padding: 1rem;
 }
 
-#article-container ul{
+#last-article-container ul{
     gap: 1rem;
 }
 
