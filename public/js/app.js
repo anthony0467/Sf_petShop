@@ -37,7 +37,7 @@ $(document).ready(function() {
 });
 
 
-// letiable pour vérifier si c'est la première mise à jour
+// variable pour vérifier si c'est la première mise à jour
 let isFirstLoad = true;
 
 // Requête AJAX pour la pagination des produits
