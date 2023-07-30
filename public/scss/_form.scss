@@ -10,6 +10,10 @@
     align-items: center;
 }
 
+#user-container img{
+    border-radius: 4px;
+}
+
 #user-form{
     display: flex;
     flex-direction: column;
@@ -38,7 +42,51 @@
     cursor: pointer;
 }
 
+// inscription
+
+#register-container{
+    max-width: 1250px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#register-container form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: flex-start; */
+    max-width: 300px;
+    gap: 1rem;
+    background-color: white;
+    padding: 2rem;
+}
+
+#register-container form div{
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+#register-container form div:last-of-type{
+    flex-direction: row;
+}
+
+#register-container form  input{
+    padding: 0.5rem;
+    border: 1px solid rgba(128, 128, 128, 0.23);
+    border-radius: 4px;
+    background-color:rgb(242, 242, 242);
+}
+
+#register-container form button{
+    padding: .75rem 2rem;
+    cursor: pointer;
+}
+
 @media (max-width: 1100px){
+    //connexion form
 .connexion-image{
     display: none;
 }
