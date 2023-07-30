@@ -1,14 +1,17 @@
-<h2>Avis clients</h2>
+<h2 class="text-center">Avis clients</h2>
 
-<div>
+<div class="flex justify-center gap items-center wrap">
     <figure>
         {% set image = produit.images.first() %}
-        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px" alt="Image de {{ image.nomImage }}">
+        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px"
+            alt="Image de {{ image.nomImage }}">
     </figure>
-    <p>Voir le profil du vendeur: 
-        <a href="{{path('show_avis', {'vendorId': produit.user.id })}}">Par ici</a>
-    </p>
-    <p>Avis vendeur : </p>
-    <a href="{{path('add_avis', {'vendorId': produit.user.id })}}">Donné nous votre avis !</a>
-    
+    <div class="text-center">
+        <p>Voir le profil du vendeur:
+            <a href="{{path('show_avis', {'vendorId': produit.user.id })}}">Par ici</a>
+        </p>
+        <p class="avis">Avis vendeur : </p>
+        <a href="{{path('add_avis', {'vendorId': produit.user.id })}}" class="btn-menu btn-pad">Donné nous votre avis
+            !</a>
+    </div>
 </div>
