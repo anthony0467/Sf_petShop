@@ -126,6 +126,32 @@
 
 // search 
 
+
+
+.rideau {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: grey;
+  opacity: 0;
+  z-index: 9;
+  transition: opacity 0.35s; /* Ajout de la transition pour l'opacité */
+}
+
+.form_search:focus-within ~ .rideau {
+  /* Lorsque .form_search ou l'un de ses descendants a le focus, l'opacité passe à 0.6 pour montrer le rideau */
+  opacity: 0.6;
+  display: block;
+}
+
+.form_search button:oncl ~ .rideau {
+  /* Lorsque .form_search ou l'un de ses descendants a le focus, l'opacité passe à 0.6 pour montrer le rideau */
+  opacity: 0;
+}
+
 .search-container{
     margin-left: auto;
     margin-right: auto;
