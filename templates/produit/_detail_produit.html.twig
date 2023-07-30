@@ -1,36 +1,71 @@
 <h1>Produit détaillé : {{ produit }}</h1>
 
 
-<div>
-    <div>
+<div id="product-detail">
+    <div class="info-product">
         <h2>{{produit}}</h2>
-        <p>Categorie : <a href="{{path('show_categorie', {'id': produit.categorie.id })}}">{{ produit.categorie.nomCategorie }}</a></p>
+        <p>Categorie : <a href="{{path('show_categorie', {'id': produit.categorie.id })}}">{{
+                produit.categorie.nomCategorie }}</a></p>
         <p>Etat : {{ produit.statut }}</p>
         <p>Vendeur : <a href="{{path('show_user', {'id': produit.user.id })}}">{{ produit.user.pseudo }}</a></p>
         <p>Avis vendeur : </p>
         <p>Description : {{ produit.description }}</p>
-        <p>Stock : {{ produit.disponible }}</p>
-        <p>Prix : {{ produit.prix }} €</p>
-        <ul>
+        <p class="stock">Stock : {{ produit.disponible }}</p>
+        <p class="price">Prix : {{ produit.prix }} €</p>
+        <ul class="flex wrap gap mh-2">
             <li>
-                <a href="{{path('show_order', {'id': produit.id } )}}">Acheter</a>
+                <a href="{{path('show_order', {'id': produit.id } )}}" class="btn">Acheter</a>
             </li>
 
             <li>
-                <a href="">Faire une offre</a>
+                <a href="" class="btn">Faire une offre</a>
             </li>
 
             <li>
-                <a href="{{path('send', {'vendorId': produit.user.id })}}">Contacter le vendeur</a>
+                <a href="{{path('send', {'vendorId': produit.user.id })}}" class="btn">Contacter le vendeur</a>
             </li>
         </ul>
     </div>
-    <div class="galerie">
-            {% for image in produit.images %}
-               
-               <figure>
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px" alt="Image de {{ image.nomImage }}">
-            </figure>
-            {% endfor %}
+    <div>
+        <div style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+            class="swiper mySwiper12 img-slide">
+            <div class="swiper-wrapper">
+                {% for image in produit.images %}
+                <div class="swiper-slide">
+                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" alt="Image de {{ image.nomImage }}">
+                </div>
+                {% endfor %}
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+        </div>
+        <div thumbsSlider="" class="swiper2 mySwiper15 img-little-slide">
+            <div class="swiper-wrapper">
+                {% for image in produit.images %}
+                <div class="swiper-slide">
+                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" alt="Image de {{ image.nomImage }}">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
 </div>
+<!-- Initialize Swiper -->
+<script>
+    var swiper = new Swiper(".mySwiper15", {
+        spaceBetween: 10,
+        slidesPerView: 4,
+        freeMode: true,
+        watchSlidesProgress: true,
+    });
+    var swiper12 = new Swiper(".mySwiper12", {
+        spaceBetween: 10,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        thumbs: {
+            swiper: swiper,
+        },
+    });
+</script>
