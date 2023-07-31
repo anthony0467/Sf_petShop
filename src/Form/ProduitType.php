@@ -28,7 +28,7 @@ class ProduitType extends AbstractType
         $builder
         //mapped false pour ne pas le lier a la base de données
             ->add('images', FileType::class, [
-                'label' => 'Photos',
+                'label' =>  'Ajoute des photos', 
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
@@ -49,20 +49,27 @@ class ProduitType extends AbstractType
             ])
         ])
                 ],
+                'label_attr' => ['class' => 'file-label'],
             ])
             ->add('nomProduit', TextType::class, [
-                'label' => 'Nom du produit'
+                'label' => 'Nom du produit',
+                'attr' =>[ 'placeholder' => 'ex: croquettes' ]
             ])
-            ->add('description', TextareaType::class)
+            ->add('description', TextareaType::class, [
+                'attr' =>[ 'placeholder' => 'ex: Sac de 5 kilos jamais utilisé', 'rows' => 5, 'cols' => 33 ]
+            ])
             ->add('prix', NumberType::class, [
-                'label' => 'Prix Unitaire'
+                'label' => 'Prix Unitaire',
+                'attr' =>[ 'placeholder' => '0.00€' ]
             ])
             ->add('statut', ChoiceType::class, [
                 'choices' => [
+                    'Sélectionner une catégorie' => '', // Libellé par défaut
                     'Neuf' => 'neuf',
                     'Occasion' => 'occasion',
                     'Usagés' => 'usagé',
-                ]
+                ],
+                'required' => false, // Permet de ne pas rendre le champ obligatoire
             ])
             ->add('disponible', NumberType::class,  [
                 'attr' => [
