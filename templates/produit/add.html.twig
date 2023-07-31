@@ -59,25 +59,34 @@
 
 {% if app.user %}
             
+<div id="product-container">
     
     {{ form_start(formAddProduit) }}
         
-            <h2>Images</h2>
-            <div id="images-preview" style="display:flex;"></div>
+            <div id="images-preview"></div>
             {% for image in produits.images %}
                 <div>
                     <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="300px" alt="Image de {{ image.nomImage }}">
                     <a href="{{path('delete_image', {'id': image.id })}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}" >Supprimer</a>
                 </div>
             {% endfor %}
+           
+           
             
     
+      <div class="image-product">
+        <p class="images-legende">Ajoute une ou plusieurs photos.</p>
         {{ form_row(formAddProduit.images) }}
+    </div>
         {{ form_row(formAddProduit.nomProduit) }}
         {{ form_row(formAddProduit.description) }}
         {{ form_row(formAddProduit.disponible) }}
         {{ form_row(formAddProduit.categorie) }}
         {{ form_row(formAddProduit.prix) }}
+        {{ form_row(formAddProduit.statut, {'attr': {'onchange': "this.children[0].disabled=true", 'data-placeholder': 'Sélectionnez une catégorie', 'class' : 'grey-color'}}) }}
+        <div class="product-valid">
+        {{ form_row(formAddProduit.Valider, {'attr': {'class': 'btn' }}) }}
+    </div>
     {{ form_end(formAddProduit) }}
 
     {% if app.flashes('error') is not empty %}
@@ -86,6 +95,7 @@
             {{ message }}
         {% endfor %}
     </div>
+</div>
 {% endif %}
 
 {% else %}
