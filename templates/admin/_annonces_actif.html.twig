@@ -1,69 +1,72 @@
-<h2>Toutes les annnonces validées</h2>
+<h2 class="text-center">Toutes les annnonces</h2>
+
+<div id="container-annonce-admin">
 
 
-<table>
-    <thead>
-        <tr class="title-table">
-            <th>Utilisateur</th>
-            <th>Photos</th>
-            <th>Titre</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Prix</th>
-            <th>Categorie</th>
-            <th>Etat</th>
-            <th>Editer</th>
-            <th>Supprimer</th>
-            
-        </tr>
-    </thead>
-    <tbody>
+    <ul>
         {% for produit in produitsActif %}
-       
-       
-        <tr>
-            <td>{{produit.user}}</td>
-            <td>
-                {% if produit.images is not empty %}
-                <!--récupérer la 1er image uniquement -->
-                {% set image = produit.images.first() %}
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
-                    alt="Image de {{ image.nomImage }}">
+        {% set borderClass = produit.etat ? 'green-border' : 'red-border' %}
+        <li class="{{borderClass}} card-annonce-admin flex flex-col">
+            <div class="toggle-switch flex justify-between">
+                <p>{{produit.user}}</p>
+                <div class="switch">
+                    <input type="checkbox" id="switch{{ produit.id }}" {% if produit.etat==true %}checked{% endif %}
+                        onchange="toggleAnnonce('{{ path('publish_annonce', {'id': produit.id }) }}')" />
+                    <label for="switch{{ produit.id }}" class="label-switch"></label>
+                </div>
+            </div>
+            {% if produit.images is not empty %}
+            <!--récupérer la 1er image uniquement -->
+            {% set image = produit.images.first() %}
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+                alt="Image de {{ image.nomImage }}">
 
 
-                {% else %}
-                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
-                {% endif %}
-            </td>
-            <td>{{ produit.nomProduit }}</td>
-            <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
-            <td width='350px'>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}</td>
-            <td>{{ produit.prix }} €</td>
-            <td>{{ produit.categorie }}</td>
-
-            <td>
-                
-                <a href="{{path('publish_annonce', {'id': produit.id })}}">{% if produit.etat == false %}
-                    <p style="color:red;">Inactif</p>
-                    {% else %}
-                    <p style="color:green;">Actif</p>
-                {% endif %}</a>
-            </td>
-           
-            
-            <td><a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a></td>
-            <td><a href="{{path('delete_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
-
-
-
-
-        </tr>
+            {% else %}
+            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
+            {% endif %}
+            <div class="flex gap05">
+                <p>{{ produit.nomProduit }}</p>
+                <a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+                <a href="{{path('delete_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a>
+            </div>
+            <p>Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
+            <p>Description: {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' :
+                produit.description }}</p>
+            <p>Prix: {{ produit.prix }} €</p>
+            <p>Catégorie: {{ produit.categorie }}</p>
+        </li>
         {% endfor %}
+    </ul>
+</div>
 
+<script>
+    function toggleAnnonce(path) {
+        var checkbox = event.target;
+        // Envoyer une requête AJAX au contrôleur pour mettre à jour l'état de l'annonce
+        $.ajax({
+            type: 'POST',
+            url: path,
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                // La requête a été traitée avec succès, vous pouvez effectuer des actions supplémentaires si nécessaire.
 
+                // Récupérer la ligne parente (tr) de la case à cocher
+                var row = checkbox.closest('li');
+                // Ajouter la classe "green-border" ou "red-border" en fonction de l'état
+                if (checkbox.checked) {
+                    row.classList.add('green-border');
+                    row.classList.remove('red-border');
+                } else {
+                    row.classList.add('red-border');
+                    row.classList.remove('green-border');
+                }
+            },
+            error: function () {
+                console.log('Une erreur s\'est produite lors de la mise à jour de l\'état de l\'annonce.');
+            }
+        });
+    }
 
-
-    </tbody>
-</table>
-
-
+</script>
