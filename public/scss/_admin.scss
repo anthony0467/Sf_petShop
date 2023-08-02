@@ -1,0 +1,102 @@
+.table-admin{
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+#container-annonce-admin{
+  display: flex;
+  justify-content: center;
+}
+
+#container-annonce-admin ul{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+
+
+
+.card-annonce-admin{
+  width: 400px;
+  padding: 1rem;
+}
+
+/* Styles pour le bouton switch */
+.toggle-switch {
+  display: inline-block;
+}
+
+.toggle-switch a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input[type="checkbox"] {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.label-switch {
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 100%;
+  height: 100%;
+  background: red;
+  display: block;
+  border-radius: 34px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.label-switch:after {
+  content: '';
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 24px;
+  height: 24px;
+  background: #fff;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+/* Styles pour l'état "checked" */
+.switch input[type="checkbox"]:checked + label {
+  background: #bada55;
+}
+
+.switch input[type="checkbox"]:checked + label:after {
+  left: calc(100% - 5px);
+  transform: translateX(-100%);
+}
+
+/* Styles pour l'état "checked" */
+.checked label {
+  background: #bada55;
+}
+
+.checked label:after {
+  left: calc(100% - 5px);
+  transform: translateX(-100%);
+}
+
+// bg annonce
+
+.green-border{
+  background-color: rgba(0, 128, 0, 0.346);
+}
+
+.red-border{
+  background-color:  rgba(255, 0, 0, 0.387);
+}
