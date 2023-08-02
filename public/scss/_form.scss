@@ -7,17 +7,19 @@
 // formulaire connexion
 
 #user-container{
-    max-width: 1250px;
-    margin-left: auto;
-    margin-right: auto;
-    height: 79.5vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#user-container img{
-    border-radius: 4px;
+#user-container figure{
+    width: 56%;
+}
+
+#user-container figure img{
+    display: block;
+    height: auto;
+    width: 100%;
 }
 
 #user-form{
@@ -225,6 +227,69 @@
     background: white;
 }
 
+
+//event form 
+
+#events-container{
+    max-width: 1050px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+#events-container form input{
+    padding: 0.5rem;
+    border-bottom: 1px dashed #8080806e;
+    //border: 1px solid rgba(128, 128, 128, 0.23);
+    border-radius: 4px;
+    
+}
+
+#events-container form textarea{
+    padding: 0.5rem;
+    border-bottom: 1px dashed #8080806e;
+    //border: 1px solid rgba(128, 128, 128, 0.23);
+    border-radius: 4px;
+    
+}
+
+#events-container form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0rem 2rem 2rem 2rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+}
+
+
+#events-container form div{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: white;
+    padding: 1rem;
+}
+
+.selectize-control, .selectize-input{
+    padding: 0!important;
+}
+
+.selectize-input input{
+    width: 100%!important;
+}
+
+#evenement .file-label{
+    max-width: 150px;
+    text-align: center;
+}
 
 @media (max-width: 550px){
     #product-container{
