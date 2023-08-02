@@ -4,7 +4,7 @@
 
 
 {% include "layout/_slider.html.twig" %}
-<div class="form_search">
+<section class="form_search">
   {{ form_start(form) }}
   <div id="search_produit">
     <!-- Champ "mots" -->
@@ -27,23 +27,26 @@
   </div>
 
   {{ form_end(form) }}
-</div>
+</section>
 
 
 {# Zone pour afficher les résultats de la recherche #}
-<div id="search-results">
+<section id="search-results">
   {% if form.vars.submitted %}
   {% include "home/_search_articles.html.twig" %}
   {% endif %}
-</div>
+</section>
 {#Derniers articles#}
 {% include "home/_last_articles.html.twig" %}
+{#presentation site#}
+{% include "home/_presentation_site.html.twig" %}
+
 {#Derniers evenements#}
 {% include "home/_last_evenements.html.twig" %}
 {#Tous les articles#}
-<div id="article-container">
+<section id="article-container">
   {% include "home/_all_articles.html.twig" %}
-</div>
+</section>
 <div class="rideau"></div>
 
 
