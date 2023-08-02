@@ -4,24 +4,25 @@
 
 {% block javascripts %}
 <script src="{{ asset('js/geoGouv.js')}}"></script>
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+    integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 <script src="{{ asset('js/leaflet.js')}}"></script>
 {% endblock javascripts %}
 
 {% block body %}
-    
+
 
 {% if is_granted('ROLE_ADMIN')%}
-    <h1>Ajouter un évenement</h1>
-            
+<h1>Ajouter un évenement</h1>
+<div id="events-container">
     {{ form_start(formAddEvenement) }}
     {{ form_widget(formAddEvenement) }}
     {{ form_end(formAddEvenement) }}
+</div>
 
-    
 {% else %}
 
-    <p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
+<p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
 
 {% endif %}
 
