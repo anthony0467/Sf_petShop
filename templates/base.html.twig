@@ -4,6 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="Explorez notre vaste sélection de produits animaliers sur notre site e-commerce dédié aux passionnés d'animaux. Découvrez des offres uniques proposées par des particuliers passionnés par nos amis à quatre pattes. Trouvez tout ce dont vous avez besoin pour prendre soin de vos animaux de compagnie, des aliments nutritifs aux jouets divertissants. Ne manquez pas nos événements exclusifs, des rencontres entre amoureux des animaux, des ateliers éducatifs et des expositions fascinantes. Rejoignez notre communauté et partagez votre passion pour les animaux avec d'autres amoureux des animaux comme vous !">
   <title>{% block title %}Accueil{% endblock %}</title>
   <link rel="icon"
     href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>" />
@@ -14,6 +16,7 @@
     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="{{ asset('js/jQuery.min.js') }}"></script>
 
   {# Run `composer require symfony/webpack-encore-bundle` to start using
   Symfony UX #} {% block stylesheets %}
@@ -49,7 +52,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
     integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="{{ asset('js/jQuery.min.js') }}"></script>
   <script src="{{ asset('js/app.js') }}"></script>
 
 </body>
