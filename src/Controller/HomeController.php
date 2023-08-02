@@ -39,7 +39,7 @@ class HomeController extends AbstractController
         $pagination = $paginator->paginate(
             $Pr->allProduits(),
             $request->query->get('page', 1),
-            5
+            15
         );
 
 
@@ -89,7 +89,7 @@ class HomeController extends AbstractController
         $page = $request->query->getInt('page', 1);
 
         // Nombre d'articles à afficher par page
-        $limit = 5;
+        $limit = 15;
 
         // Effectuer la recherche en utilisant les paramètres
         $pagination = $paginator->paginate(
@@ -267,8 +267,10 @@ class HomeController extends AbstractController
         $em = $doctrine->getManager();
         $em->flush();
 
-        return $this->redirectToRoute('show_admin');
+        // Retourner une réponse JSON indiquant le nouvel état de l'annonce
+        return new JsonResponse(['etat' => $produit->isEtat()]);
     }
+
 
     #[Route('/user/show/{id}', name: 'show_user')] // afficher autre utilisateur
     public function showUser(ManagerRegistry $doctrine, User $user = null): Response
@@ -293,7 +295,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
     }
-    #[Route('/error', name: 'error_page')] // afficher autre utilisateur
+    #[Route('/error', name: 'error_page')] // page 404
     public function errorRedirection(): Response
     {
         return $this->render('errorPage/404.html.twig', []);
