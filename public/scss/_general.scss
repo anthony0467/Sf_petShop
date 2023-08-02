@@ -17,7 +17,7 @@ footer, header, hgroup, menu, nav, section {
 	display: block;
 }
 body {
-	line-height: 1;
+	line-height: 1.25;
 	background-color: rgb(242, 242, 242);
 }
 
@@ -79,7 +79,7 @@ img {
 }
 
 .container{
-	min-height: 77vh;
+	min-height: 76vh;
 }
 
 .container-error{
@@ -247,7 +247,6 @@ img {
 }
 
 #footer{
-margin-top: 2rem;
 padding: 1rem;
 color: white;
 }
