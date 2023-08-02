@@ -23,13 +23,17 @@ class EvenementType extends AbstractType
     {
         $builder
             ->add('Titre', TextType::class)
-            ->add('localisation', TextType::class,[
-            'attr' => ['placeholder' => 'Saisissez votre adresse ici'],
+            ->add('localisation', TextType::class, [
+                'attr' => ['placeholder' => 'Saisissez votre adresse ici'],
             ])
-            ->add('ville', TextType::class)
-            ->add('cp', TextType::class)
+            ->add('ville', TextType::class, [
+                'attr' => ['placeholder' => 'ex: Marseille'],
+            ])
+            ->add('cp', TextType::class, [
+                'attr' => ['placeholder' => 'ex : 13000'],
+            ])
             ->add('images', FileType::class, [
-                'label' => 'Photos',
+                'label' => 'Ajoute des photos',
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
@@ -38,31 +42,34 @@ class EvenementType extends AbstractType
                         'max' => 2,
                         'maxMessage' => 'Vous ne pouvez télécharger que {{ limit }} images maximum',
                     ]),
-        new All([
-            new File([
-                'maxSize' => '2048k',
-                'maxSizeMessage' => 'La taille maximale autorisée est de {{ limit }}.',
-                'mimeTypes' => [
-                    'image/jpeg',
-                    'image/png'
+                    new All([
+                        new File([
+                            'maxSize' => '2048k',
+                            'maxSizeMessage' => 'La taille maximale autorisée est de {{ limit }}.',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png'
+                            ],
+                            'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, GIF)',
+                        ])
+                    ])
                 ],
-                'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, GIF)',
-            ])
-        ])
-                ],
+                'label_attr' => ['class' => 'file-label'],
             ])
             ->add('description', TextareaType::class)
             ->add('dateEvenement',  DateType::class, [
-                'widget' =>'single_text' // calendrier
+                'widget' => 'single_text' // calendrier
             ])
             ->add('lien', UrlType::class, [
                 'label' => 'URL(facultatif)',
                 'required' => false,
                 'constraints' => [
                     new Url(),
-                ], ])
-            ->add('Ajouter', SubmitType::class)
-        ;
+                ],
+            ])
+            ->add('Ajouter', SubmitType::class, [
+                'attr' => ['class' => 'btn']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
