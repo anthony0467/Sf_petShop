@@ -68,9 +68,13 @@ class Produit
       #[ORM\Column(length: 100)]
       private ?string $statut = null;
 
+      #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Offre::class)]
+      private Collection $offres;
+
       public function __construct()
       {
           $this->images = new ArrayCollection();
+          $this->offres = new ArrayCollection();
       }
 
     public function getId(): ?int
@@ -222,5 +226,35 @@ class Produit
     public function __toString()
     {
         return $this->nomProduit;
+    }
+
+    /**
+     * @return Collection<int, Offre>
+     */
+    public function getOffres(): Collection
+    {
+        return $this->offres;
+    }
+
+    public function addOffre(Offre $offre): self
+    {
+        if (!$this->offres->contains($offre)) {
+            $this->offres->add($offre);
+            $offre->setProduits($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOffre(Offre $offre): self
+    {
+        if ($this->offres->removeElement($offre)) {
+            // set the owning side to null (unless already changed)
+            if ($offre->getProduits() === $this) {
+                $offre->setProduits(null);
+            }
+        }
+
+        return $this;
     }
 }
