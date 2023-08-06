@@ -36,7 +36,13 @@
 
     #second_menu ul li {
         padding: 1rem;
+        transition: .35s;
+        &:hover{
+            @include primary-background-color-hover;
+        }
     }
+
+     
 
     #second_menu ul li:last-child {
         border-left: 1px solid white;

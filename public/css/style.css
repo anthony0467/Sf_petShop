@@ -94,7 +94,7 @@
 }
 
 .border-article {
-  border: 1px solid;
+  border: 3px solid;
   border-color: #c6538c;
   padding: 1.5rem;
   max-width: 300px;
@@ -1022,7 +1022,7 @@ img {
 }
 
 .container {
-  min-height: 76vh;
+  min-height: 78.5vh;
 }
 
 .container-error {
@@ -1175,7 +1175,7 @@ img {
 }
 
 .btn:hover {
-  background-color: #a63b71;
+  background-color: #a63a70;
 }
 
 .btn-menu {
@@ -1237,6 +1237,10 @@ img {
   }
   #second_menu ul li {
     padding: 1rem;
+    transition: 0.35s;
+  }
+  #second_menu ul li:hover {
+    background-color: #a63a70;
   }
   #second_menu ul li:last-child {
     border-left: 1px solid white;
