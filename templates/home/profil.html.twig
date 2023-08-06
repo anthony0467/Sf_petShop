@@ -11,6 +11,57 @@ endblock %} {% block body %} {% if app.user %}
 <div class="mh-2">
   <a href="{{ path('app_messages') }}" class="btn">Ma messagerie</a>
 </div>
+<h2>Offre émisse</h2>
+
+{% if offres is empty %}
+<p>Aucune offre émisse.</p>
+{% else %}
+<ul>
+  {% for offre in offres %}
+  <li class="flex">
+
+    {% set image = offre.produits.images.first() %}
+    <p>Produit : {{ offre.produits.nomProduit }}</p>
+    <p>Prix proposé : {{ offre.prix }}€</p>
+    <p>Prix initial : {{ offre.produits.prix }}€</p>
+    <p>Statut : {{ offre.getStatutText() }}</p>
+    <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
+  </li>
+  {% endfor %}
+</ul>
+{% endif %}
+
+<h2>Offre reçue</h2>
+{% set offreTrouvee = false %}
+{% if offresObtenu is empty %}
+<p>Aucune offre reçue.</p>
+{% else %}
+<ul>
+  {% for offre in offresObtenu %}
+  {% if app.user == offre.produits.user %}
+  {% set offreTrouvee = true %}
+  <li class="flex">
+    {% set image = offre.produits.images.first() %}
+    <p>Produit : {{ offre.produits.nomProduit }}</p>
+    <p>Prix proposé : {{ offre.prix }}€</p>
+    <p>Prix initial : {{ offre.produits.prix }}€</p>
+    {% if offre.statut == constant('App\\Entity\\Offre::STATUT_EN_ATTENTE') %}
+    <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'acceptee' }) }}">Accepter</a>
+    <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'refusee' }) }}">Refuser</a>
+    {% endif %}
+    <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
+  </li>
+  {% endif %}
+  {% endfor %}
+</ul>
+{% endif %}
+
+{% if offresObtenu is not empty and not offreTrouvee %}
+<p>Aucune offre reçue.</p>
+{% endif %}
+
+
+
 <h2>Mes annonces</h2>
 {% if produits is not empty %}
 
@@ -36,20 +87,11 @@ endblock %} {% block body %} {% if app.user %}
         {% if produit.images is not empty %}
         <!--récupérer la 1er image uniquement -->
         {% set image = produit.images.first() %}
-        <img
-          src="{{ asset('uploads/images/' ~ image.nomImage) }}"
-          height="auto"
-          width="200px"
-          alt="Image de {{ image.nomImage }}"
-        />
+        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+          alt="Image de {{ image.nomImage }}" />
 
         {% else %}
-        <img
-          src="{{ asset('uploads/images/defaut.jpg') }}"
-          height="300px"
-          width="200px"
-          alt="Mon image"
-        />
+        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
         {% endif %}
       </td>
       <td>{{ produit.nomProduit }}</td>
@@ -67,14 +109,10 @@ endblock %} {% block body %} {% if app.user %}
       {% endif %}
 
       <td>
-        <a href="{{ path('edit_produit', { id: produit.id }) }}"
-          ><i class="fa-sharp fa-solid fa-pen"></i
-        ></a>
+        <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
       </td>
       <td>
-        <a href="{{ path('delete_produit', { id: produit.id }) }}"
-          ><i class="fa-sharp fa-solid fa-trash"></i
-        ></a>
+        <a href="{{ path('delete_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-trash"></i></a>
       </td>
     </tr>
     {% endfor %}
