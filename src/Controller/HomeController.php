@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use doctrine;
 use App\Entity\User;
+use App\Entity\Offre;
 use App\Entity\Images;
 use App\Entity\Slider;
 use App\Entity\Produit;
@@ -212,24 +213,26 @@ class HomeController extends AbstractController
     }
 
     #[Route('/home/show', name: 'show_home')] // vue profil de l'utilisateur
-    public function show(ManagerRegistry $doctrine): Response
+    public function show(ManagerRegistry $doctrine, ProduitRepository $Pr): Response
     {
         $user = $this->getUser();
-
         $produits = $doctrine->getRepository(Produit::class)->findBy(['user' => $user], ["dateCreationProduit" => "DESC"]); // uniquement les 5 derniers articles ajoutés
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-
-
+        $offres = $doctrine->getRepository(Offre::class)->findBy(['Users' => $user], []);
+        $offresObtenu = $doctrine->getRepository(Offre::class)->findBy([], []);
 
         return $this->render('home/profil.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produits,
             'categories' => $categories,
+            'offres' => $offres,
+            'offresObtenu' => $offresObtenu
+
 
 
         ]);
 
-        return $this->render('home/index.html.twig', []);
+        //return $this->render('home/index.html.twig', []);
     }
 
     #[Route('/home/admin', name: 'show_admin')] // vue profil de l'utilisateur
