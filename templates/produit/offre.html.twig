@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter votre article{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const file_upload = document.querySelector('#produit_images');
+        file_upload.addEventListener('change', previewFile);
+
+        function previewFile() {
+            const file_extension_regex = /\.(jpe?g|png|gif)$/i;
+            if (this.files.length === 0) {
+                return;
+            }
+            const files = Array.from(this.files).filter(file => file_extension_regex.test(file.name));
+
+            const container = document.querySelector('#images-preview');
+            container.innerHTML = ''; // vider le contenu existant
+
+            for (const file of files) {
+                const file_reader = new FileReader();
+
+                file_reader.readAsDataURL(file);
+
+                file_reader.addEventListener('load', (event) => displayImage(event, file, container));
+            }
+        }
+
+        function displayImage(event, file, container) {
+            const figure_element = document.createElement('figure');
+            figure_element.id = "image_selected";
+
+            const image_element = document.createElement('img');
+            image_element.src = event.target.result;
+
+            // définir une taille pour l'image
+            image_element.style.width = "200px";
+            image_element.style.height = "250px";
+
+            figure_element.appendChild(image_element);
+            container.appendChild(figure_element);
+        }
+
+    });
+</script>
+{% endblock javascripts %}
+
+{% block body %}
+
+<h1>Faite votre offre</h1>
+
+{% if app.user %}
+<div>
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+</div>
+
+
+{% else %}
+
+<p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
+
+{% endif %}
+
+
+
+
+{% endblock %}
