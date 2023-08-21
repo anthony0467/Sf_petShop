@@ -10,13 +10,15 @@ use App\Form\OffreType;
 use App\Form\OrderType;
 use App\Entity\Commande;
 use App\Entity\Categorie;
+use Symfony\Component\Mime\Email;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Mime\Email;
-use Symfony\Component\Mailer\MailerInterface;
 
 class ProduitController extends AbstractController
 {
@@ -127,31 +129,42 @@ class ProduitController extends AbstractController
     #[Route('/changer-statut-offre/{id}/{statut}', name: 'changer_statut_offre')]
     public function changerStatutOffre(ManagerRegistry $doctrine, Offre $offre, string $statut, MailerInterface $mailer): Response
     {
+
         // Vérifier que l'utilisateur connecté est bien le propriétaire de l'offre
         if ($this->getUser() !== $offre->getProduits()->getUser()) {
             throw $this->createAccessDeniedException();
         }
+
 
         // Mettre à jour le statut de l'offre en fonction de la valeur passée dans l'URL
         switch ($statut) {
             case 'acceptee':
                 $offre->setStatut(Offre::STATUT_ACCEPTEE);
                 $offre->setNotifStatus(true);
-                dump('Envoyer un e-mail ici');
-                // Envoi d'un e-mail de notification au client
+
+                // Envoi d'un e-mail de notification au destinataire
                 $clientEmail = $offre->getUsers()->getEmail();
                 $produitNom = $offre->getProduits()->getNomProduit();
-
+                dd($produitNom);
+                $offre->setNotifMessage("Votre offre concernant le produit \"$produitNom\" a été acceptée.");
                 $email = (new Email())
-                    ->from('votre_adresse_email@example.com')
+                    ->from('admin@worldofpets.com')
                     ->to($clientEmail)
                     ->subject('Votre offre a été acceptée')
-                    ->text("Félicitations, votre offre pour le produit $produitNom a été acceptée.");
+                    ->text("Votre offre pour le produit \"$produitNom\" a été acceptée.");
 
                 $mailer->send($email);
+
+                // Envoyer une notification interne à l'utilisateur (exemple)
+                $this->addFlash('success', 'Vous avez accepter une offre pour le produit "' . $produitNom . '".');
                 break;
             case 'refusee':
                 $offre->setStatut(Offre::STATUT_REFUSEE);
+                $offre->setNotifStatus(true);
+                $produitNom = $offre->getProduits()->getNomProduit();
+                $offre->setNotifMessage("Votre offre concernant le produit \"$produitNom\" a été refusée");
+                // Envoyer une notification interne à l'utilisateur (exemple)
+                $this->addFlash('warning', 'Vous avez refuser une offre pour le produit "' . $produitNom . '".');
                 break;
             default:
                 throw new \InvalidArgumentException("Statut invalide");
@@ -163,5 +176,15 @@ class ProduitController extends AbstractController
 
         // Rediriger l'utilisateur vers la page du profil
         return $this->redirectToRoute('show_home');
+    }
+
+    #[Route('/marquer-offre-lue/{id}', name: 'marquer_offre_lue')]
+    public function marquerOffreLue(Offre $offre, EntityManagerInterface $entityManager): Response
+    {
+        // Mettre à jour l'état isRead dans la base de données
+        $offre->setIsRead(true);
+        $entityManager->flush();
+
+        return new JsonResponse(['success' => true]);
     }
 }
