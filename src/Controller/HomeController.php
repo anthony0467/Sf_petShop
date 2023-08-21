@@ -218,7 +218,7 @@ class HomeController extends AbstractController
         $user = $this->getUser();
         $produits = $doctrine->getRepository(Produit::class)->findBy(['user' => $user], ["dateCreationProduit" => "DESC"]); // uniquement les 5 derniers articles ajoutés
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-        $offres = $doctrine->getRepository(Offre::class)->findBy(['Users' => $user], []);
+        $offres = $doctrine->getRepository(Offre::class)->findBy(['Users' => $user], ['date' => 'DESC']); // uniquement les 5 derniers articles
         $offresObtenu = $doctrine->getRepository(Offre::class)->findBy([], []);
 
         return $this->render('home/profil.html.twig', [
