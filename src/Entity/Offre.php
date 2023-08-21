@@ -50,6 +50,12 @@ class Offre
     #[ORM\Column]
     private ?bool $notifStatus = null;
 
+    #[ORM\Column(length: 200)]
+    private ?string $notifMessage = 'Offre en cours de traitement';
+
+    #[ORM\Column]
+    private ?bool $isRead = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -123,6 +129,30 @@ class Offre
     public function setNotifStatus(bool $notifStatus): self
     {
         $this->notifStatus = $notifStatus;
+
+        return $this;
+    }
+
+    public function getNotifMessage(): ?string
+    {
+        return $this->notifMessage;
+    }
+
+    public function setNotifMessage(string $notifMessage): self
+    {
+        $this->notifMessage = $notifMessage;
+
+        return $this;
+    }
+
+    public function isIsRead(): ?bool
+    {
+        return $this->isRead;
+    }
+
+    public function setIsRead(bool $isRead): self
+    {
+        $this->isRead = $isRead;
 
         return $this;
     }
