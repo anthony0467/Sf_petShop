@@ -50,6 +50,7 @@
   }
 
   .bold{
+    cursor: pointer;
 	font-weight: bold;
   @include background-messagerie;
 }

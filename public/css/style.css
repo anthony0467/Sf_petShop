@@ -1085,6 +1085,16 @@ img {
   padding: 0.5rem;
 }
 
+.custom-flash-warning {
+  background-color: rgb(146, 13, 13);
+  color: #ffffff;
+  padding: 10px;
+}
+
+.notification-unread {
+  font-weight: bold;
+}
+
 /*----------------------------------------------------------------FLEX- ----------------------------------------------------------------*/
 .flex {
   display: flex;
@@ -1402,6 +1412,7 @@ body {
 }
 
 .bold {
+  cursor: pointer;
   font-weight: bold;
   background-color: rgba(198, 83, 140, 0.5);
 }
