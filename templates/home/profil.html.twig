@@ -1,5 +1,16 @@
 {% extends 'base.html.twig' %} {% block title %}Profil : {{ app.user }}{%
 endblock %} {% block body %} {% if app.user %}
+{% for message in app.flashes("success") %}
+<div class="custom-flash">
+  {{ message }}
+</div>
+{% endfor %}
+
+{% for message in app.flashes("warning") %}
+<div class="custom-flash-warning">
+  {{ message }}
+</div>
+{% endfor %}
 
 <h1>Bienvenue {{ app.user }}</h1>
 
@@ -11,9 +22,23 @@ endblock %} {% block body %} {% if app.user %}
 <div class="mh-2">
   <a href="{{ path('app_messages') }}" class="btn">Ma messagerie</a>
 </div>
+
+<h2>Mes notifications</h2>
+
+{% for offre in offres %}
+{% if offres is empty %}
+<p>Aucune notification</p>
+{% else %}
+{% set bold = offre.isRead ? '' : 'bold' %}
+<p class="notification {{ bold }}" data-offre-id="{{ offre.id }}">{{ offre.notifMessage }}</p>
+{% endif %}
+{% endfor %}
+
+
 <h2>Offre émisse</h2>
 
 {% if offres is empty %}
+
 <p>Aucune offre émisse.</p>
 {% else %}
 <ul>
@@ -134,4 +159,33 @@ endblock %} {% block body %} {% if app.user %}
 
 <p>Vous devez vous connectez pour avoir accès à cette page</p>
 
-{% endif %} {% endblock %}
+
+
+{% endif %}
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const notifications = document.querySelectorAll(".notification");
+
+    notifications.forEach(notification => {
+      notification.addEventListener("click", function () {
+        if (!notification.classList.contains("read")) {
+          // Envoyer une requête AJAX pour marquer l'offre comme lue
+          const offreId = notification.getAttribute("data-offre-id");
+          fetch(`/marquer-offre-lue/${offreId}`, {
+            method: "POST",
+            headers: {
+              "X-Requested-With": "XMLHttpRequest",
+              "Content-Type": "application/json"
+            }
+          });
+
+          // Marquer la notification comme lue visuellement
+          notification.classList.remove("bold");
+        }
+      });
+    });
+  });
+</script>
+
+{% endblock %}
