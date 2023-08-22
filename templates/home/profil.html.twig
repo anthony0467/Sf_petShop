@@ -12,148 +12,176 @@ endblock %} {% block body %} {% if app.user %}
 </div>
 {% endfor %}
 
-<h1>Bienvenue {{ app.user }}</h1>
-
-<h2>Mon profil</h2>
-<a href="{{ path('edit_user') }}">Modifier mes informations personnelles</a>
-<p>Pseudo : {{ app.user }}</p>
-<p>Email : {{ app.user.email }}</p>
-<p>Annonce(s) en cours : {{ app.user.produits | length }}</p>
-<div class="mh-2">
-  <a href="{{ path('app_messages') }}" class="btn">Ma messagerie</a>
+{% for message in app.flashes("error") %}
+<div class="custom-flash-warning">
+  {{ message }}
 </div>
-
-<h2>Mes notifications</h2>
-
-{% for offre in offres %}
-{% if offres is empty %}
-<p>Aucune notification</p>
-{% else %}
-{% set bold = offre.isRead ? '' : 'bold' %}
-<p class="notification {{ bold }}" data-offre-id="{{ offre.id }}">{{ offre.notifMessage }}</p>
-{% endif %}
 {% endfor %}
 
 
-<h2>Offre émisse</h2>
+<h1>Bienvenue {{ app.user }}</h1>
+<div class="profil-container">
 
-{% if offres is empty %}
+  <div class="flex wrap gap justify-between">
+    <div>
+      <h2>Mon profil</h2>
+      <a href="{{ path('edit_user') }}">Modifier mes informations personnelles</a>
+      <p>Pseudo : {{ app.user }}</p>
+      <p>Email : {{ app.user.email }}</p>
+      <p>Annonce(s) en cours : {{ app.user.produits | length }}</p>
+      <div class="mh-2">
+        <a href="{{ path('app_messages') }}" class="btn">Ma messagerie</a>
+      </div>
+    </div>
 
-<p>Aucune offre émisse.</p>
-{% else %}
-<ul>
-  {% for offre in offres %}
-  <li class="flex">
-
-    {% set image = offre.produits.images.first() %}
-    <p>Produit : {{ offre.produits.nomProduit }}</p>
-    <p>Prix proposé : {{ offre.prix }}€</p>
-    <p>Prix initial : {{ offre.produits.prix }}€</p>
-    <p>Statut : {{ offre.getStatutText() }}</p>
-    <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
-  </li>
-  {% endfor %}
-</ul>
-{% endif %}
-
-<h2>Offre reçue</h2>
-{% set offreTrouvee = false %}
-{% if offresObtenu is empty %}
-<p>Aucune offre reçue.</p>
-{% else %}
-<ul>
-  {% for offre in offresObtenu %}
-  {% if app.user == offre.produits.user %}
-  {% set offreTrouvee = true %}
-  <li class="flex">
-    {% set image = offre.produits.images.first() %}
-    <p>Produit : {{ offre.produits.nomProduit }}</p>
-    <p>Prix proposé : {{ offre.prix }}€</p>
-    <p>Prix initial : {{ offre.produits.prix }}€</p>
-    {% if offre.statut == constant('App\\Entity\\Offre::STATUT_EN_ATTENTE') %}
-    <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'acceptee' }) }}">Accepter</a>
-    <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'refusee' }) }}">Refuser</a>
-    {% endif %}
-    <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
-  </li>
-  {% endif %}
-  {% endfor %}
-</ul>
-{% endif %}
-
-{% if offresObtenu is not empty and not offreTrouvee %}
-<p>Aucune offre reçue.</p>
-{% endif %}
-
-
-
-<h2>Mes annonces</h2>
-{% if produits is not empty %}
-
-<table>
-  <thead>
-    <tr class="title-table">
-      <th>Photos</th>
-      <th>Titre</th>
-      <th>Date</th>
-      <th>Description</th>
-      <th>Prix</th>
-      <th>Categorie</th>
-      <th>Etat</th>
-      <th>Editer</th>
-      <th>Supprimer</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for produit in produits %}
-
-    <tr>
-      <td>
-        {% if produit.images is not empty %}
-        <!--récupérer la 1er image uniquement -->
-        {% set image = produit.images.first() %}
-        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
-          alt="Image de {{ image.nomImage }}" />
-
-        {% else %}
-        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
-        {% endif %}
-      </td>
-      <td>{{ produit.nomProduit }}</td>
-      <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
-      <td>
-        {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
-      </td>
-      <td>{{ produit.prix }} €</td>
-      <td>{{ produit.categorie }}</td>
-
-      {% if produit.etat == false %}
-      <td style="color: red">En attente</td>
+    <div>
+      <h2>Mes notifications</h2>
+      {% if offres is empty %}
+      <p>Aucune notification</p>
       {% else %}
-      <td style="color: green">Ok</td>
+      <div class="scroll-container">
+
+        {% for notif in notifs %}
+        {% set bold = notif.isRead ? '' : 'bold' %}
+        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.message }}</p>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <div class="flex wrap gap justify-between">
+    <div class="offer-container">
+      <h2>Offre émisse</h2>
+
+      {% if offres is empty %}
+
+      <p>Aucune offre émisse.</p>
+      {% else %}
+      <ul class="flex wrap gap">
+        {% for offre in offres %}
+        {% if offre.isDeleted == 0 %}
+        <li class="flex flex-col card-offer">
+
+          {% set image = offre.produits.images.first() %}
+          <p>Produit : {{ offre.produits.nomProduit }}</p>
+          <p>Prix proposé : {{ offre.prix }}€</p>
+          <p>Prix initial : {{ offre.produits.prix }}€</p>
+          <p>Statut : {{ offre.getStatutText() }}</p>
+          {% if offre.getStatutText() == 2 %}
+
+          {% endif %}
+          <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
+        </li>
+        {% endif %}
+
+        {% endfor %}
+      </ul>
       {% endif %}
+    </div>
+    <div class="offer-container">
+      <h2>Offre reçue</h2>
+      {% set offreTrouvee = false %}
+      {% if offresObtenu is empty %}
+      <p>Aucune offre reçue.</p>
+      {% else %}
+      <ul class="flex wrap gap">
+        {% for offre in offresObtenu %}
+        {% if app.user == offre.produits.user %}
+        {% set offreTrouvee = true %}
+        <li class="flex flex-col card-offer">
+          {% set image = offre.produits.images.first() %}
+          <p>Produit : {{ offre.produits.nomProduit }}</p>
+          <p>Prix proposé : {{ offre.prix }}€</p>
+          <p>Prix initial : {{ offre.produits.prix }}€</p>
+          {% if offre.statut == constant('App\\Entity\\Offre::STATUT_EN_ATTENTE') %}
+          <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'acceptee' }) }}">Accepter</a>
+          <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'refusee' }) }}">Refuser</a>
+          {% endif %}
+          <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
 
-      <td>
-        <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
-      </td>
-      <td>
-        <a href="{{ path('delete_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-trash"></i></a>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+  {% if offresObtenu is not empty and not offreTrouvee %}
+  <p>Aucune offre reçue.</p>
+  {% endif %}
 
-{% else %}
-<p>Vous n'avez pas encore créé d'annonces.</p>
-{% endif %}
 
-<div>
-  <a href="{{ path('delete_user') }}">Supprimer mon compte</a>
-  <p>
-    Attention! Si le compte est supprimé, vous perdrez toutes les informations
-    liés à celui-ci.
-  </p>
+
+  <h2>Mes annonces</h2>
+  {% if produits is not empty %}
+
+  <table>
+    <thead>
+      <tr class="title-table">
+        <th>Photos</th>
+        <th>Titre</th>
+        <th>Date</th>
+        <th>Description</th>
+        <th>Prix</th>
+        <th>Categorie</th>
+        <th>Etat</th>
+        <th>Editer</th>
+        <th>Supprimer</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for produit in produits %}
+
+      <tr>
+        <td>
+          {% if produit.images is not empty %}
+          <!--récupérer la 1er image uniquement -->
+          {% set image = produit.images.first() %}
+          <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+            alt="Image de {{ image.nomImage }}" />
+
+          {% else %}
+          <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
+          {% endif %}
+        </td>
+        <td>{{ produit.nomProduit }}</td>
+        <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
+        <td>
+          {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
+        </td>
+        <td>{{ produit.prix }} €</td>
+        <td>{{ produit.categorie }}</td>
+
+        {% if produit.etat == false %}
+        <td style="color: red">En attente</td>
+        {% else %}
+        <td style="color: green">Ok</td>
+        {% endif %}
+
+        <td>
+          <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+        </td>
+        <td>
+          <a href="{{ path('delete_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-trash"></i></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% else %}
+  <p>Vous n'avez pas encore créé d'annonces.</p>
+  {% endif %}
+
+  <div>
+    <a href="{{ path('delete_user') }}">Supprimer mon compte</a>
+    <p>
+      Attention! Si le compte est supprimé, vous perdrez toutes les informations
+      liés à celui-ci.
+    </p>
+  </div>
 </div>
 {% else %}
 
@@ -168,11 +196,13 @@ endblock %} {% block body %} {% if app.user %}
     const notifications = document.querySelectorAll(".notification");
 
     notifications.forEach(notification => {
+      const notificationId = notification.getAttribute("data-notification-id");
+      const isDefaultNotification = notification.textContent.includes("Offre en cours de traitement");
+
       notification.addEventListener("click", function () {
-        if (!notification.classList.contains("read")) {
+        if (!notification.classList.contains("read") && !isDefaultNotification) {
           // Envoyer une requête AJAX pour marquer l'offre comme lue
-          const offreId = notification.getAttribute("data-offre-id");
-          fetch(`/marquer-offre-lue/${offreId}`, {
+          fetch(`/marquer-offre-lue/${notificationId}`, {
             method: "POST",
             headers: {
               "X-Requested-With": "XMLHttpRequest",
@@ -186,6 +216,8 @@ endblock %} {% block body %} {% if app.user %}
       });
     });
   });
+
 </script>
+
 
 {% endblock %}

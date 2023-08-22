@@ -11,6 +11,7 @@ use App\Entity\Produit;
 use App\Entity\Categorie;
 use App\Entity\Evenement;
 use App\Form\ProduitType;
+use App\Entity\Notification;
 use App\Form\EtatAnnonceType;
 use App\Form\SearchProduitType;
 use App\Repository\ProduitRepository;
@@ -33,7 +34,7 @@ class HomeController extends AbstractController
     {
         $produitSearch = null; //  recherche produits
         $slider = $doctrine->getRepository(Slider::class)->findBy([], ["id" => "DESC"]);
-        $produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit" => "DESC"], 4); // uniquement les 4 derniers articles ajoutés
+        $produits = $doctrine->getRepository(Produit::class)->findBy(["etat" => 1], ["dateCreationProduit" => "DESC"], 4); // uniquement les 4 derniers articles ajoutés
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
 
         //pagination tous les produits 
@@ -220,13 +221,15 @@ class HomeController extends AbstractController
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
         $offres = $doctrine->getRepository(Offre::class)->findBy(['Users' => $user], ['date' => 'DESC']); // uniquement les 5 derniers articles
         $offresObtenu = $doctrine->getRepository(Offre::class)->findBy([], []);
+        $notifs = $doctrine->getRepository(Notification::class)->findBy(['user' => $user], ['date' => 'DESC']);
 
         return $this->render('home/profil.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produits,
             'categories' => $categories,
             'offres' => $offres,
-            'offresObtenu' => $offresObtenu
+            'offresObtenu' => $offresObtenu,
+            'notifs' => $notifs,
 
 
 

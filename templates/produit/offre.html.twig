@@ -53,7 +53,7 @@
 {% if app.user %}
 <div>
     {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="flex">{{ form_row(form.prix) }} euros</div>
     {{ form_end(form) }}
 </div>
 

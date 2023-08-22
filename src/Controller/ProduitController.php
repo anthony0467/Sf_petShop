@@ -10,6 +10,7 @@ use App\Form\OffreType;
 use App\Form\OrderType;
 use App\Entity\Commande;
 use App\Entity\Categorie;
+use App\Entity\Notification;
 use Symfony\Component\Mime\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -98,10 +99,19 @@ class ProduitController extends AbstractController
     public function send(Request $request, ManagerRegistry $doctrine, $vendorId, $productId): Response
     {
         $user = $this->getUser();
-        //$vendeur = $doctrine->getRepository(Produit::class)->find($vendorId);
-        //$vendor = $doctrine->getRepository(User::class)->find($vendorId);
         $offre = new Offre();
+
         $produit = $doctrine->getRepository(Produit::class)->find($productId);
+        $offreRepository = $doctrine->getRepository(Offre::class);
+
+        // Vérifier si l'utilisateur a déjà fait une offre pour ce produit
+        $existingOffre = $offreRepository->findOneBy(['Users' => $user, 'produits' => $produit]);
+        if ($existingOffre || $offre->isIsDeleted(false)) {
+            $this->addFlash('error', 'Une offre existe déjà pour ce produit.');
+            return $this->redirectToRoute('show_home');
+        }
+
+
         $form = $this->createForm(OffreType::class, $offre);
         $form->handleRequest($request);
 
@@ -112,12 +122,23 @@ class ProduitController extends AbstractController
             $offre->setProduits($produit);
             $offre->setDate(new \DateTime);
 
-
             $em = $doctrine->getManager();
             $em->persist($offre);
             $em->flush();
 
-            $this->addFlash("offre", "Offre envoyé avec succès", "success");
+            // Créer et enregistrer une nouvelle notification pour l'offre en attente
+            $notification = new Notification();
+
+            $now = new \DateTime(); // objet date
+            $notification->setDate($now);
+            $notification->setUser($user);
+            $notification->setMessage("Votre offre pour le produit \"" . $produit->getNomProduit() . "\" est en attente.");
+            $notification->setOffre($offre);
+
+            $em->persist($notification);
+            $em->flush();
+
+            $this->addFlash("offre", "Offre envoyée avec succès", "success");
             return $this->redirectToRoute('show_home');
         }
 
@@ -126,63 +147,67 @@ class ProduitController extends AbstractController
         ]);
     }
 
+
+
+
     #[Route('/changer-statut-offre/{id}/{statut}', name: 'changer_statut_offre')]
     public function changerStatutOffre(ManagerRegistry $doctrine, Offre $offre, string $statut, MailerInterface $mailer): Response
     {
-
         // Vérifier que l'utilisateur connecté est bien le propriétaire de l'offre
         if ($this->getUser() !== $offre->getProduits()->getUser()) {
             throw $this->createAccessDeniedException();
         }
-
+        $user = $this->getUser();
+        $entityManager = $doctrine->getManager();
 
         // Mettre à jour le statut de l'offre en fonction de la valeur passée dans l'URL
         switch ($statut) {
             case 'acceptee':
+                // ... Code pour l'offre acceptée ...
                 $offre->setStatut(Offre::STATUT_ACCEPTEE);
-                $offre->setNotifStatus(true);
+                // Créer et enregistrer une nouvelle notification pour l'acceptation de l'offre
+                $notificationAcceptee = new Notification();
+                $notificationAcceptee->setMessage("Votre offre pour le produit \"" . $offre->getProduits()->getNomProduit() . "\" a été acceptée.");
+                $notificationAcceptee->setOffre($offre);
+                $notificationAcceptee->setUser($user);
 
-                // Envoi d'un e-mail de notification au destinataire
-                $clientEmail = $offre->getUsers()->getEmail();
-                $produitNom = $offre->getProduits()->getNomProduit();
-                dd($produitNom);
-                $offre->setNotifMessage("Votre offre concernant le produit \"$produitNom\" a été acceptée.");
-                $email = (new Email())
-                    ->from('admin@worldofpets.com')
-                    ->to($clientEmail)
-                    ->subject('Votre offre a été acceptée')
-                    ->text("Votre offre pour le produit \"$produitNom\" a été acceptée.");
+                $now = new \DateTime(); // objet date
+                $notificationAcceptee->setDate($now);
 
-                $mailer->send($email);
-
-                // Envoyer une notification interne à l'utilisateur (exemple)
-                $this->addFlash('success', 'Vous avez accepter une offre pour le produit "' . $produitNom . '".');
+                $entityManager->persist($notificationAcceptee);
                 break;
             case 'refusee':
+                // Créer et enregistrer une nouvelle notification pour le refus de l'offre
                 $offre->setStatut(Offre::STATUT_REFUSEE);
-                $offre->setNotifStatus(true);
-                $produitNom = $offre->getProduits()->getNomProduit();
-                $offre->setNotifMessage("Votre offre concernant le produit \"$produitNom\" a été refusée");
-                // Envoyer une notification interne à l'utilisateur (exemple)
-                $this->addFlash('warning', 'Vous avez refuser une offre pour le produit "' . $produitNom . '".');
+                $offre->setIsDeleted(true);
+                $notificationRefusee = new Notification();
+                $notificationRefusee->setMessage("Votre offre pour le produit \"" . $offre->getProduits()->getNomProduit() . "\" a été refusée.");
+                $notificationRefusee->setOffre($offre);
+                $notificationRefusee->setUser($user);
+                $now = new \DateTime(); // objet date
+                $notificationRefusee->setDate($now);
+                $entityManager->persist($notificationRefusee);
+
                 break;
             default:
                 throw new \InvalidArgumentException("Statut invalide");
         }
 
-        $entityManager = $doctrine->getManager();
-        $entityManager->persist($offre);
+        // Envoyer des notifications par e-mail, etc.
+
         $entityManager->flush();
 
         // Rediriger l'utilisateur vers la page du profil
         return $this->redirectToRoute('show_home');
     }
 
+
+
     #[Route('/marquer-offre-lue/{id}', name: 'marquer_offre_lue')]
-    public function marquerOffreLue(Offre $offre, EntityManagerInterface $entityManager): Response
+    public function marquerOffreLue(Notification $notification, EntityManagerInterface $entityManager): Response
     {
         // Mettre à jour l'état isRead dans la base de données
-        $offre->setIsRead(true);
+        $notification->setIsRead(true);
         $entityManager->flush();
 
         return new JsonResponse(['success' => true]);

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\OffreRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -50,11 +52,18 @@ class Offre
     #[ORM\Column]
     private ?bool $notifStatus = null;
 
-    #[ORM\Column(length: 200)]
-    private ?string $notifMessage = 'Offre en cours de traitement';
+
+    #[ORM\OneToMany(mappedBy: 'offre', targetEntity: Notification::class)]
+    private Collection $notifications;
 
     #[ORM\Column]
-    private ?bool $isRead = false;
+    private ?bool $isDeleted = false;
+
+    public function __construct()
+    {
+        $this->notifications = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -133,26 +142,46 @@ class Offre
         return $this;
     }
 
-    public function getNotifMessage(): ?string
+
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotifications(): Collection
     {
-        return $this->notifMessage;
+        return $this->notifications;
     }
 
-    public function setNotifMessage(string $notifMessage): self
+    public function addNotification(Notification $notification): self
     {
-        $this->notifMessage = $notifMessage;
+        if (!$this->notifications->contains($notification)) {
+            $this->notifications->add($notification);
+            $notification->setOffre($this);
+        }
 
         return $this;
     }
 
-    public function isIsRead(): ?bool
+    public function removeNotification(Notification $notification): self
     {
-        return $this->isRead;
+        if ($this->notifications->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getOffre() === $this) {
+                $notification->setOffre(null);
+            }
+        }
+
+        return $this;
     }
 
-    public function setIsRead(bool $isRead): self
+    public function isIsDeleted(): ?bool
     {
-        $this->isRead = $isRead;
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
 
         return $this;
     }

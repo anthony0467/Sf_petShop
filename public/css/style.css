@@ -1484,4 +1484,36 @@ body {
   table.messagerie td:nth-of-type(5):before {
     content: "Action";
   }
+}
+.profil-container {
+  max-width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.scroll-container {
+  height: 150px;
+  border: 1px solid #ccc;
+  overflow: auto; /* Ajoute une barre de défilement si le contenu dépasse */
+}
+
+.notification {
+  padding: 1rem;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.287);
+  border-top: 1px solid rgba(128, 128, 128, 0.287);
+}
+
+.offer-container {
+  max-width: 550px;
+}
+
+.card-offer {
+  background-color: rgba(198, 83, 140, 0.5);
+  padding: 0.5rem;
+  width: 200px;
+  justify-content: space-between;
+}
+
+.card-offer a {
+  color: #fff;
 }/*# sourceMappingURL=style.css.map */
