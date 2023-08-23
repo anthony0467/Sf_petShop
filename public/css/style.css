@@ -1153,6 +1153,10 @@ img {
   min-width: 280px;
 }
 
+.w-280 {
+  width: 280px;
+}
+
 .m-w-800 {
   max-width: 800px;
 }
@@ -1516,4 +1520,9 @@ body {
 
 .card-offer a {
   color: #fff;
+}
+
+.card-annonce {
+  border: 1px solid rgba(128, 128, 128, 0.507);
+  background-color: white;
 }/*# sourceMappingURL=style.css.map */
