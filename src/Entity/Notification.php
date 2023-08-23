@@ -29,6 +29,9 @@ class Notification
     #[ORM\ManyToOne(inversedBy: 'notifications')]
     private ?User $user = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $messageDestinataire = 'Vous avez reçu une nouvelle offre';
+
 
 
     public function getId(): ?int
@@ -92,6 +95,18 @@ class Notification
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getMessageDestinataire(): ?string
+    {
+        return $this->messageDestinataire;
+    }
+
+    public function setMessageDestinataire(string $messageDestinataire): self
+    {
+        $this->messageDestinataire = $messageDestinataire;
 
         return $this;
     }
