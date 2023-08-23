@@ -106,7 +106,10 @@ class ProduitController extends AbstractController
 
         // Vérifier si l'utilisateur a déjà fait une offre pour ce produit
         $existingOffre = $offreRepository->findOneBy(['Users' => $user, 'produits' => $produit]);
-        if ($existingOffre || $offre->isIsDeleted(false)) {
+        $offreIsDeleted = $offreRepository->findOneBy([]);
+        //dd($existingOffre);
+
+        if ($existingOffre && $existingOffre->isIsDeleted() === false) {
             $this->addFlash('error', 'Une offre existe déjà pour ce produit.');
             return $this->redirectToRoute('show_home');
         }
@@ -121,7 +124,6 @@ class ProduitController extends AbstractController
             $offre->setNotifStatus(false);
             $offre->setProduits($produit);
             $offre->setDate(new \DateTime);
-
             $em = $doctrine->getManager();
             $em->persist($offre);
             $em->flush();
@@ -133,6 +135,7 @@ class ProduitController extends AbstractController
             $notification->setDate($now);
             $notification->setUser($user);
             $notification->setMessage("Votre offre pour le produit \"" . $produit->getNomProduit() . "\" est en attente.");
+            $notification->setMessageDestinataire("Vous avez reçu une offre concernant le produit \"" . $produit->getNomProduit() . "\" ");
             $notification->setOffre($offre);
 
             $em->persist($notification);
@@ -168,13 +171,15 @@ class ProduitController extends AbstractController
                 // Créer et enregistrer une nouvelle notification pour l'acceptation de l'offre
                 $notificationAcceptee = new Notification();
                 $notificationAcceptee->setMessage("Votre offre pour le produit \"" . $offre->getProduits()->getNomProduit() . "\" a été acceptée.");
+                $notificationAcceptee->setMessageDestinataire("Vous avez accepté l'offre concernant le produit \"" . $offre->getProduits()->getNomProduit() . "\".");
                 $notificationAcceptee->setOffre($offre);
-                $notificationAcceptee->setUser($user);
+                $notificationAcceptee->setUser($offre->getUsers());
 
                 $now = new \DateTime(); // objet date
                 $notificationAcceptee->setDate($now);
 
                 $entityManager->persist($notificationAcceptee);
+                $this->addFlash("success", "Offre concernant le produit \"" . $offre->getProduits()->getNomProduit() . "\"  acceptée");
                 break;
             case 'refusee':
                 // Créer et enregistrer une nouvelle notification pour le refus de l'offre
@@ -182,12 +187,13 @@ class ProduitController extends AbstractController
                 $offre->setIsDeleted(true);
                 $notificationRefusee = new Notification();
                 $notificationRefusee->setMessage("Votre offre pour le produit \"" . $offre->getProduits()->getNomProduit() . "\" a été refusée.");
+                $notificationRefusee->setMessageDestinataire("Vous avez refusé l'offre concernant le produit \"" . $offre->getProduits()->getNomProduit() . "\".");
                 $notificationRefusee->setOffre($offre);
-                $notificationRefusee->setUser($user);
+                $notificationRefusee->setUser($offre->getUsers());
                 $now = new \DateTime(); // objet date
                 $notificationRefusee->setDate($now);
                 $entityManager->persist($notificationRefusee);
-
+                $this->addFlash("warning", "Offre concernant le produit \"" . $offre->getProduits()->getNomProduit() . "\" refusée");
                 break;
             default:
                 throw new \InvalidArgumentException("Statut invalide");
