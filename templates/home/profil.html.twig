@@ -36,19 +36,29 @@ endblock %} {% block body %} {% if app.user %}
 
     <div>
       <h2>Mes notifications</h2>
-      {% if offres is empty %}
-      <p>Aucune notification</p>
-      {% else %}
+  
+      {% set hasDisplayedNotifications = false %}
+  
       <div class="scroll-container">
-
-        {% for notif in notifs %}
-        {% set bold = notif.isRead ? '' : 'bold' %}
-        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.message }}</p>
-        {% endfor %}
-        {% endif %}
+          {% for notif in notifs %}
+              {% set bold = notif.isRead ? '' : 'bold' %}
+  
+              {% if app.user == notif.offre.produits.user %}
+                  <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.messageDestinataire }}</p>
+                  {% set hasDisplayedNotifications = true %}
+              {% endif %}
+              {% if app.user == notif.offre.Users %}
+                  <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.message }}</p>
+                  {% set hasDisplayedNotifications = true %}
+              {% endif %}
+          {% endfor %}
+  
+          {% if not hasDisplayedNotifications %}
+              <p>Aucune notification</p>
+          {% endif %}
       </div>
-
-    </div>
+  </div>
+  
   </div>
 
   <div class="flex wrap gap justify-between">
@@ -61,10 +71,12 @@ endblock %} {% block body %} {% if app.user %}
       {% else %}
       <ul class="flex wrap gap">
         {% for offre in offres %}
-        {% if offre.isDeleted == 0 %}
+        {% if offre.isDeleted == 0 and app.user == offre.Users %}
         <li class="flex flex-col card-offer">
 
           {% set image = offre.produits.images.first() %}
+          <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto" width="80px"
+                alt="Image de {{ image.nomImage }}">
           <p>Produit : {{ offre.produits.nomProduit }}</p>
           <p>Prix proposé : {{ offre.prix }}€</p>
           <p>Prix initial : {{ offre.produits.prix }}€</p>
@@ -92,9 +104,12 @@ endblock %} {% block body %} {% if app.user %}
         {% set offreTrouvee = true %}
         <li class="flex flex-col card-offer">
           {% set image = offre.produits.images.first() %}
+          <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto" width="80px"
+                alt="Image de {{ image.nomImage }}">
           <p>Produit : {{ offre.produits.nomProduit }}</p>
           <p>Prix proposé : {{ offre.prix }}€</p>
           <p>Prix initial : {{ offre.produits.prix }}€</p>
+          <p>Statut : {{ offre.getStatutText() }}</p>
           {% if offre.statut == constant('App\\Entity\\Offre::STATUT_EN_ATTENTE') %}
           <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'acceptee' }) }}">Accepter</a>
           <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'refusee' }) }}">Refuser</a>
@@ -117,59 +132,42 @@ endblock %} {% block body %} {% if app.user %}
   <h2>Mes annonces</h2>
   {% if produits is not empty %}
 
-  <table>
-    <thead>
-      <tr class="title-table">
-        <th>Photos</th>
-        <th>Titre</th>
-        <th>Date</th>
-        <th>Description</th>
-        <th>Prix</th>
-        <th>Categorie</th>
-        <th>Etat</th>
-        <th>Editer</th>
-        <th>Supprimer</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for produit in produits %}
-
-      <tr>
-        <td>
-          {% if produit.images is not empty %}
+  <ul class="flex wrap  gap">
+    {% for produit in produits %}
+    <li class="w-280 p-05 card-annonce">
+      {% if produit.images is not empty %}
           <!--récupérer la 1er image uniquement -->
           {% set image = produit.images.first() %}
-          <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+          <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="250px" width="100%"
             alt="Image de {{ image.nomImage }}" />
 
           {% else %}
           <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
           {% endif %}
-        </td>
-        <td>{{ produit.nomProduit }}</td>
-        <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
-        <td>
+          <p>{{ produit.nomProduit }}</p>
+          <p>{{ produit.dateCreationProduit | date("d/m/Y") }}</p>
+        <p>
           {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
-        </td>
-        <td>{{ produit.prix }} €</td>
-        <td>{{ produit.categorie }}</td>
+        </p>
+        <p>{{ produit.prix }} €</p>
+        <p>{{ produit.categorie }}</p>
 
         {% if produit.etat == false %}
-        <td style="color: red">En attente</td>
+        <p style="color: red">En attente</p>
         {% else %}
-        <td style="color: green">Ok</td>
+        <p style="color: green">Ok</p>
         {% endif %}
-
-        <td>
-          <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
-        </td>
-        <td>
-          <a href="{{ path('delete_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-trash"></i></a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+        <div class="flex justify-center gap">
+          <p>
+            <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+          </p>
+          <p>
+            <a href="{{ path('delete_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-trash"></i></a>
+          </p>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
 
   {% else %}
   <p>Vous n'avez pas encore créé d'annonces.</p>
