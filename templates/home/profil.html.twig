@@ -134,7 +134,7 @@ endblock %} {% block body %} {% if app.user %}
 
   <ul class="flex wrap  gap">
     {% for produit in produits %}
-    <li class="w-280 p-05 card-annonce">
+    <li class="w-280 p-05 card-annonce flex flex-col justify-between">
       {% if produit.images is not empty %}
           <!--récupérer la 1er image uniquement -->
           {% set image = produit.images.first() %}
@@ -144,13 +144,13 @@ endblock %} {% block body %} {% if app.user %}
           {% else %}
           <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
           {% endif %}
-          <p>{{ produit.nomProduit }}</p>
-          <p>{{ produit.dateCreationProduit | date("d/m/Y") }}</p>
-        <p>
+          <p>Titre: {{ produit.nomProduit }}</p>
+          <p>Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
+        <p>Description: 
           {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
         </p>
-        <p>{{ produit.prix }} €</p>
-        <p>{{ produit.categorie }}</p>
+        <p>Prix: {{ produit.prix }} €</p>
+        <p>Catégorie: {{ produit.categorie }}</p>
 
         {% if produit.etat == false %}
         <p style="color: red">En attente</p>
