@@ -4,10 +4,11 @@
     max-width: 1250px;
     margin-left: auto;
     margin-right: auto;
+    padding: 1rem;
 }
 
  .scroll-container {
-      height: 150px;
+      height: 160px;
       border: 1px solid #ccc;
       overflow: auto; /* Ajoute une barre de défilement si le contenu dépasse */
     }
@@ -41,4 +42,16 @@
 .card-annonce{
     border: 1px solid rgba(128, 128, 128, 0.507);
     background-color: white;
+}
+
+.title-annonce{
+    padding: 0.5rem 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.date-annonce{
+    color: grey;
+    font-size: 15px;
+    font-style: italic;
 }

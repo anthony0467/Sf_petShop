@@ -36,29 +36,29 @@ endblock %} {% block body %} {% if app.user %}
 
     <div>
       <h2>Mes notifications</h2>
-  
+
       {% set hasDisplayedNotifications = false %}
-  
+
       <div class="scroll-container">
-          {% for notif in notifs %}
-              {% set bold = notif.isRead ? '' : 'bold' %}
-  
-              {% if app.user == notif.offre.produits.user %}
-                  <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.messageDestinataire }}</p>
-                  {% set hasDisplayedNotifications = true %}
-              {% endif %}
-              {% if app.user == notif.offre.Users %}
-                  <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.message }}</p>
-                  {% set hasDisplayedNotifications = true %}
-              {% endif %}
-          {% endfor %}
-  
-          {% if not hasDisplayedNotifications %}
-              <p>Aucune notification</p>
-          {% endif %}
+        {% for notif in notifs %}
+        {% set bold = notif.isRead ? '' : 'bold' %}
+
+        {% if app.user == notif.offre.produits.user %}
+        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.messageDestinataire }}</p>
+        {% set hasDisplayedNotifications = true %}
+        {% endif %}
+        {% if app.user == notif.offre.Users %}
+        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.message }}</p>
+        {% set hasDisplayedNotifications = true %}
+        {% endif %}
+        {% endfor %}
+
+        {% if not hasDisplayedNotifications %}
+        <p>Aucune notification</p>
+        {% endif %}
       </div>
-  </div>
-  
+    </div>
+
   </div>
 
   <div class="flex wrap gap justify-between">
@@ -76,7 +76,7 @@ endblock %} {% block body %} {% if app.user %}
 
           {% set image = offre.produits.images.first() %}
           <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto" width="80px"
-                alt="Image de {{ image.nomImage }}">
+            alt="Image de {{ image.nomImage }}">
           <p>Produit : {{ offre.produits.nomProduit }}</p>
           <p>Prix proposé : {{ offre.prix }}€</p>
           <p>Prix initial : {{ offre.produits.prix }}€</p>
@@ -105,7 +105,7 @@ endblock %} {% block body %} {% if app.user %}
         <li class="flex flex-col card-offer">
           {% set image = offre.produits.images.first() %}
           <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto" width="80px"
-                alt="Image de {{ image.nomImage }}">
+            alt="Image de {{ image.nomImage }}">
           <p>Produit : {{ offre.produits.nomProduit }}</p>
           <p>Prix proposé : {{ offre.prix }}€</p>
           <p>Prix initial : {{ offre.produits.prix }}€</p>
@@ -119,14 +119,13 @@ endblock %} {% block body %} {% if app.user %}
         {% endif %}
         {% endfor %}
       </ul>
+      {% endif %}
+
+      {% if offresObtenu is not empty and not offreTrouvee %}
+      <p>Aucune offre reçue.</p>
+      {% endif %}
     </div>
   </div>
-  {% endif %}
-
-  {% if offresObtenu is not empty and not offreTrouvee %}
-  <p>Aucune offre reçue.</p>
-  {% endif %}
-
 
 
   <h2>Mes annonces</h2>
@@ -136,34 +135,36 @@ endblock %} {% block body %} {% if app.user %}
     {% for produit in produits %}
     <li class="w-280 p-05 card-annonce flex flex-col justify-between">
       {% if produit.images is not empty %}
-          <!--récupérer la 1er image uniquement -->
-          {% set image = produit.images.first() %}
-          <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="250px" width="100%"
-            alt="Image de {{ image.nomImage }}" />
+      <!--récupérer la 1er image uniquement -->
+      {% set image = produit.images.first() %}
+      <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="250px" width="100%"
+        alt="Image de {{ image.nomImage }}" />
 
-          {% else %}
-          <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
-          {% endif %}
-          <p>Titre: {{ produit.nomProduit }}</p>
-          <p>Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
-        <p>Description: 
-          {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
-        </p>
-        <p>Prix: {{ produit.prix }} €</p>
-        <p>Catégorie: {{ produit.categorie }}</p>
-
+      {% else %}
+      <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
+      {% endif %}
+      <p class="title-annonce">Titre: {{ produit.nomProduit }}</p>
+      <p class="date-annonce">Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
+      <p>Description:
+        {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
+      </p>
+      <p>Prix: {{ produit.prix }} €</p>
+      <p>Catégorie: {{ produit.categorie }}</p>
+      <div class="flex gap">
+        <p>Publiée: </p>
         {% if produit.etat == false %}
-        <p style="color: red">En attente</p>
+        <p style="color: red"> En attente</p>
         {% else %}
         <p style="color: green">Ok</p>
         {% endif %}
-        <div class="flex justify-center gap">
-          <p>
-            <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
-          </p>
-          <p>
-            <a href="{{ path('delete_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-trash"></i></a>
-          </p>
+      </div>
+      <div class="flex justify-center gap">
+        <p>
+          <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+        </p>
+        <p>
+          <a href="{{ path('delete_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-trash"></i></a>
+        </p>
       </div>
     </li>
     {% endfor %}
@@ -173,7 +174,7 @@ endblock %} {% block body %} {% if app.user %}
   <p>Vous n'avez pas encore créé d'annonces.</p>
   {% endif %}
 
-  <div>
+  <div class="mh-2">
     <a href="{{ path('delete_user') }}">Supprimer mon compte</a>
     <p>
       Attention! Si le compte est supprimé, vous perdrez toutes les informations
