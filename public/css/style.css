@@ -1489,6 +1489,32 @@ body {
     content: "Action";
   }
 }
+.payment-container {
+  display: flex;
+  height: 82.5vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.bg-success {
+  background: white;
+  padding: 1rem 3rem 0rem 3rem;
+  border: 1px solid rgba(128, 128, 128, 0.1607843137);
+  border-radius: 4px;
+}
+
+.bg-icon-sucess {
+  background: rgb(13, 194, 13);
+  border-radius: 50px;
+  padding: 0.5rem;
+}
+
+.img-success {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
 .profil-container {
   max-width: 1250px;
   margin-left: auto;
