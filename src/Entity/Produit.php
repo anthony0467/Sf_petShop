@@ -37,7 +37,7 @@ class Produit
     private ?string $prix = null;
 
 
-     /**
+    /**
      * @ORM\Column(type="integer")
      * @Assert\GreaterThanOrEqual(
      * value = 1,
@@ -59,23 +59,32 @@ class Produit
 
 
 
-      #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Images::class, cascade:["persist"])]
-      private Collection $images;
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Images::class, cascade: ["persist"])]
+    private Collection $images;
 
-      #[ORM\Column]
-      private ?bool $etat = null;
+    #[ORM\Column]
+    private ?bool $etat = null;
 
-      #[ORM\Column(length: 100)]
-      private ?string $statut = null;
+    #[ORM\Column(length: 100)]
+    private ?string $statut = null;
 
-      #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Offre::class)]
-      private Collection $offres;
+    #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Offre::class)]
+    private Collection $offres;
 
-      public function __construct()
-      {
-          $this->images = new ArrayCollection();
-          $this->offres = new ArrayCollection();
-      }
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $stripeProductId = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $stripePriceId = null;
+
+    #[ORM\Column]
+    private ?bool $isSelling = false;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection();
+        $this->offres = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -166,7 +175,7 @@ class Produit
         return $this;
     }
 
-  
+
 
     /**
      * @return Collection<int, Images>
@@ -254,6 +263,42 @@ class Produit
                 $offre->setProduits(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStripeProductId(): ?string
+    {
+        return $this->stripeProductId;
+    }
+
+    public function setStripeProductId(?string $stripeProductId): self
+    {
+        $this->stripeProductId = $stripeProductId;
+
+        return $this;
+    }
+
+    public function getStripePriceId(): ?string
+    {
+        return $this->stripePriceId;
+    }
+
+    public function setStripePriceId(?string $stripePriceId): self
+    {
+        $this->stripePriceId = $stripePriceId;
+
+        return $this;
+    }
+
+    public function isIsSelling(): ?bool
+    {
+        return $this->isSelling;
+    }
+
+    public function setIsSelling(bool $isSelling): self
+    {
+        $this->isSelling = $isSelling;
 
         return $this;
     }
