@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use doctrine;
+use Stripe\Price;
+use Stripe\Stripe;
+use Stripe\Product;
 use App\Entity\User;
 use App\Entity\Offre;
 use App\Entity\Images;
@@ -34,7 +37,7 @@ class HomeController extends AbstractController
     {
         $produitSearch = null; //  recherche produits
         $slider = $doctrine->getRepository(Slider::class)->findBy([], ["id" => "DESC"]);
-        $produits = $doctrine->getRepository(Produit::class)->findBy(["etat" => 1], ["dateCreationProduit" => "DESC"], 4); // uniquement les 4 derniers articles ajoutés
+        $produits = $doctrine->getRepository(Produit::class)->findBy(["etat" => 1, "isSelling" => 0], ["dateCreationProduit" => "DESC"], 4); // uniquement les 4 derniers articles ajoutés
         $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 2); // uniquement les 2 derniers évenements
 
         //pagination tous les produits 
@@ -149,10 +152,31 @@ class HomeController extends AbstractController
             $now = new \DateTime(); // objet date
             $produit->setDateCreationProduit($now); // installe ma date
             $produit->setEtat(false);
+            $produit->setIsSelling(false);
 
             $entityManager = $doctrine->getManager(); // on récupère les ressources
             $entityManager->persist($produit); // on enregistre la ressource
             $entityManager->flush(); // on envoie la ressource insert into
+
+            // Créez le produit sur Stripe
+            Stripe::setApiKey('sk_test_51NibhTEctxRE8ZHzRSOxVx6iKTB7WP0MobKRL4IlWwtpmv7jkZ3ORBaS3zmprfTUVWrg6M4kxBrGdTUmTJikf7Xd00Up0YjBEr');
+
+            $stripeProduct = Product::create([
+                'name' => $produit->getNomProduit(),
+                // Autres paramètres du produit sur Stripe
+            ]);
+
+            // Créez le prix du produit sur Stripe et liez-le au produit créé précédemment
+            $stripePrice = Price::create([
+                'unit_amount' => $produit->getPrix() * 100,  // Le prix en centimes, multiplicateur pour éviter les problèmes de précision
+                'currency' => 'eur',  // Devise
+                'product' => $stripeProduct->id,  // ID du produit Stripe
+            ]);
+
+            // Stockez l'ID du produit Stripe dans votre base de données local
+            $produit->setStripeProductId($stripeProduct->id);
+            $produit->setStripePriceId($stripePrice->id);
+            $entityManager->flush();
 
             return $this->redirectToRoute('show_home');
         }
