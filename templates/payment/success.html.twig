@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement accepté{% endblock %}
+
+{% block body %}
+{% if app.user %}
+
+<section class="payment-container">
+    <div class="bg-success">
+        <div class="flex items-center gap05">
+            <span class="bg-icon-sucess"><i class="fa-solid fa-check fa-xl" style="color: #ffffff;"></i></span>
+            <h2>Merci</h2>
+        </div>
+        <p>Votre paiement a été mis en place avec succès
+        </p>
+        <img class="img-success" src="{{asset('img/succes-dog.jpg')}}" alt="succes paiement">
+    </div>
+</section>
+{% else %}
+<p>Merci de vous connecter</p>
+{% endif %}
+
+{% endblock %}
