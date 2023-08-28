@@ -158,6 +158,14 @@ endblock %} {% block body %} {% if app.user %}
         <p style="color: green">Ok</p>
         {% endif %}
       </div>
+      <div class="flex gap">
+        <p>Statut:</p>
+        {% if produit.isSelling == true %}
+        <p style="color: green">Vendu</p>
+        {% else %}
+        <p style="color: #A58AFF">En cours</p>
+        {% endif %}
+      </div>
       <div class="flex justify-center gap">
         <p>
           <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
