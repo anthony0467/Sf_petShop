@@ -55,9 +55,9 @@
                 <p>{{ produit.prix + 1.25 }}€</p>
             </div>
 
-            <div class="text-center mh-2">
-                <a href="" class="btn">Payer maintenant</a>
-            </div>
+            <form action="{{ path('app_test', {'produitId': produit.id}) }}" method="POST">
+                <button class="btn text-center" type="submit" id="checkout-button">Paiement</button>
+            </form>
         </div>
     </div>
 
