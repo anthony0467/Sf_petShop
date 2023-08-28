@@ -79,6 +79,7 @@ class ProduitRepository extends ServiceEntityRepository
         $query->select('p')
             ->from(Produit::class, 'p')
             ->where('p.etat = 1')
+            ->andWhere('p.isSelling = false')
             ->orderBy('p.nomProduit', 'ASC');
 
         return $query->getQuery()->getResult();
@@ -90,6 +91,7 @@ class ProduitRepository extends ServiceEntityRepository
 
         $query = $this->createQueryBuilder('p');
         $query->where('p.etat = 1');
+        $query->andWhere('p.isSelling = false');
 
         if ($mots != null) {
             $query->andWhere('MATCH_AGAINST(p.nomProduit, p.description) AGAINST (:mots boolean)>0')->setParameter('mots', $mots);
