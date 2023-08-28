@@ -36,9 +36,9 @@ class ProduitController extends AbstractController
     {
         $user = $this->getUser();
 
+        //dd($produit->isIsSelling());
 
-
-        if ($produit) {
+        if ($produit && $produit->isIsSelling() == false) {
 
             // $message->setExpediteur($user);
             //$message->setDestinataire($vendeur);
