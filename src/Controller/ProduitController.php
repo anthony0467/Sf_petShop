@@ -75,11 +75,16 @@ class ProduitController extends AbstractController
                 $now = new \DateTime(); // objet date
                 $commande->setDateCommande($now); // installe ma date
                 $commande->setCommander($user);
+                $commande->setProduit($produit);
+                $commande->setMessage("Félicitation! Le produit : \"" . $produit->getNomProduit() . "\" a été vendu, merci de procéder rapidement à l'envoi.");
                 $entityManager = $doctrine->getManager(); // on récupère les ressources
                 $entityManager->persist($commande); // on enregistre la ressource
                 $entityManager->flush(); // on envoie la ressource insert into
 
-                return $this->redirectToRoute('app_home');
+                return $this->redirectToRoute(
+                    'app_test',
+                    ['produitId' => $produit->getId()]
+                );
             }
 
 
