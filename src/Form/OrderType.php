@@ -44,7 +44,7 @@ class OrderType extends AbstractType
                     'placeholder' => 'Entrez votre code postal',
                 ],
             ])
-            ->add('Valider', SubmitType::class, [
+            ->add('Paiement', SubmitType::class, [
                 'attr' => [
                     'class' => 'btn btn-order'
                 ]
