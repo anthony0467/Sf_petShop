@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use doctrine;
+use Stripe\File;
 use Stripe\Price;
 use Stripe\Stripe;
 use Stripe\Product;
@@ -11,6 +12,7 @@ use App\Entity\Offre;
 use App\Entity\Images;
 use App\Entity\Slider;
 use App\Entity\Produit;
+use App\Entity\Commande;
 use App\Entity\Categorie;
 use App\Entity\Evenement;
 use App\Form\ProduitType;
@@ -128,7 +130,9 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) { // valid respecter les contraintes
             // on recupere les images transmisse
             $images = $form->get('images')->getData();
-
+            // Créez le produit sur Stripe
+            Stripe::setApiKey('sk_test_51NibhTEctxRE8ZHzRSOxVx6iKTB7WP0MobKRL4IlWwtpmv7jkZ3ORBaS3zmprfTUVWrg6M4kxBrGdTUmTJikf7Xd00Up0YjBEr');
+            $stripeImageIds = [];
             // on boucle sur les tableaux
             foreach ($images as $image) {
                 // on genere un nouveau nom de fichier
@@ -144,7 +148,16 @@ class HomeController extends AbstractController
                 $img = new Images();
                 $img->setNomImage($fichier);
                 $produit->addImage($img);
+
+                /*
+                $stripeImage = File::create([
+                    'file' => fopen($this->getParameter('images_directory') . '/' . $fichier, 'rb'),
+                    'purpose' => 'product_image',
+                ]);
+                //dd($stripeImage);
+                $stripeImageIds[] = $stripeImage->id;*/
             }
+
 
             $produit = $form->getData();
 
@@ -158,11 +171,11 @@ class HomeController extends AbstractController
             $entityManager->persist($produit); // on enregistre la ressource
             $entityManager->flush(); // on envoie la ressource insert into
 
-            // Créez le produit sur Stripe
-            Stripe::setApiKey('sk_test_51NibhTEctxRE8ZHzRSOxVx6iKTB7WP0MobKRL4IlWwtpmv7jkZ3ORBaS3zmprfTUVWrg6M4kxBrGdTUmTJikf7Xd00Up0YjBEr');
 
+            //dd($produit->getImages());
             $stripeProduct = Product::create([
                 'name' => $produit->getNomProduit(),
+                //'images' => $stripeImageIds,
                 // Autres paramètres du produit sur Stripe
             ]);
 
@@ -246,6 +259,7 @@ class HomeController extends AbstractController
         $offres = $doctrine->getRepository(Offre::class)->findBy([], ['date' => 'DESC']); // uniquement les 5 derniers articles
         $offresObtenu = $doctrine->getRepository(Offre::class)->findBy([], []);
         $notifs = $doctrine->getRepository(Notification::class)->findBy([], ['date' => 'DESC']);
+        $commandes = $doctrine->getRepository(Commande::class)->findBy([], ['dateCommande' => 'DESC']);
 
         return $this->render('home/profil.html.twig', [
             'controller_name' => 'HomeController',
@@ -254,6 +268,7 @@ class HomeController extends AbstractController
             'offres' => $offres,
             'offresObtenu' => $offresObtenu,
             'notifs' => $notifs,
+            'commandes' => $commandes
 
 
 
