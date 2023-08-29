@@ -35,6 +35,13 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?User $commander = null;
 
+    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    private ?Produit $produit = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $message = 'Commande en attente';
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -120,6 +127,30 @@ class Commande
     public function setCommander(?User $commander): self
     {
         $this->commander = $commander;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Produit $produit): self
+    {
+        $this->produit = $produit;
+
+        return $this;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): self
+    {
+        $this->message = $message;
 
         return $this;
     }
