@@ -54,7 +54,7 @@ class PaymentController extends AbstractController
 
         if (!$produit) {
             // Gérer si le produit n'est pas trouvé dans la base de données
-            // Par exemple, rediriger l'utilisateur vers une page d'erreur
+            return $this->redirectToRoute('app_home');
         }
 
         // Mettre à jour le champ "disponible" du produit
