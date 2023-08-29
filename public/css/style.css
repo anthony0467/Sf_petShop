@@ -1534,12 +1534,54 @@ body {
   border-top: 1px solid rgba(128, 128, 128, 0.287);
 }
 
+.notif-vente {
+  background-color: rgba(19, 184, 19, 0.9);
+  color: #fff;
+}
+
+.card-command {
+  background: white;
+  padding: 1rem;
+  border: 1px solid rgba(128, 128, 128, 0.2705882353);
+  border-radius: 4px;
+}
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.tooltip {
+  visibility: hidden;
+  font-size: 14px;
+  width: 200px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 100%; /* Position above the element */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
+}
+
+.tooltip-container:hover .tooltip {
+  visibility: visible;
+  opacity: 1;
+}
+
 .offer-container {
   max-width: 550px;
 }
 
 .card-offer {
-  background-color: rgba(198, 83, 140, 0.5);
+  background-color: white;
+  border: 1px solid rgba(128, 128, 128, 0.2509803922);
   padding: 0.5rem;
   width: 200px;
   justify-content: space-between;
