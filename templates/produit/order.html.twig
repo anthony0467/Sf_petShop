@@ -26,6 +26,7 @@
             <p class="italic-grey">Adresse </p>
             {{ form_start(formCommande) }}
             {{ form_widget(formCommande) }}
+
             {{ form_end(formCommande) }}
         </div>
 
@@ -54,10 +55,6 @@
                 <p>Total:</p>
                 <p>{{ produit.prix + 1.25 }}€</p>
             </div>
-
-            <form action="{{ path('app_test', {'produitId': produit.id}) }}" method="POST">
-                <button class="btn text-center" type="submit" id="checkout-button">Paiement</button>
-            </form>
         </div>
     </div>
 
