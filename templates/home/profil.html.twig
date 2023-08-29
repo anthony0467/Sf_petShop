@@ -40,9 +40,13 @@ endblock %} {% block body %} {% if app.user %}
       {% set hasDisplayedNotifications = false %}
 
       <div class="scroll-container">
+        {% for commande in commandes %}
+        {% if app.user == commande.produit.user and commande.produit.isSelling == true %}
+        <p class="notification notif-vente">{{ commande.message }}</p>
+        {% endif %}
+        {% endfor %}
         {% for notif in notifs %}
         {% set bold = notif.isRead ? '' : 'bold' %}
-
         {% if app.user == notif.offre.produits.user %}
         <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.messageDestinataire }}</p>
         {% set hasDisplayedNotifications = true %}
@@ -60,6 +64,52 @@ endblock %} {% block body %} {% if app.user %}
     </div>
 
   </div>
+
+  {% set user_has_matching_command = false %}
+  {% for commande in commandes %}
+  {% if app.user == commande.produit.user and commande.produit.isSelling == true %}
+  {% set user_has_matching_command = true %}
+  {% endif %}
+  {% endfor %}
+
+
+  {% if user_has_matching_command %}
+  <div>
+    <h2>Vos commandes</h2>
+    <ul class="flex flex-col gap">
+      {% for commande in commandes %}
+      {% if app.user == commande.produit.user and commande.produit.isSelling == true %}
+
+      <li class="flex gap wrap justify-between card-command">
+        <p>Titre: {{ commande.produit.nomProduit }}</p>
+        <p>Prix: {{ commande.produit.prix}}€</p>
+        <div class="flex gap wrap">
+          Adresse de livraison du client:
+          <div class="flex gap wrap">
+            <div>
+              <p>Nom: {{ commande.nom}}</p>
+              <p>Prénom: {{ commande.prenom}}</p>
+            </div>
+            <div>
+              <p>Adresse: {{ commande.adresse}}</p>
+              <p>Ville: {{ commande.ville}} - Code postal: {{ commande.codePostal}}</p>
+            </div>
+          </div>
+        </div>
+        <div class="flex wrap gap05">
+          <p class="tooltip-container">Produit envoyé (?)
+            <span class="tooltip">Penser à cliquer sur le lien une fois le colis envoyer afin de prévenir le
+              client.</span>
+          </p>
+          <a href="#">Non</a>
+        </div>
+      </li>
+      {% endif %}
+
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
 
   <div class="flex wrap gap justify-between">
     <div class="offer-container">
