@@ -6,13 +6,18 @@
 {% if app.user %}
 
 <section class="payment-container">
-    <div class="bg-success">
-        <div class="flex items-center gap05">
-            <span class="bg-icon-sucess"><i class="fa-solid fa-check fa-xl" style="color: #ffffff;"></i></span>
-            <h2>Merci</h2>
+    <div class="bg-success flex wrap gap">
+        <div class="content-success">
+            <div class="flex items-center gap05">
+                <span class="bg-icon-sucess"><i class="fa-solid fa-check fa-xl" style="color: #ffffff;"></i></span>
+                <h2>Merci!</h2>
+            </div>
+            <p>
+                Votre paiement a été mis en place avec succès. Un Email de confirmation vous a été envoyé. Merci de
+                consulté votre boite Email.
+            </p>
+
         </div>
-        <p>Votre paiement a été mis en place avec succès
-        </p>
         <img class="img-success" src="{{asset('img/succes-dog.jpg')}}" alt="succes paiement">
     </div>
 </section>
