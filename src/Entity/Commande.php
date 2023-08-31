@@ -41,6 +41,15 @@ class Commande
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $message = 'Commande en attente';
 
+    #[ORM\Column]
+    private ?bool $isSent = false;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $messageSent = 'Votre commande est en cours de traitement';
+
+    #[ORM\Column]
+    private ?bool $isReceived = false;
+
 
     public function getId(): ?int
     {
@@ -151,6 +160,42 @@ class Commande
     public function setMessage(?string $message): self
     {
         $this->message = $message;
+
+        return $this;
+    }
+
+    public function isIsSent(): ?bool
+    {
+        return $this->isSent;
+    }
+
+    public function setIsSent(bool $isSent): self
+    {
+        $this->isSent = $isSent;
+
+        return $this;
+    }
+
+    public function getMessageSent(): ?string
+    {
+        return $this->messageSent;
+    }
+
+    public function setMessageSent(?string $messageSent): self
+    {
+        $this->messageSent = $messageSent;
+
+        return $this;
+    }
+
+    public function isIsReceived(): ?bool
+    {
+        return $this->isReceived;
+    }
+
+    public function setIsReceived(bool $isReceived): self
+    {
+        $this->isReceived = $isReceived;
 
         return $this;
     }
