@@ -76,7 +76,13 @@ class ProduitController extends AbstractController
                 $commande->setDateCommande($now); // installe ma date
                 $commande->setCommander($user);
                 $commande->setProduit($produit);
-                $commande->setMessage("Félicitation! Le produit : \"" . $produit->getNomProduit() . "\" a été vendu, merci de procéder rapidement à l'envoi.");
+                // Gérer le message de notification
+                if ($produit->getNomProduit()) {
+                    $notificationMessage = "Félicitation! Le produit : \"" . $produit->getNomProduit() . "\" a été vendu, merci de procéder rapidement à l'envoi.";
+                } else {
+                    $notificationMessage = "Félicitation! Un produit a été vendu, merci de procéder rapidement à l'envoi.";
+                }
+                $commande->setMessage($notificationMessage);
                 $entityManager = $doctrine->getManager(); // on récupère les ressources
                 $entityManager->persist($commande); // on enregistre la ressource
                 $entityManager->flush(); // on envoie la ressource insert into
@@ -100,8 +106,68 @@ class ProduitController extends AbstractController
         }
     }
 
+    #[Route('/produit/sent/{id}', name: 'order_sent')] // publier annonce
+    //#[IsGranted('ROLE_ADMIN')]
+    public function sentProduct(ManagerRegistry $doctrine, Commande $commande, MailerInterface $mailer)
+    {
+
+
+        if ($commande->isIsSent()) {
+            $commande->setIsSent(false);
+        } else {
+            $commande->setIsSent(true);
+            $commande->setMessageSent("Votre commande concernant \"" . $commande->getProduit()->getNomProduit() . "\" à bien été envoyé.");
+
+            $clientEmail = $commande->getCommander()->getEmail();
+            $produitNom = $commande->getProduit()->getNomProduit();
+            $nomVendeur = $commande->getProduit()->getUser()->getPseudo();
+            $email = (new Email())
+                ->from('admin@worldofpets.com')
+                ->to($clientEmail)
+                ->subject("WorlfofPets - Votre colis \"" . $produitNom . "\" a bien été envoyé")
+                ->text("Le colis $produitNom. a été envoyé par " . $nomVendeur .  ".  L'équipe WorldofPets");
+
+            $mailer->send($email);
+        }
+
+        $em = $doctrine->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('show_home');
+    }
+
+    #[Route('/produit/received/{id}', name: 'order_received')] // publier annonce
+    //#[IsGranted('ROLE_ADMIN')]
+    public function receivedProduct(ManagerRegistry $doctrine, Commande $commande, MailerInterface $mailer)
+    {
+
+
+        if ($commande->isIsReceived()) {
+            $commande->setIsReceived(false);
+        } else {
+            $commande->setIsReceived(true);
+            //$commande->setMessageSent("Votre commande concernant \"" . $commande->getProduit()->getNomProduit() . "\" à bien été envoyé.");
+
+            $clientEmail = $commande->getProduit()->getUser()->getEmail();
+            $produitNom = $commande->getProduit()->getNomProduit();
+            $nomVendeur = $commande->getProduit()->getUser()->getPseudo();
+            $email = (new Email())
+                ->from('admin@worldofpets.com')
+                ->to($clientEmail)
+                ->subject("WorlfofPets - Colis \"" . $produitNom . "\"  receptionné")
+                ->text("Votre colis $produitNom a bien été receptionné par l'acheteur.  L'équipe WorldofPets");
+
+            $mailer->send($email);
+        }
+
+        $em = $doctrine->getManager();
+        $em->flush();
+
+        return $this->redirectToRoute('show_home');
+    }
+
     #[Route('/offre/{vendorId}/{productId}', name: 'show_offre')] // formulaire offre 
-    public function send(Request $request, ManagerRegistry $doctrine, $vendorId, $productId): Response
+    public function send(Request $request, ManagerRegistry $doctrine, $vendorId, $productId, MailerInterface $mailer): Response
     {
         $user = $this->getUser();
         $offre = new Offre();
@@ -146,7 +212,18 @@ class ProduitController extends AbstractController
             $em->persist($notification);
             $em->flush();
 
-            $this->addFlash("offre", "Offre envoyée avec succès", "success");
+            $clientEmail = $offre->getProduits()->getUser()->getEmail();
+            $produitNom = $offre->getProduits()->getNomProduit();
+
+            $email = (new Email())
+                ->from('admin@worldofpets.com')
+                ->to($clientEmail)
+                ->subject("WorlfofPets - Vous avez reçu une offre pour \"" . $produit->getNomProduit() . "\"")
+                ->text("Vous avez reçu une offre concernant le produit $produitNom. Merci de vous rendre dans votre espace personnel pour accepter ou refuser l'offre. L'équipe WorldofPets");
+
+            $mailer->send($email);
+
+            $this->addFlash("message", "Offre envoyée avec succès", "success");
             return $this->redirectToRoute('show_home');
         }
 
