@@ -23,4 +23,13 @@ padding: .5rem;
 display: block;
 height: auto;
 width: 100%;
+max-width: 500px;
+}
+
+.content-success{
+    max-width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: justify;
 }

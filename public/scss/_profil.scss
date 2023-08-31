@@ -1,5 +1,17 @@
 @import 'mixins';
 
+//espace vendeur 
+
+.card-seller{
+    //@include background-messagerie;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    border: 1px solid rgba(128, 128, 128, 0.332);
+}
+
+
+
 .profil-container{
     max-width: 1250px;
     margin-left: auto;
@@ -33,6 +45,8 @@
     border-radius: 4px;
 }
 
+
+
 .tooltip-container {
   position: relative;
   display: inline-block;
@@ -65,10 +79,6 @@
 
 //offre
 
-.offer-container{
-    max-width: 550px;
-}
-
 .card-offer{
     background-color: white;
     border: 1px solid #80808040;
@@ -77,9 +87,7 @@
     justify-content: space-between;
 }
 
-.card-offer a{
-    color: #fff;
-}
+
 
 
 //annonce 
@@ -99,4 +107,18 @@
     color: grey;
     font-size: 15px;
     font-style: italic;
+}
+
+
+
+@media (min-width: 550px){
+    // commandes vendeur
+   .card-command{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+
+}
+.adresse-commande{
+    grid-column: 3/5;
+}
 }
