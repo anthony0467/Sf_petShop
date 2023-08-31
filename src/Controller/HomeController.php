@@ -208,6 +208,11 @@ class HomeController extends AbstractController
     public function delete(ManagerRegistry $doctrine, Produit $produit = null): Response
     {
         if ($produit) {
+
+            // Trouver la commande associée au produit
+            $commandeRepository = $doctrine->getRepository(Commande::class);
+            $commande = $commandeRepository->findOneBy(['produit' => $produit]);
+
             $entityManager = $doctrine->getManager();
 
             // Supprimer les images associées
@@ -219,6 +224,11 @@ class HomeController extends AbstractController
                     unlink($imagePath);
                 }
                 $entityManager->remove($image);
+            }
+
+            // Supprimer la commande associée
+            if ($commande) {
+                $entityManager->remove($commande);
             }
 
             // Supprimer le produit
