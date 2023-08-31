@@ -1,21 +1,34 @@
 {% extends 'base.html.twig' %} {% block title %}Panneau administrateur :
 {{ app.user }}{% endblock %} {% block body %} {% if is_granted('ROLE_ADMIN') %}
 
+
+
 <h1>Bienvenue sur le panneau d'administrateur {{ app.user }}</h1>
+<div class="flex gap">
+    <nav id="menu-admin">
+        <ul>
+            <li>Les évenements</li>
+            <li>Les annonces</li>
+            <li>Les commentaires</li>
+            <li>Les slides</li>
+        </ul>
+    </nav>
+    <div>
+        {% include "admin/_slides.html.twig" %}
 
-{% include "admin/_slides.html.twig" %}
+        <h2>Gérer les événements</h2>
 
-<h2>Gérer les événements</h2>
+        <a href="{{ path('app_evenement') }}">Voir les événements</a>
+        <a href="{{ path('add_evenement') }}">Ajouter un évenement</a>
 
-<a href="{{ path('app_evenement') }}">Voir les événements</a>
-<a href="{{ path('add_evenement') }}">Ajouter un évenement</a>
+        <h2>Gérer les commentaires</h2>
 
-<h2>Gérer les commentaires</h2>
+        <a href="{{ path('admin_avis') }}">Voir les commentaires</a>
 
-<a href="{{ path('admin_avis') }}">Voir les commentaires</a>
-
-{# {% include "admin/_annonces_inactifs.html.twig" %} #} {% include
-"admin/_annonces_actif.html.twig" %} {% else %}
+        {# {% include "admin/_annonces_inactifs.html.twig" %} #} {% include
+        "admin/_annonces_actif.html.twig" %}
+    </div>
+</div>{% else %}
 
 <p>Vous n'avez pas les droits pour accèder à cette page.</p>
 
