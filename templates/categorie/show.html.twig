@@ -19,7 +19,7 @@
         {% set all_products_false = true %} {# verifier l'état de tous les produits #}
         {% for produit in produits %}
         {# verifier l'état avant de mettre en ligne #}
-        {% if produit.etat == true %}
+        {% if produit.etat == true and produit.isSelling == false %}
         {% set all_products_false = false %}
         <li class="card-all-article flex flex-col justify-between">
             {% if produit.images is not empty %}
