@@ -5,30 +5,40 @@
 
 <h1>Bienvenue sur le panneau d'administrateur {{ app.user }}</h1>
 <div class="flex gap">
-    <nav id="menu-admin">
-        <ul>
-            <li>Les évenements</li>
-            <li>Les annonces</li>
-            <li>Les commentaires</li>
-            <li>Les slides</li>
-        </ul>
-    </nav>
-    <div>
+    {% include "admin/_menu_admin.html.twig" %}
+    <div id="container-admin">
+
+        <h3>Dashboard</h3>
+        <div class="flex wrap gap">
+            <div class="card-admin-first">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <p>Modifier ou supprimer un évenement</p>
+                <a href="{{ path('app_evenement') }}">Voir les événements</a>
+            </div>
+
+            <div class="card-admin-first">
+                <i class="fa-solid fa-plus"></i>
+                <p>Ajouter un évenement, son image, sa description</p>
+                <a href="{{ path('add_evenement') }}">Ajouter un événement</a>
+            </div>
+
+            <div class="card-admin-first">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <p>Vérifier et valider les commentairs des utilisateurs </p>
+                <a href="{{ path('admin_avis') }}">Espace commentaire</a>
+            </div>
+        </div>
+
         {% include "admin/_slides.html.twig" %}
 
-        <h2>Gérer les événements</h2>
-
-        <a href="{{ path('app_evenement') }}">Voir les événements</a>
-        <a href="{{ path('add_evenement') }}">Ajouter un évenement</a>
-
-        <h2>Gérer les commentaires</h2>
-
-        <a href="{{ path('admin_avis') }}">Voir les commentaires</a>
 
         {# {% include "admin/_annonces_inactifs.html.twig" %} #} {% include
         "admin/_annonces_actif.html.twig" %}
     </div>
-</div>{% else %}
+</div>
+
+
+{% else %}
 
 <p>Vous n'avez pas les droits pour accèder à cette page.</p>
 
