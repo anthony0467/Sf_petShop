@@ -6,6 +6,7 @@
 
 {% if is_granted('ROLE_ADMIN') %}
 <h1>Gestion des avis clients</h1>
+{% include "admin/_menu_admin.html.twig" %}
 <h2>Commentaires en cours de publication</h2>
 
 {% include "admin/_avis_inactif.html.twig" %}
