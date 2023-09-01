@@ -1,38 +1,43 @@
-<h2>Gérer les slides</h2>
+<div id="page-slide">
 
-<a href="{{ path('add_slide') }}">Ajouter un slide</a>
-
-<table>
-    <thead>
-        <tr class="title-table">
-            <th>Titre</th>
-            <th>Photos</th>
-            <th>Editer</th>
-            <th>Supprimer</th>   
-        </tr>
-    </thead>
-    <tbody>
-        
-        {% for slide in  slider %}
-    {% for image in slide.image %}
-        <tr>
-            <td>{{slide.title}}</td>
-            <td>
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}"
-                alt="{{slide.title}}"
-                width="300px"
-                height="150px">
-            </td>
-            <td><a href="{{path('edit_slide', {'id': slide.id })}}"><i class="fa-sharp fa-solid fa-pen color-primary"></i></a></td>
-            <td><a href="{{path('delete_slider', {'id': slide.id })}}"><i class="fa-sharp fa-solid fa-trash color-primary"></i></a>   </td>
-        </tr>
+    <h3>Gérer les slides</h3>
+<div class="slide-contain">
+    
+    <table>
+        <thead>
+            <tr class="title-table">
+                <th>Titre</th>
+                <th>Photos</th>
+                <th>Editer</th>
+                <th>Supprimer</th>   
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for slide in  slider %}
+        {% for image in slide.image %}
+            <tr>
+                <td>{{slide.title}}</td>
+                <td>
+                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}"
+                    alt="{{slide.title}}"
+                    width="300px"
+                    height="150px">
+                </td>
+                <td><a href="{{path('edit_slide', {'id': slide.id })}}"><i class="fa-sharp fa-solid fa-pen color-primary"></i></a></td>
+                <td><a href="{{path('delete_slider', {'id': slide.id })}}"><i class="fa-sharp fa-solid fa-trash color-primary"></i></a>   </td>
+            </tr>
+        {% endfor %}
     {% endfor %}
-{% endfor %}
 
 
 
 
-    </tbody>
-</table>
-
+        </tbody>
+    </table>
+</div>
+<div class="flex justify-center ">
+    <a href="{{ path('add_slide') }}" class="btn text-center">Ajouter un slide</a>
+    </div>
+</div>
 
