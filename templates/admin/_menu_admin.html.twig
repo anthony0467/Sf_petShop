@@ -1,0 +1,64 @@
+<nav id="menu-js" class="main-menu">
+    <ul>
+        <li>
+            <a href="#">
+                <i class="fa fa-home fa-2x"></i>
+                <span class="nav-text">
+                    Dashboard
+                </span>
+            </a>
+          
+        </li>
+        <li class="slides-text">
+            <a href="#page-slide">
+                <i class="fa fa-film fa-2x"></i>
+                <span class="nav-text">
+                    Gestion des slides
+                </span>
+            </a>
+            <ul class="sub-menu">
+                <li><a href="{{ path('add_slide') }}">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="nav-text">
+                        Ajouter des slides
+                    </span>
+                </a>
+             </li>
+            </ul>
+        </li>
+        <li class="slides-text">
+            <a href="{{ path('app_evenement') }}">
+                 <i class="fa fa-map-marker fa-2x"></i>
+                 <span class="nav-text">
+                     Gestion des évenements
+                 </span>
+             </a>
+             <ul class="sub-menu">
+                <li><a href="{{ path('add_evenement') }}">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="nav-text">
+                        Ajouter un évenement
+                    </span>
+                </a>
+             </li>
+            </ul>
+         </li>
+        <li class="has-subnav">
+            <a href="{{ path('admin_avis') }}">
+               <i class="fa fa-comments fa-2x"></i>
+                <span class="nav-text">
+                   Gestion des commentaires
+                </span>
+            </a>    
+        </li>
+        <li>
+            <a href="#annonce-page">
+                <i class="fa fa-book fa-2x"></i>
+                <span class="nav-text">
+                   Gestion des annonces
+                </span>
+            </a>
+        </li>
+    </ul>
+
+</nav>
