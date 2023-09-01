@@ -1,6 +1,12 @@
 {% extends 'base.html.twig' %} {% block title %}Ajouter votre slide{% endblock
 %} {% block body %} {% if is_granted('ROLE_ADMIN')%}
-<h1>Ajouter un slide</h1>
+
+{% if edit %}
+        <h1>Modifier le slide</h1>
+        {% else %}
+        <h1>Ajouter un slide</h1>
+    {% endif %}
+    
 
 {{ form_start(formAddSlider) }}
 {{ form_widget(formAddSlider) }}
