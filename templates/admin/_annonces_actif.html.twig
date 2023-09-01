@@ -1,43 +1,46 @@
-<h2 class="text-center">Toutes les annnonces</h2>
+<div id="annonce-page">
 
-<div id="container-annonce-admin">
+    <h2 class="text-center">Toutes les annnonces</h2>
+
+    <div id="container-annonce-admin">
 
 
-    <ul>
-        {% for produit in produitsActif %}
-        {% set borderClass = produit.etat ? 'green-border' : 'red-border' %}
-        <li class="{{borderClass}} card-annonce-admin flex flex-col">
-            <div class="toggle-switch flex justify-between">
-                <p>{{produit.user}}</p>
-                <div class="switch">
-                    <input type="checkbox" id="switch{{ produit.id }}" {% if produit.etat==true %}checked{% endif %}
-                        onchange="toggleAnnonce('{{ path('publish_annonce', {'id': produit.id }) }}')" />
-                    <label for="switch{{ produit.id }}" class="label-switch"></label>
+        <ul>
+            {% for produit in produitsActif %}
+            {% set borderClass = produit.etat ? 'green-border' : 'red-border' %}
+            <li class="{{borderClass}} card-annonce-admin flex flex-col">
+                <div class="toggle-switch flex justify-between">
+                    <p>{{produit.user}}</p>
+                    <div class="switch">
+                        <input type="checkbox" id="switch{{ produit.id }}" {% if produit.etat==true %}checked{% endif %}
+                            onchange="toggleAnnonce('{{ path('publish_annonce', {'id': produit.id }) }}')" />
+                        <label for="switch{{ produit.id }}" class="label-switch"></label>
+                    </div>
                 </div>
-            </div>
-            {% if produit.images is not empty %}
-            <!--récupérer la 1er image uniquement -->
-            {% set image = produit.images.first() %}
-            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
-                alt="Image de {{ image.nomImage }}">
+                {% if produit.images is not empty %}
+                <!--récupérer la 1er image uniquement -->
+                {% set image = produit.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
+                    alt="Image de {{ image.nomImage }}">
 
 
-            {% else %}
-            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
-            {% endif %}
-            <div class="flex gap05">
-                <p>{{ produit.nomProduit }}</p>
-                <a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
-                <a href="{{path('delete_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a>
-            </div>
-            <p>Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
-            <p>Description: {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' :
-                produit.description }}</p>
-            <p>Prix: {{ produit.prix }} €</p>
-            <p>Catégorie: {{ produit.categorie }}</p>
-        </li>
-        {% endfor %}
-    </ul>
+                {% else %}
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
+                {% endif %}
+                <div class="flex gap05">
+                    <p>{{ produit.nomProduit }}</p>
+                    <a href="{{path('edit_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-pen"></i></a>
+                    <a href="{{path('delete_produit', {'id': produit.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a>
+                </div>
+                <p>Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
+                <p>Description: {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' :
+                    produit.description }}</p>
+                <p>Prix: {{ produit.prix }} €</p>
+                <p>Catégorie: {{ produit.categorie }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
 <script>
