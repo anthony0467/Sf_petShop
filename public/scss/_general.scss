@@ -59,7 +59,9 @@ h3{
 	margin: 2rem 0;
 }
 
-
+button{
+	cursor: pointer;
+}
 
 .logo strong{
     font-family: 'Caveat', cursive !important;
@@ -267,6 +269,8 @@ img {
 #footer{
 padding: 1rem;
 color: white;
+position: relative;
+z-index: 2;
 }
 
 #footer li{
