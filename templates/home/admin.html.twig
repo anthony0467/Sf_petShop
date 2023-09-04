@@ -8,24 +8,65 @@
     {% include "admin/_menu_admin.html.twig" %}
     <div id="container-admin">
 
-        <h3>Dashboard</h3>
+
         <div class="flex wrap gap">
-            <div class="card-admin-first">
-                <i class="fa-solid fa-pen-to-square"></i>
-                <p>Modifier ou supprimer un évenement</p>
-                <a href="{{ path('app_evenement') }}">Voir les événements</a>
-            </div>
+            <div>
+                <h3>Dashboard</h3>
+                <div class="flex wrap gap">
+                    <div class="card-admin-first">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <p>Modifier ou supprimer un évenement</p>
+                        <a href="{{ path('app_evenement') }}">Voir les événements</a>
+                    </div>
 
-            <div class="card-admin-first">
-                <i class="fa-solid fa-plus"></i>
-                <p>Ajouter un évenement, son image, sa description</p>
-                <a href="{{ path('add_evenement') }}">Ajouter un événement</a>
-            </div>
+                    <div class="card-admin-first">
+                        <i class="fa-solid fa-plus"></i>
+                        <p>Ajouter un évenement, son image, sa description</p>
+                        <a href="{{ path('add_evenement') }}">Ajouter un événement</a>
+                    </div>
 
-            <div class="card-admin-first">
-                <i class="fa-solid fa-pen-to-square"></i>
-                <p>Vérifier et valider les commentairs des utilisateurs </p>
-                <a href="{{ path('admin_avis') }}">Espace commentaire</a>
+                    <div class="card-admin-first">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        <p>Vérifier et valider les commentairs des utilisateurs </p>
+                        <a href="{{ path('admin_avis') }}">Espace commentaire</a>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <h3>Stats</h3>
+                <div class="card-stats">
+                    {% set tailleTableau = 0 %}
+                    {% set tailleAnnonce = 0 %}
+                    {% set tailleAvis = 0 %}
+                    {% set tailleAvisInactif = 0 %}
+
+                    {% for produit in produitsActif %}
+                    {% if produit.isSelling == 1 %}
+                    {% set tailleTableau = tailleTableau + 1 %}
+                    {% endif %}
+                    {% if produit.isSelling == 0 and produit.Etat == 1 %}
+                    {% set tailleAnnonce = tailleAnnonce + 1 %}
+                    {% endif %}
+                    {% endfor %}
+
+
+                    <div class="flex wrap items-center gap"><i class="fa-brands fa-product-hunt fa-xl"></i>
+                        <p> Nombre de produits vendu : <span class="primary-color">{{ tailleTableau }}</span>
+                        </p>
+                    </div>
+                    <div class="flex wrap items-center gap"><i class="fa-brands fa-sellsy fa-xl"></i>
+                        <p>Nombre d'annonce en cours : <span class="primary-color">{{ tailleAnnonce }}</span></p>
+                    </div>
+                    <div class="flex wrap items-center gap"><i class="fa-solid fa-comments fa-xl"></i>
+                        <p>Nombre de commentaires publiés: <span class="primary-color">{{ avisActif | length
+                                }}</span></p>
+                    </div>
+                    <div class="flex wrap items-center gap"><i class="fa-regular fa-comment-dots fa-xl"></i>
+                        <p>Nombre de commentaires à traiter: <span class="primary-color">{{ avisInactif
+                                |
+                                length}}</span></p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -34,6 +75,18 @@
 
         {# {% include "admin/_annonces_inactifs.html.twig" %} #} {% include
         "admin/_annonces_actif.html.twig" %}
+        <div id="page-comments">
+            <h1>Gestion des avis clients</h1>
+
+            <h2>Commentaires en cours de publication</h2>
+
+            {% include "admin/_avis_inactif.html.twig" %}
+
+            <h2>Commentaires publiés</h2>
+
+            {% include "admin/_avis_actif.html.twig" %}
+        </div>
+
     </div>
 </div>
 

@@ -78,7 +78,7 @@ class AvisController extends AbstractController
         $em = $doctrine->getManager();
         $em->flush();
 
-        return $this->redirectToRoute('admin_avis');
+        return $this->redirectToRoute('show_admin');
     }
 
 

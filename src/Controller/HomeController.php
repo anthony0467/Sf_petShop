@@ -19,6 +19,7 @@ use App\Form\ProduitType;
 use App\Entity\Notification;
 use App\Form\EtatAnnonceType;
 use App\Form\SearchProduitType;
+use App\Repository\AvisRepository;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -288,21 +289,23 @@ class HomeController extends AbstractController
     }
 
     #[Route('/home/admin', name: 'show_admin')] // vue profil de l'utilisateur
-    public function admin(ManagerRegistry $doctrine, ProduitRepository $pi): Response
+    public function admin(ManagerRegistry $doctrine, ProduitRepository $pi, AvisRepository $Ar): Response
     {
         //$produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); 
 
         $slider = $doctrine->getRepository(Slider::class)->findBy([]);
         $produitInactif = $pi->annonceInactif(); // requete dql
         $produitActif = $pi->annonceActif(); // requete dql
+        $avisInactif = $Ar->inactifAvis();
+        $avisActif = $Ar->actifAvis();
 
         return $this->render('home/admin.html.twig', [
             'controller_name' => 'HomeController',
             'produits' => $produitInactif,
             'produitsActif' => $produitActif,
             'slider' => $slider,
-
-
+            'avisInactif' => $avisInactif,
+            'avisActif' => $avisActif
 
         ]);
     }

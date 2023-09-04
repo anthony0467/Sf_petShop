@@ -10,7 +10,7 @@
         <p>Vendeur : <a href="{{path('show_user', {'id': produit.user.id })}}">{{ produit.user.pseudo }}</a></p>
         <p>Avis vendeur : </p>
         <p>Description : {{ produit.description }}</p>
-        <p class="stock">Stock : {{ produit.disponible }}</p>
+        <!-- <p class="stock">Stock : {{ produit.disponible }}</p> -->
         <p class="price">Prix : {{ produit.prix }} €</p>
         <ul class="flex wrap gap mh-2">
             <li>

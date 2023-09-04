@@ -381,11 +381,15 @@ html {
   scroll-behavior: smooth;
 }
 
-.fa-2x {
+#menu-js {
+  display: none;
+}
+
+#menu-js .fa-2x {
   font-size: 2em;
 }
 
-.fa {
+#menu-js .fa {
   position: relative;
   display: table-cell;
   width: 60px;
@@ -563,13 +567,45 @@ nav ul, nav li {
   color: #c6538c;
 }
 
-.slide-contain {
-  background: white;
-  padding: 1rem;
-  margin: 2rem 0;
+.card-stats {
+  background-color: #fff;
   border: 1px solid;
   border-color: #c6538c;
   border-radius: 25px;
+  padding: 1rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 160px;
+}
+
+.card-stats i {
+  color: #c6538c;
+}
+
+.primary-color {
+  color: #c6538c;
+  font-weight: bold;
+}
+
+.btn-slide {
+  margin: 1rem 0;
+}
+
+.btn-slide a {
+  padding: 0.5rem;
+}
+
+.card-slide {
+  background-color: #fff;
+  border: 1px solid;
+  border-color: #c6538c;
+  padding-bottom: 1rem;
+}
+
+.card-slide h3 {
+  text-align: center;
 }
 
 .slide-contain table {
@@ -585,18 +621,21 @@ nav ul, nav li {
 #container-annonce-admin {
   display: flex;
   justify-content: center;
+  margin-bottom: 2rem;
 }
 
 #container-annonce-admin ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 1rem;
 }
 
 .card-annonce-admin {
-  width: 400px;
+  width: 270px;
+  background: white;
+  border: 1px solid;
+  border-color: #c6538c;
   padding: 1rem;
 }
 
@@ -669,13 +708,67 @@ nav ul, nav li {
 }
 
 .green-border {
-  background-color: rgba(0, 128, 0, 0.346);
+  background-color: rgba(0, 128, 0, 0.15);
 }
 
 .red-border {
-  background-color: rgba(255, 0, 0, 0.387);
+  background-color: rgba(255, 0, 0, 0.15);
 }
 
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th, .custom-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+.custom-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.custom-table th {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.delete-icon {
+  color: red;
+}
+
+/* Styles pour écran étroit (ajustez les valeurs en fonction de vos besoins) */
+@media (max-width: 768px) {
+  .custom-table th, .custom-table td {
+    padding: 4px;
+  }
+  .custom-table td {
+    font-size: 12px;
+  }
+  /* Réorganiser le tableau en mode mobile */
+  .custom-table {
+    display: block;
+  }
+  .custom-table thead, .custom-table tbody {
+    display: table;
+    width: 100%;
+  }
+  /* Créer une colonne distincte pour le thead et le tbody en mode mobile */
+  .custom-table th, .custom-table td {
+    display: block;
+  }
+}
+.m-b2 {
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 512px) {
+  #menu-js {
+    display: block;
+  }
+}
 #cat-container {
   position: relative;
   margin-bottom: 8rem;

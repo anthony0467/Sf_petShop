@@ -1,31 +1,24 @@
-<table>
+<table class="custom-table m-b2">
     <thead>
         <tr class="title-table">
-            <th>Utilisateur</th>
-            <th>Date</th>
-            <th>Commentaire</th>
-            <th>Etat</th>
-            <th>Supprimer</th>
-            
+            <th class="user-header">Utilisateur</th>
+            <th class="date-header">Date</th>
+            <th class="comment-header">Commentaire</th>
+            <th class="state-header">Etat</th>
+            <th class="delete-header">Supprimer</th>
         </tr>
     </thead>
     <tbody>
         {% for avis in avisActif %}
-      
-       
         <tr>
-            <td>{{ avis.users.pseudo}}</td>
-            <td>{{ avis.dateAvis | date('d/m/Y')}}</td>
-            <td>{{ avis.commentaire }}</td>
-            <td><a href="{{path('publish_avis', {'id': avis.id })}}">Inactif</a></td>
-            
-            <td><a href="{{path('delete_avis', {'id': avis.id, 'vendorId': avis.vendeur.id })}}"><i class="fa-sharp fa-solid fa-trash"></i></a></td>
-
+            <td class="user-cell">{{ avis.users.pseudo }}</td>
+            <td class="date-cell">{{ avis.dateAvis | date('d/m/Y') }}</td>
+            <td class="comment-cell">{{ avis.commentaire }}</td>
+            <td class="state-cell"><a href="{{ path('publish_avis', {'id': avis.id }) }}">Inactif</a></td>
+            <td class="delete-cell"><a
+                    href="{{ path('delete_avis', {'id': avis.id, 'vendorId': avis.vendeur.id }) }}"><i
+                        class="delete-icon fa-sharp fa-solid fa-trash"></i></a></td>
         </tr>
         {% endfor %}
-
-
-
-
     </tbody>
 </table>
