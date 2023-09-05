@@ -80,6 +80,9 @@ class Produit
     #[ORM\Column]
     private ?bool $isSelling = false;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    private ?string $prixOffre = null;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -299,6 +302,18 @@ class Produit
     public function setIsSelling(bool $isSelling): self
     {
         $this->isSelling = $isSelling;
+
+        return $this;
+    }
+
+    public function getPrixOffre(): ?string
+    {
+        return $this->prixOffre;
+    }
+
+    public function setPrixOffre(?string $prixOffre): self
+    {
+        $this->prixOffre = $prixOffre;
 
         return $this;
     }
