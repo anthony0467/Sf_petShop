@@ -223,6 +223,9 @@ endblock %} {% block body %} {% if app.user %}
           <p>Prix proposé : {{ offre.prix }}€</p>
           <p>Prix initial : {{ offre.produits.prix }}€</p>
           <p>Statut : {{ offre.getStatutText() }}</p>
+          {% if offre.statut == 1 %}
+            <a href="{{ path('show_order', {id: offre.produits.id })}}">Paiement</a>
+          {% endif %}
           {% if offre.getStatutText() == 2 %}
 
           {% endif %}
