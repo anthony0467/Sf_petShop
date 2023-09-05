@@ -9,6 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
 {
+    public const ETAT_EN_ATTENTE = 0;
+    public const ETAT_PAYE = 1;
+    public const ETAT_REFUSEE = 2;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -35,7 +39,7 @@ class Commande
     #[ORM\ManyToOne(inversedBy: 'commandes')]
     private ?User $commander = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne()] //cascade: ['persist', 'remove']
     private ?Produit $produit = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -49,6 +53,9 @@ class Commande
 
     #[ORM\Column]
     private ?bool $isReceived = false;
+
+    #[ORM\Column]
+    private ?int $etat = null;
 
 
     public function getId(): ?int
@@ -196,6 +203,18 @@ class Commande
     public function setIsReceived(bool $isReceived): self
     {
         $this->isReceived = $isReceived;
+
+        return $this;
+    }
+
+    public function getEtat(): ?int
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(int $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }
