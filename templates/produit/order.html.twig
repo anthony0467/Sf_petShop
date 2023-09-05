@@ -19,6 +19,13 @@
 
                 <p>{{ produit.nomProduit }} <br> <span class="italic-grey">{{ produit.statut }}</span></p>
                 <p class="grow text-right">{{ produit.prix }}€</p>
+                
+                {% for offre in produit.offres %}
+                    {% if produit.prixOffre and offre.Users == app.user %}
+                <p><i class="fa-solid fa-arrow-right fa-lg"></i>  {{ produit.prixOffre}}€</p>
+                {% endif %}
+                {% endfor %}
+                
             </div>
 
         </div>
@@ -43,7 +50,14 @@
             <p class="italic-grey">Résumé de la commande </p>
             <div class="flex justify-between items-center ">
                 <p>Commande:</p>
-                <p>{{ produit.prix }}€</p>
+                {% for offre in produit.offres %}
+                {% if produit.prixOffre and offre.Users == app.user %}
+            <p>{{ produit.prixOffre}}€</p>
+            {% else %}
+            <p>{{ produit.prix }}€</p>
+            {% endif %}
+            {% endfor %}
+                
             </div>
 
             <div class="flex justify-between items-center ">
@@ -53,7 +67,13 @@
 
             <div class="flex justify-between items-center ">
                 <p>Total:</p>
-                <p>{{ produit.prix + 1.25 }}€</p>
+                {% for offre in produit.offres %}
+                {% if produit.prixOffre and offre.Users == app.user %}
+            <p>{{ produit.prixOffre + 1.25}}€</p>
+            {% else %}
+            <p>{{ produit.prix + 1.25 }}€</p>
+            {% endif %}
+            {% endfor %}
             </div>
         </div>
     </div>
