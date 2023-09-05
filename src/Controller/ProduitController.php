@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use Stripe\Stripe;
 use App\Entity\User;
 use App\Entity\Offre;
 use App\Entity\Produit;
@@ -60,7 +61,7 @@ class ProduitController extends AbstractController
     public function showOrder(ManagerRegistry $doctrine,  Produit $produit = null, Request $request): Response
     {
         $user = $this->getUser();
-
+        
         if ($produit) {
 
             $commande = new Commande;
@@ -76,6 +77,7 @@ class ProduitController extends AbstractController
                 $commande->setDateCommande($now); // installe ma date
                 $commande->setCommander($user);
                 $commande->setProduit($produit);
+                $commande->setEtat(0);
                 // Gérer le message de notification
                 if ($produit->getNomProduit()) {
                     $notificationMessage = "Félicitation! Le produit : \"" . $produit->getNomProduit() . "\" a été vendu, merci de procéder rapidement à l'envoi.";
@@ -180,6 +182,14 @@ class ProduitController extends AbstractController
         $offreIsDeleted = $offreRepository->findOneBy([]);
         //dd($existingOffre);
 
+        // Vérifier si une offre a été acceptée pour ce produit
+    $offreAcceptee = $offreRepository->findOneBy(['produits' => $produit, 'statut' => Offre::STATUT_ACCEPTEE]);
+
+    if ($offreAcceptee) {
+        $this->addFlash('error', 'Une offre a déjà été acceptée pour ce produit.');
+        return $this->redirectToRoute('show_home');
+    }
+
         if ($existingOffre && $existingOffre->isIsDeleted() === false) {
             $this->addFlash('error', 'Une offre existe déjà pour ce produit.');
             return $this->redirectToRoute('show_home');
@@ -248,6 +258,15 @@ class ProduitController extends AbstractController
         // Mettre à jour le statut de l'offre en fonction de la valeur passée dans l'URL
         switch ($statut) {
             case 'acceptee':
+
+                Stripe::setApiKey('sk_test_51NibhTEctxRE8ZHzRSOxVx6iKTB7WP0MobKRL4IlWwtpmv7jkZ3ORBaS3zmprfTUVWrg6M4kxBrGdTUmTJikf7Xd00Up0YjBEr');
+              
+                // Mettez à jour le prix de base du produit avec le prix de l'offre si l'utilisateur est le propriétaire
+                if ($this->getUser() === $offre->getProduits()->getUser()) {
+                    $offre->getProduits()->setPrixOffre($offre->getPrix());
+                }
+                
+
                 // ... Code pour l'offre acceptée ...
                 $offre->setStatut(Offre::STATUT_ACCEPTEE);
                 // Créer et enregistrer une nouvelle notification pour l'acceptation de l'offre

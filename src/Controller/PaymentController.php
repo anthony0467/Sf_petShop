@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commande;
 use Symfony\Component\Mime\Email;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,6 +22,8 @@ class PaymentController extends AbstractController
     {
 
         $produit = $produitRepository->find($produitId);
+        $user = $this->getUser();
+        
 
         if (!$produit) {
             // Gérer si le produit n'est pas trouvé dans la base de données
@@ -34,29 +37,68 @@ class PaymentController extends AbstractController
 
         $YOUR_DOMAIN = 'http://localhost:8000';
 
-        $checkout_session = \Stripe\Checkout\Session::create([
-            'line_items' => [[
-                'price' => $stripePriceId,
-                'quantity' => 1,
-            ]],
-            'mode' => 'payment',
-            'success_url' => $YOUR_DOMAIN .  $this->generateUrl('app_success', ['produitId' => $produitId]),
-            'cancel_url' => $YOUR_DOMAIN . $this->generateUrl('app_cancel'),
-        ]);
+        $offreAccepte = $produit->getPrixOffre();
 
-        return $this->redirect($checkout_session->url);
+        $checkout_sessions = [];
+
+        // Parcourez toutes les offres du produit
+        foreach ($produit->getOffres() as $offre) {
+            // Comparez l'utilisateur de l'offre à l'utilisateur courant
+            if ($offre->getUsers() === $user) {
+                // Utilisez le prix de l'offre si elle existe
+                $prix = $offre->getPrix();
+            } else {
+                // Utilisez le prix de base
+                $prix = $produit->getPrix();
+            }
+        
+            // Créez une session Stripe pour cette offre
+            $checkout_sessions[] = \Stripe\Checkout\Session::create([
+                'line_items' => [[
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'unit_amount' => $prix * 100, // Le prix en centimes
+                        'product_data' => [
+                            'name' => 'Nom du produit',
+                        ],
+                    ],
+                    'quantity' => 1,
+                ]],
+                'mode' => 'payment',
+                'success_url' => $YOUR_DOMAIN .  $this->generateUrl('app_success', ['produitId' => $produitId]),
+                'cancel_url' => $YOUR_DOMAIN . $this->generateUrl('app_cancel'),
+            ]);
+        }
+
+        return $this->redirect($checkout_sessions[0]->url);
     }
 
     #[Route('/payment/success', name: 'app_success')]
-    public function success(Request $request, EntityManagerInterface $entityManager, ProduitRepository $produitRepository, MailerInterface $mailer): Response
+    public function success(Request $request, ManagerRegistry $doctrine, ProduitRepository $produitRepository, MailerInterface $mailer): Response
     {
         $produitId = $request->query->get('produitId'); // Récupérer l'identifiant du produit depuis les paramètres de la requête
         $produit = $produitRepository->find($produitId);
         $user = $this->getUser();
+        $entityManager = $doctrine->getManager();
+        
+        // Recherchez la commande en attente associée à l'utilisateur courant
+        $commandeRepository = $doctrine->getRepository(Commande::class);
+        //dd($commandeRepository);
+        $pendingCommande = $commandeRepository->findOneBy(['commander' => $user, 'etat' => Commande::ETAT_EN_ATTENTE]);
+    
 
         if (!$produit) {
             // Gérer si le produit n'est pas trouvé dans la base de données
             return $this->redirectToRoute('app_home');
+        }
+
+
+        if ($pendingCommande) {
+            // Mettez à jour l'état de la commande en "payée" (ou tout autre état approprié)
+            $pendingCommande->setEtat(Commande::ETAT_PAYE);
+            
+            // Enregistrez les modifications
+            $entityManager->flush();
         }
 
         // Mettre à jour le champ "disponible" du produit
@@ -102,8 +144,23 @@ class PaymentController extends AbstractController
 
 
     #[Route('/payment/cancel', name: 'app_cancel')]
-    public function cancel(): Response
+    public function cancel(ManagerRegistry $doctrine): Response
     {
-        return $this->render('payment/cancel.html.twig');
+        $user = $this->getUser();
+        $entityManager = $doctrine->getManager();
+    
+    // Recherchez la commande en attente associée à l'utilisateur courant
+    $commandeRepository = $doctrine->getRepository(Commande::class);
+    
+    $pendingCommande = $commandeRepository->findOneBy(['commander' => $user, 'etat' => Commande::ETAT_EN_ATTENTE]);
+
+    if ($pendingCommande) {
+        // Supprimez la commande en attente et ses données associées
+        $entityManager->remove($pendingCommande);
+        $entityManager->flush();
+    }
+
+    // Redirigez l'utilisateur vers une page appropriée
+    return $this->redirectToRoute('app_home');
     }
 }
