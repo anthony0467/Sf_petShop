@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 
 <head>
   <meta charset="UTF-8" />
@@ -17,6 +17,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
   <script src="{{ asset('js/jQuery.min.js') }}"></script>
+
+
+
 
   {# Run `composer require symfony/webpack-encore-bundle` to start using
   Symfony UX #} {% block stylesheets %}
@@ -53,7 +56,8 @@
     integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="{{ asset('js/app.js') }}"></script>
-  <script src="{{ asset('js/admin.js') }}"></script>
+  <script src="{{asset('js/tarteaucitron/tarteaucitron.js')}}"></script>
+  <script src="{{asset('js/tarteaucitron.js')}}"></script>
 
 </body>
 
