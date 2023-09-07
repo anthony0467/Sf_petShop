@@ -39,7 +39,7 @@ class ProduitController extends AbstractController
 
         //dd($produit->isIsSelling());
 
-        if ($produit && $produit->isIsSelling() == false) {
+        if ($produit && $produit->isIsSelling() == false && $produit->isEtat() == true) {
 
             // $message->setExpediteur($user);
             //$message->setDestinataire($vendeur);
@@ -61,7 +61,7 @@ class ProduitController extends AbstractController
     public function showOrder(ManagerRegistry $doctrine,  Produit $produit = null, Request $request): Response
     {
         $user = $this->getUser();
-        
+
         if ($produit) {
 
             $commande = new Commande;
@@ -183,12 +183,12 @@ class ProduitController extends AbstractController
         //dd($existingOffre);
 
         // Vérifier si une offre a été acceptée pour ce produit
-    $offreAcceptee = $offreRepository->findOneBy(['produits' => $produit, 'statut' => Offre::STATUT_ACCEPTEE]);
+        $offreAcceptee = $offreRepository->findOneBy(['produits' => $produit, 'statut' => Offre::STATUT_ACCEPTEE]);
 
-    if ($offreAcceptee) {
-        $this->addFlash('error', 'Une offre a déjà été acceptée pour ce produit.');
-        return $this->redirectToRoute('show_home');
-    }
+        if ($offreAcceptee) {
+            $this->addFlash('error', 'Une offre a déjà été acceptée pour ce produit.');
+            return $this->redirectToRoute('show_home');
+        }
 
         if ($existingOffre && $existingOffre->isIsDeleted() === false) {
             $this->addFlash('error', 'Une offre existe déjà pour ce produit.');
@@ -260,12 +260,12 @@ class ProduitController extends AbstractController
             case 'acceptee':
 
                 Stripe::setApiKey('sk_test_51NibhTEctxRE8ZHzRSOxVx6iKTB7WP0MobKRL4IlWwtpmv7jkZ3ORBaS3zmprfTUVWrg6M4kxBrGdTUmTJikf7Xd00Up0YjBEr');
-              
+
                 // Mettez à jour le prix de base du produit avec le prix de l'offre si l'utilisateur est le propriétaire
                 if ($this->getUser() === $offre->getProduits()->getUser()) {
                     $offre->getProduits()->setPrixOffre($offre->getPrix());
                 }
-                
+
 
                 // ... Code pour l'offre acceptée ...
                 $offre->setStatut(Offre::STATUT_ACCEPTEE);
