@@ -3,8 +3,12 @@
 <div class="flex justify-center gap items-center wrap">
     <figure>
         {% set image = produit.images.first() %}
+        {% if image is defined and image is not empty %}
         <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px"
             alt="Image de {{ image.nomImage }}">
+        {% else %}
+        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="200px" alt="Mon image">
+        {% endif %}
     </figure>
     <div class="text-center">
         <p>Voir le profil du vendeur:
