@@ -23,7 +23,7 @@ class PaymentController extends AbstractController
 
         $produit = $produitRepository->find($produitId);
         $user = $this->getUser();
-        
+
 
         if (!$produit) {
             // Gérer si le produit n'est pas trouvé dans la base de données
@@ -41,25 +41,51 @@ class PaymentController extends AbstractController
 
         $checkout_sessions = [];
 
-        // Parcourez toutes les offres du produit
-        foreach ($produit->getOffres() as $offre) {
-            // Comparez l'utilisateur de l'offre à l'utilisateur courant
-            if ($offre->getUsers() === $user) {
-                // Utilisez le prix de l'offre si elle existe
-                $prix = $offre->getPrix();
-            } else {
-                // Utilisez le prix de base
-                $prix = $produit->getPrix();
+        // Vérifiez s'il y a des offres pour ce produit
+        $produitOffres = $produit->getOffres();
+
+        if (count($produitOffres) > 0) {
+            // Il y a des offres, parcourez-les et créez une session pour chaque offre
+            foreach ($produitOffres as $offre) {
+                // Comparez l'utilisateur de l'offre à l'utilisateur courant
+                if ($offre->getUsers() === $user) {
+                    // Utilisez le prix de l'offre si elle existe
+                    $prix = $offre->getPrix();
+                } else {
+                    // Utilisez le prix de base
+                    $prix = $produit->getPrix();
+                }
+
+                // Créez une session Stripe pour cette offre
+                $checkout_sessions[] = \Stripe\Checkout\Session::create([
+                    'line_items' => [[
+                        'price_data' => [
+                            'currency' => 'eur',
+                            'unit_amount' => ($prix + 10) * 100, // Le prix en centimes
+                            'product_data' => [
+                                'name' => $produit->getNomProduit(),
+                            ],
+                        ],
+                        'quantity' => 1,
+                    ]],
+                    'mode' => 'payment',
+                    'success_url' => $YOUR_DOMAIN .  $this->generateUrl('app_success', ['produitId' => $produitId]),
+                    'cancel_url' => $YOUR_DOMAIN . $this->generateUrl('app_cancel'),
+                    'shipping_address_collection' => [
+                        'allowed_countries' => ['FR'], // Pays autorisés pour la livraison
+                    ],
+                    'billing_address_collection' => 'required',
+                ]);
             }
-        
-            // Créez une session Stripe pour cette offre
+        } else {
+            // Aucune offre, créez une session Stripe pour le prix de base
             $checkout_sessions[] = \Stripe\Checkout\Session::create([
                 'line_items' => [[
                     'price_data' => [
                         'currency' => 'eur',
-                        'unit_amount' => $prix * 100, // Le prix en centimes
+                        'unit_amount' => ($produit->getPrix() + 10) * 100, // Le prix de base en centimes
                         'product_data' => [
-                            'name' => 'Nom du produit',
+                            'name' => $produit->getNomProduit(),
                         ],
                     ],
                     'quantity' => 1,
@@ -67,9 +93,15 @@ class PaymentController extends AbstractController
                 'mode' => 'payment',
                 'success_url' => $YOUR_DOMAIN .  $this->generateUrl('app_success', ['produitId' => $produitId]),
                 'cancel_url' => $YOUR_DOMAIN . $this->generateUrl('app_cancel'),
+                'shipping_address_collection' => [
+                    'allowed_countries' => ['FR'], // Pays autorisés pour la livraison
+                ],
+                'billing_address_collection' => 'required',
+
             ]);
         }
 
+        // Redirigez l'utilisateur vers la première session de paiement
         return $this->redirect($checkout_sessions[0]->url);
     }
 
@@ -80,12 +112,12 @@ class PaymentController extends AbstractController
         $produit = $produitRepository->find($produitId);
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
-        
+
         // Recherchez la commande en attente associée à l'utilisateur courant
         $commandeRepository = $doctrine->getRepository(Commande::class);
         //dd($commandeRepository);
         $pendingCommande = $commandeRepository->findOneBy(['commander' => $user, 'etat' => Commande::ETAT_EN_ATTENTE]);
-    
+
 
         if (!$produit) {
             // Gérer si le produit n'est pas trouvé dans la base de données
@@ -96,7 +128,7 @@ class PaymentController extends AbstractController
         if ($pendingCommande) {
             // Mettez à jour l'état de la commande en "payée" (ou tout autre état approprié)
             $pendingCommande->setEtat(Commande::ETAT_PAYE);
-            
+
             // Enregistrez les modifications
             $entityManager->flush();
         }
@@ -148,19 +180,19 @@ class PaymentController extends AbstractController
     {
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
-    
-    // Recherchez la commande en attente associée à l'utilisateur courant
-    $commandeRepository = $doctrine->getRepository(Commande::class);
-    
-    $pendingCommande = $commandeRepository->findOneBy(['commander' => $user, 'etat' => Commande::ETAT_EN_ATTENTE]);
 
-    if ($pendingCommande) {
-        // Supprimez la commande en attente et ses données associées
-        $entityManager->remove($pendingCommande);
-        $entityManager->flush();
-    }
+        // Recherchez la commande en attente associée à l'utilisateur courant
+        $commandeRepository = $doctrine->getRepository(Commande::class);
 
-    // Redirigez l'utilisateur vers une page appropriée
-    return $this->redirectToRoute('app_home');
+        $pendingCommande = $commandeRepository->findOneBy(['commander' => $user, 'etat' => Commande::ETAT_EN_ATTENTE]);
+
+        if ($pendingCommande) {
+            // Supprimez la commande en attente et ses données associées
+            $entityManager->remove($pendingCommande);
+            $entityManager->flush();
+        }
+
+        // Redirigez l'utilisateur vers une page appropriée
+        return $this->redirectToRoute('app_home');
     }
 }
