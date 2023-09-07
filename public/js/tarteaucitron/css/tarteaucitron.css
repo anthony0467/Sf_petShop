@@ -186,7 +186,7 @@ div#tarteaucitronServices {
 }
 
 #tarteaucitronServices::-webkit-scrollbar-thumb {
-    background-color: #ddd;
+    background-color: #c6538c;
     outline: 0px solid slategrey;
 }
 
@@ -383,17 +383,18 @@ div#tarteaucitronServices {
 
 #tarteaucitronAlertSmall #tarteaucitronCookiesListContainer #tarteaucitronClosePanelCookie,
 #tarteaucitron #tarteaucitronClosePanel {
-    background: #333333;
+    background: #c6538c;
     color: #fff;
     cursor: pointer;
     font-size: 12px;
     font-weight: 700;
     text-decoration: none;
-    padding: 4px 0;
+    padding: 8px 0;
     position: absolute;
     right: 0;
     text-align: center;
     width: 70px;
+    top: -10px;
 }
 
 #tarteaucitron #tarteaucitronDisclaimer {
@@ -431,7 +432,7 @@ div#tarteaucitronServices {
     padding: 5px 20px;
     text-align: left;
     width: auto;
-    background: #333;
+    background: #c6538c;
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronMainLine .tarteaucitronName a,
@@ -506,7 +507,7 @@ div#tarteaucitronServices {
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronMainLine {
-    background: #333;
+    background: #c6538c;
     border: 3px solid #333;
     border-left: 9px solid #333;
     border-top: 5px solid #333;
@@ -516,7 +517,7 @@ div#tarteaucitronServices {
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronMainLine:hover {
-    background: #333;
+    background: #c6538c;
 }
 
 #tarteaucitron #tarteaucitronServices .tarteaucitronMainLine .tarteaucitronName {
@@ -554,7 +555,7 @@ div#tarteaucitronServices {
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine .tarteaucitronAsk .tarteaucitronAllow,
 #tarteaucitron #tarteaucitronServices .tarteaucitronLine .tarteaucitronAsk .tarteaucitronDeny,
 .tac_activate .tarteaucitronAllow {
-    background: #555;
+    /*background: #000;*/
     border-radius: 4px;
     color: #fff;
     cursor: pointer;
@@ -622,7 +623,7 @@ span#tarteaucitronDisclaimerAlert {
 }
 
 #tarteaucitronRoot #tarteaucitronAlertBig {
-    background: #333;
+    background: #c6538c;
     color: #fff;
     display: none;
     font-size: 15px !important;
@@ -634,6 +635,7 @@ span#tarteaucitronDisclaimerAlert {
     padding: 10px 0 10px 0;
     margin: auto;
     width: 100%;
+    border-radius: 4px !important;
 }
 
 #tarteaucitronAlertBig #tarteaucitronPrivacyUrl,
@@ -967,7 +969,7 @@ div.amazon_product {
        opacity: 1!important;
    }
 .tarteaucitronLine .tarteaucitronAllow, .tarteaucitronLine .tarteaucitronDeny {
-    opacity: 0.4;
+    opacity: 0.8;
 }
 #tarteaucitronServices_mandatory button.tarteaucitronAllow {
     opacity: 1;
