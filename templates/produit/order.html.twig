@@ -19,16 +19,22 @@
 
                 <p>{{ produit.nomProduit }} <br> <span class="italic-grey">{{ produit.statut }}</span></p>
                 <p class="grow text-right">{{ produit.prix }}€</p>
-                
+
                 {% for offre in produit.offres %}
-                    {% if produit.prixOffre and offre.Users == app.user %}
-                <p><i class="fa-solid fa-arrow-right fa-lg"></i>  {{ produit.prixOffre}}€</p>
+                {% if produit.prixOffre and offre.Users == app.user %}
+                <p><i class="fa-solid fa-arrow-right fa-lg"></i> {{ produit.prixOffre}}€</p>
                 {% endif %}
                 {% endfor %}
-                
+
             </div>
 
         </div>
+
+        <div class="order-style m-w-800">
+            <p class="italic-grey">Livraison </p>
+            <p>Frais de livraison : 10€</p>
+        </div>
+
         <div class="order-style m-w-800">
             <p class="italic-grey">Adresse </p>
             {{ form_start(formCommande) }}
@@ -37,43 +43,46 @@
             {{ form_end(formCommande) }}
         </div>
 
-        <div class="order-style m-w-800">
-            <p class="italic-grey">Livraison </p>
-        </div>
-
-        <div class="order-style m-w-800">
-            <p class="italic-grey">Moyen de paiement </p>
-        </div>
     </div>
     <div>
         <div class="order-style min-w-280">
             <p class="italic-grey">Résumé de la commande </p>
             <div class="flex justify-between items-center ">
                 <p>Commande:</p>
+                {% set foundOffer = false %}
+                {% if produit.prixOffre and produit.offres|length > 0 %}
                 {% for offre in produit.offres %}
-                {% if produit.prixOffre and offre.Users == app.user %}
-            <p>{{ produit.prixOffre}}€</p>
-            {% else %}
-            <p>{{ produit.prix }}€</p>
-            {% endif %}
-            {% endfor %}
-                
+                {% if offre.Users == app.user %}
+                <p>{{ produit.prixOffre }}€</p>
+                {% set foundOffer = true %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% if not foundOffer %}
+                <p>{{ produit.prix }}€</p>
+                {% endif %}
+
             </div>
 
             <div class="flex justify-between items-center ">
                 <p>Frais de port:</p>
-                <p>1.25€</p>
+                <p>10€</p>
             </div>
 
             <div class="flex justify-between items-center ">
                 <p>Total:</p>
+                {% set foundOffer = false %}
+                {% if produit.prixOffre and produit.offres|length > 0 %}
                 {% for offre in produit.offres %}
-                {% if produit.prixOffre and offre.Users == app.user %}
-            <p>{{ produit.prixOffre + 1.25}}€</p>
-            {% else %}
-            <p>{{ produit.prix + 1.25 }}€</p>
-            {% endif %}
-            {% endfor %}
+                {% if offre.Users == app.user %}
+                <p>{{ produit.prixOffre + 10 }}€</p>
+                {% set foundOffer = true %}
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+                {% if not foundOffer %}
+                <p>{{ produit.prix + 10 }}€</p>
+                {% endif %}
             </div>
         </div>
     </div>
