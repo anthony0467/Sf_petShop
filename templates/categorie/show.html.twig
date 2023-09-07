@@ -35,7 +35,7 @@
             <div class="flex flex-col justify-center gap05 p-05">
                 <p>{{ produit.nomProduit }}</p>
                 <p>{{ produit.prix }}€</p>
-                <div><a href="{{ path('show_produit',{'id':produit.id})}}">Acheter</a></div>
+                <div><a href="{{ path('show_produit',{'slug':produit.slug})}}">Acheter</a></div>
             </div>
         </li>
         {% endif %}

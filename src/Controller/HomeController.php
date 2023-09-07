@@ -32,6 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Cocur\Slugify\Slugify;
 
 class HomeController extends AbstractController
 {
@@ -167,6 +168,16 @@ class HomeController extends AbstractController
             $produit->setDateCreationProduit($now); // installe ma date
             $produit->setEtat(false);
             $produit->setIsSelling(false);
+
+            // Générez le slug à partir du nom du produit
+            $slugify = new Slugify();
+            $baseSlug = $slugify->slugify($produit->getNomProduit());
+
+            // Générez un identifiant aléatoire court (par exemple, 6 caractères)
+            $randomId = substr(md5(uniqid()), 0, 6);
+
+            $slug = $baseSlug . '-' . $randomId;
+            $produit->setSlug($slug); // Définissez le slug généré
 
             $entityManager = $doctrine->getManager(); // on récupère les ressources
             $entityManager->persist($produit); // on enregistre la ressource

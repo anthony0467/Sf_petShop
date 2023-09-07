@@ -23,29 +23,28 @@ class CategorieController extends AbstractController
         ]);
     }
 
-    #[Route('/categorie/show/{id}', name: 'show_categorie')] // afficher prodtuis par categorie
+    #[Route('/categorie/show/{slug}', name: 'show_categorie')] // afficher prodtuis par categorie
     public function show(ManagerRegistry $doctrine, ProduitRepository $Pr, Categorie $categorie = null, Request $request): Response
     {
-  
+
         $form = $this->createForm(SearchProduitType::class);
 
         $search = $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //on recherche les produits correspondant au mots clef
             $produits = $Pr->search($search->get('mots')->getData());
         }
 
-        if($categorie){
+        if ($categorie) {
             $produits = $categorie->getProduits(); // récupère les produits
             return $this->render('categorie/show.html.twig', [
                 'categorie' => $categorie,
                 'produits' => $produits,
                 'form' => $form->createView()
             ]);
-        }else{
+        } else {
             return $this->redirectToRoute('app_home');
         }
-       
     }
 }

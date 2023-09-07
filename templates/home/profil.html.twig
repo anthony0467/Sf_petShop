@@ -146,7 +146,7 @@ endblock %} {% block body %} {% if app.user %}
           <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'acceptee' }) }}">Accepter</a>
           <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'refusee' }) }}">Refuser</a>
           {% endif %}
-          <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
+          <p><a href="{{ path('show_produit', { slug: offre.produits.slug }) }}">Voir le produit</a></p>
         </li>
         {% endif %}
         {% endfor %}
@@ -224,7 +224,7 @@ endblock %} {% block body %} {% if app.user %}
           <p>Prix initial : {{ offre.produits.prix }}€</p>
           <p>Statut : {{ offre.getStatutText() }}</p>
           {% if offre.statut == 1 %}
-            <a href="{{ path('show_order', {id: offre.produits.id })}}">Paiement</a>
+          <a href="{{ path('show_order', {id: offre.produits.id })}}">Paiement</a>
           {% endif %}
           {% if offre.getStatutText() == 2 %}
 

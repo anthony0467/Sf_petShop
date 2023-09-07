@@ -19,7 +19,7 @@
                 <p class="title-product">{{ produit.nomProduit }}</p>
                 <p class="price-product">{{ produit.prix }}€</p>
                 <div>
-                    <a href="{{ path('show_produit',{'id':produit.id})}}">Go</a>
+                    <a href="{{ path('show_produit',{'slug':produit.slug})}}">Go</a>
                 </div>
             </div>
         </li>

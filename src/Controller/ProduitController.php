@@ -32,7 +32,7 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/show/{id}', name: 'show_produit')] // vue detaillé du produit
+    #[Route('/produit/show/{slug}', name: 'show_produit')] // vue detaillé du produit
     public function show(ManagerRegistry $doctrine,  Produit $produit = null,): Response
     {
         $user = $this->getUser();

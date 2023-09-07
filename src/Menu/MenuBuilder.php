@@ -35,7 +35,7 @@ class MenuBuilder
         foreach ($categories as $category) {
             $menu->addChild($category->getNomCategorie(), [
                 'route' => 'show_categorie',
-                'routeParameters' => ['id' => $category->getId()]
+                'routeParameters' => ['slug' => $category->getSlug()]
             ]);
         }
         $menu->addChild('Évenements', ['route' => 'app_evenement']);
@@ -55,7 +55,7 @@ class MenuBuilder
         foreach ($categories as $category) {
             $menu->addChild($category->getNomCategorie(), [
                 'route' => 'show_categorie',
-                'routeParameters' => ['id' => $category->getId()]
+                'routeParameters' => ['slug' => $category->getSlug()]
             ]);
         }
         $menu->addChild('Événements', ['route' => 'app_evenement']);

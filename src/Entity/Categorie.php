@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Cocur\Slugify\Slugify;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
@@ -24,9 +25,17 @@ class Categorie
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageCategorie = null;
 
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $slug = null;
+
     public function __construct()
     {
         $this->produits = new ArrayCollection();
+    }
+
+    public function prePersist()
+    {
+        $this->slug = (new Slugify())->slugify($this->nomCategorie);
     }
 
     public function getId(): ?int
@@ -89,6 +98,18 @@ class Categorie
     public function setImageCategorie(?string $imageCategorie): self
     {
         $this->imageCategorie = $imageCategorie;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }

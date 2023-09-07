@@ -4,7 +4,7 @@
 <div id="product-detail">
     <div class="info-product">
         <h2>{{produit}}</h2>
-        <p>Categorie : <a href="{{path('show_categorie', {'id': produit.categorie.id })}}">{{
+        <p>Categorie : <a href="{{path('show_categorie', {'slug': produit.categorie.slug })}}">{{
                 produit.categorie.nomCategorie }}</a></p>
         <p>Etat : {{ produit.statut }}</p>
         <p>Vendeur : <a href="{{path('show_user', {'id': produit.user.id })}}">{{ produit.user.pseudo }}</a></p>
