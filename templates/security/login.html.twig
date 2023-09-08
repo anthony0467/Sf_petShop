@@ -39,9 +39,14 @@
         <button class="btn btn-lg btn-primary" type="submit">
             Valider
         </button>
+        <div>
+            <p>Envie de nous rejoindre?</p>
+            <a href="{{path('app_register')}}">Créer un compte</a>
+        </div>
     </form>
     <figure class="connexion-image">
         <img src="{{asset('img/dog-computer.webp')}}" alt="connectez-vous">
+        <figcaption>Bienvenue</figcaption>
     </figure>
 </div>
 {% endblock %}
