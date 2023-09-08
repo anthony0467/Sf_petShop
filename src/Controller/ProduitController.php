@@ -62,6 +62,10 @@ class ProduitController extends AbstractController
     {
         $user = $this->getUser();
 
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
         if ($produit) {
 
             $commande = new Commande;
@@ -173,6 +177,10 @@ class ProduitController extends AbstractController
     {
         $user = $this->getUser();
         $offre = new Offre();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
         $produit = $doctrine->getRepository(Produit::class)->find($productId);
         $offreRepository = $doctrine->getRepository(Offre::class);
