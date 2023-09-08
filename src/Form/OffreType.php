@@ -16,11 +16,18 @@ class OffreType extends AbstractType
         $builder
             ->add('prix', NumberType::class, [
                 'scale' => 2, // Définir deux décimales après la virgule
+                'attr' => [
+                    'placeholder' => 'euros', // Ajouter un placeholder
+                ],
             ])
             //->add('date')
             //->add('statut')
             //->add('produits')
-            ->add('Valider', SubmitType::class);
+            ->add('Valider', SubmitType::class,  [
+                'attr' => [
+                    'class' => 'btn'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
