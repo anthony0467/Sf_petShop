@@ -118,8 +118,11 @@ class HomeController extends AbstractController
     public function add(ManagerRegistry $doctrine, Produit $produit = null,  Request $request): Response
     {
 
+        $user = $this->getUser();
 
-        $user = $this->getUser(); // récupérer objet user 
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
 
         if (!$produit) { // edit
             $produit = new Produit();
