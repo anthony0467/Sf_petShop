@@ -87,6 +87,8 @@ class Produit
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageShow = 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg';
     public function __construct()
     {
         $this->images = new ArrayCollection();
@@ -335,6 +337,18 @@ class Produit
     public function setSlug(?string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getImageShow(): ?string
+    {
+        return $this->imageShow;
+    }
+
+    public function setImageShow(?string $imageShow): self
+    {
+        $this->imageShow = $imageShow;
 
         return $this;
     }
