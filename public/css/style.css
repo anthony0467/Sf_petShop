@@ -819,6 +819,18 @@ nav ul, nav li {
   margin-right: auto;
 }
 
+.connexion-page {
+  height: 65vh;
+  align-content: center;
+  align-items: center;
+}
+
+.connexion-page div {
+  max-width: 450px;
+  background-color: #fff;
+  padding: 1rem;
+}
+
 .comment {
   margin: 1rem 0;
   padding: 1rem;
@@ -931,6 +943,37 @@ nav ul, nav li {
 
 .btn-pad {
   padding: 0.5rem;
+}
+
+.other-product-container {
+  max-width: 850px;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 5rem;
+  margin-top: 5rem;
+}
+
+.card-other-product {
+  background-color: #c6538c;
+}
+
+.card-other-product figcaption p {
+  color: white;
+  font-style: italic;
+}
+
+.other-product-container a {
+  transition: 0.5s ease;
+}
+
+.other-product-container a:hover {
+  box-shadow: 1px 1px 5px 1px #c6538c;
+}
+
+.bg-white {
+  margin-right: 10px !important;
+  margin-left: 10px !important;
+  height: 300px !important;
 }
 
 .evenement-titre {
@@ -1225,6 +1268,44 @@ input[type=file]:valid ~ .file-label::after {
   text-align: center;
 }
 
+.container-offre {
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.offre-form {
+  display: flex;
+  justify-content: center;
+}
+
+.offre-form form {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  max-width: 280px;
+  border-radius: 4px;
+  gap: 1rem;
+}
+
+.offre-form form div div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.offre-form input {
+  padding: 0.5rem;
+  border: 1px solid rgba(128, 128, 128, 0.23);
+  border-radius: 4px;
+  background-color: rgb(242, 242, 242);
+}
+
 @media (max-width: 550px) {
   #product-container {
     max-width: 280px;
@@ -1325,7 +1406,7 @@ img {
 }
 
 .container {
-  min-height: 78.5vh;
+  min-height: 82.5vh;
 }
 
 .container-error {

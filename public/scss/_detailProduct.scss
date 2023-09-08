@@ -1,3 +1,6 @@
+@import 'mixins';
+
+
 #product-detail{
     display: flex;
     flex-direction: row-reverse;
@@ -105,3 +108,39 @@
 .btn-pad{
    padding: .5rem;
 }
+
+// autre produits
+
+.other-product-container{
+    max-width: 850px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 5rem;
+    margin-top: 5rem;
+    
+}
+
+.card-other-product{
+    @include primary-background-color;
+}
+
+.card-other-product figcaption p{
+    color: white;
+    font-style: italic;
+}
+
+.other-product-container a{
+    transition: .5s ease;
+}
+
+.other-product-container a:hover{
+    box-shadow: 1px 1px 5px 1px #c6538c;
+}
+
+.bg-white{
+    //background-color: white;
+    margin-right: 10px!important;
+    margin-left: 10px!important;
+    height: 300px!important;
+}
+
