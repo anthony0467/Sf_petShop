@@ -48,15 +48,16 @@
 
 {% block body %}
 
-<h1>Faite votre offre</h1>
 
-{% if app.user %}
-<div>
-    {{ form_start(form) }}
-    <div class="flex">{{ form_row(form.prix) }} euros</div>
-    {{ form_end(form) }}
+<div class="container-offre">
+    <h1>Faite votre offre</h1>
+    {% if app.user %}
+    <div class="offre-form">
+        {{ form_start(form) }}
+        <div class="flex">{{ form_row(form.prix) }}</div>
+        {{ form_end(form) }}
+    </div>
 </div>
-
 
 {% else %}
 
