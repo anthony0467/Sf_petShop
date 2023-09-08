@@ -90,9 +90,13 @@
 </div>
 {% else %}
 <h1>Votre commande</h1>
-<p>Vous souhaitez faire un achat? Veuiller vous <a href="{{path('app_login')}}">connecter</a> ou vous <a
-        href="{{path('app_register')}}">inscrire</a> si vous n'avez
-    pas encore de compte.</p>
+<div class="flex justify-center connexion-page">
+    <div>
+        <p>Vous souhaitez faire un achat? Veuiller vous <a href="{{path('app_login')}}">connecter</a> ou vous <a
+                href="{{path('app_register')}}">inscrire</a> si vous n'avez
+            pas encore de compte.</p>
+    </div>
+</div>
 {% endif %}
 
 {% endblock %}
