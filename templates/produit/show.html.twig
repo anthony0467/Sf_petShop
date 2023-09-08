@@ -3,6 +3,14 @@
 {% block title %}Produit : {{ produit }}{% endblock %}
 
 {% block body %}
+<div id="cat-container">
+    {% if produit.imageShow is not null %}
+    <figure>
+        <img src="{{ produit.imageShow }}" alt="chien" width="100%" height="400px">
+    </figure>
+    {% endif %}
+    <h1>Produit détaillé : {{ produit }}</h1>
+</div>
 
 {% include "produit/_detail_produit.html.twig" %}
 
@@ -11,37 +19,72 @@
 {% if produit.categorie.produits is not empty %}
 
 
-<h2>Articles qui pourrait vous interessé</h2>
+<div class="other-product-container">
+    <div>
+        <h2>Articles qui pourrait vous interessé</h2>
+    </div>
+    <div class="swiper mySwiper99 bg-white">
+        <div class="swiper-wrapper">
+            {% for produitCategorie in produit.categorie.produits %}
 
-<ul>
-    {% for produitCategorie in produit.categorie.produits %}
-    {% if produitCategorie.etat == true %} {# afficher si produit valider #}
+            {% if produitCategorie.etat == true and produitCategorie.id != produit.id %} {# afficher si produit
+            valider
+            #}
+            <div class="swiper-slide bg-white">
+                <a href="{{ path('show_produit',{'slug':produitCategorie.slug})}}">
+                    <figure class="card-other-product">
+                        {% if produitCategorie.images is not empty %} {# si il y a une image #}
 
-    <li>
-        <a href="{{ path('show_produit',{'slug':produitCategorie.slug})}}">
-            <figure>
-                {% if produitCategorie.images is not empty %} {# si il y a une image #}
-
-                <!--récupérer la 1er image uniquement -->
-                {% set image = produitCategorie.images.first() %}
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="300" width="300px"
-                    alt="Image de {{ image.nomImage }}">
+                        <!--récupérer la 1er image uniquement -->
+                        {% set image = produitCategorie.images.first() %}
+                        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px"
+                            alt="Image de {{ image.nomImage }}">
 
 
-                {% else %}
-                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="300px" alt="Mon image">
-                {% endif %}
-                <figcaption>
-                    <p>{{ produitCategorie.nomProduit }}</p>
-                    <p>{{ produitCategorie.prix }} €</p>
-                </figcaption>
-            </figure>
-        </a>
-    </li>
-    {% endif %}
-    {% endfor %}
-
-</ul>
+                        {% else %}
+                        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="200px"
+                            alt="Mon image">
+                        {% endif %}
+                        <figcaption>
+                            <p>{{ produitCategorie.nomProduit }}</p>
+                            <p>{{ produitCategorie.prix }} €</p>
+                        </figcaption>
+                    </figure>
+                </a>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>
 {% endif %}
+
+<script>
+    var swiper = new Swiper(".mySwiper99", {
+        slidesPerView: 1,
+        spaceBetween: 30,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+        breakpoints: {
+            // Lorsque la largeur de l'écran est supérieur ou égale à 768 pixels (mobile)
+            768: {
+                slidesPerView: 2, // Une seule diapositive sur mobile
+            },
+            // Lorsque la largeur de l'écran est supérieure à 768 pixels mais inférieure ou égale à 1024 pixels (tablette)
+            1024: {
+                slidesPerView: 3, // Deux diapositives sur tablette
+            },
+        },
+    });
+</script>
 
 {% endblock %}
