@@ -201,7 +201,7 @@ class HomeController extends AbstractController
                 'product' => $stripeProduct->id,  // ID du produit Stripe
             ]);
 
-            // Stockez l'ID du produit Stripe dans votre base de données local
+            // Stockez l'ID du produit Stripe dans la base de données
             $produit->setStripeProductId($stripeProduct->id);
             $produit->setStripePriceId($stripePrice->id);
             $entityManager->flush();
