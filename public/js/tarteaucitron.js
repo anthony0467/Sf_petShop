@@ -43,5 +43,5 @@ tarteaucitron.init({
           
         });
 
-         tarteaucitron.user.googleFonts = 'families';
+         tarteaucitron.user.googleFonts = 'Open Sans';
         (tarteaucitron.job = tarteaucitron.job || []).push('googlefonts');
