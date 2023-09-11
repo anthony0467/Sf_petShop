@@ -23,12 +23,12 @@ class ProduitType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        
-        
+
+
         $builder
-        //mapped false pour ne pas le lier a la base de données
+            //mapped false pour ne pas le lier a la base de données
             ->add('images', FileType::class, [
-                'label' =>  'Ajoute des photos', 
+                'label' =>  'Ajoute des photos',
                 'multiple' => true,
                 'mapped' => false,
                 'required' => false,
@@ -37,30 +37,30 @@ class ProduitType extends AbstractType
                         'max' => 4,
                         'maxMessage' => 'Vous ne pouvez télécharger que {{ limit }} images maximum',
                     ]),
-        new All([
-            new File([
-                'maxSize' => '1024k',
-                'maxSizeMessage' => 'La taille maximale autorisée est de {{ limit }}.',
-                'mimeTypes' => [
-                    'image/jpeg',
-                    'image/png'
-                ],
-                'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, GIF)',
-            ])
-        ])
+                    new All([
+                        new File([
+                            'maxSize' => '1024k',
+                            'maxSizeMessage' => 'La taille maximale autorisée est de {{ limit }}.',
+                            'mimeTypes' => [
+                                'image/jpeg',
+                                'image/png'
+                            ],
+                            'mimeTypesMessage' => 'Veuillez télécharger une image valide (JPEG, PNG, GIF)',
+                        ])
+                    ])
                 ],
                 'label_attr' => ['class' => 'file-label'],
             ])
             ->add('nomProduit', TextType::class, [
                 'label' => 'Nom du produit',
-                'attr' =>[ 'placeholder' => 'ex: croquettes' ]
+                'attr' => ['placeholder' => 'ex: croquettes']
             ])
             ->add('description', TextareaType::class, [
-                'attr' =>[ 'placeholder' => 'ex: Sac de 5 kilos jamais utilisé', 'rows' => 5, 'cols' => 33 ]
+                'attr' => ['placeholder' => 'ex: Sac de 5 kilos jamais utilisé', 'rows' => 5, 'cols' => 33]
             ])
             ->add('prix', NumberType::class, [
                 'label' => 'Prix Unitaire',
-                'attr' =>[ 'placeholder' => '0.00€' ]
+                'attr' => ['placeholder' => '0.00€']
             ])
             ->add('statut', ChoiceType::class, [
                 'choices' => [
@@ -71,21 +71,19 @@ class ProduitType extends AbstractType
                 ],
                 'required' => false, // Permet de ne pas rendre le champ obligatoire
             ])
-            ->add('disponible', NumberType::class,  [
+            /*->add('disponible', NumberType::class,  [
                 'attr' => [
                     'min' => 1 // Valeur minimale,
                     
-                ]])
+                ]])*/
             ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 "choice_label" => 'nomCategorie',
             ])
-            ->add('Valider', SubmitType::class)
-            
-        ;
+            ->add('Valider', SubmitType::class);
     }
 
-    
+
 
     public function configureOptions(OptionsResolver $resolver): void
     {
