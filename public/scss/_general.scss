@@ -89,7 +89,8 @@ img {
 }
 
 .container-error{
-	min-height: 80.1vh;
+	//min-height: 80.1vh;
+	margin-top: 2rem;
 }
 
 .relative{
@@ -229,6 +230,10 @@ img {
 
 .radius-4{
 	border-radius: 4px
+}
+
+.swiper-button-next:after, .swiper-button-prev:after{
+	@include primary-color;
 }
 /* ----------------------------------------------------------------ENDFLEX- ----------------------------------------------------------------*/
 

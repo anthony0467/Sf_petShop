@@ -109,6 +109,87 @@
     font-style: italic;
 }
 
+//other profile
+
+.other-profile-container{
+    max-width: 1250px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+    /* Style de base pour le tableau */
+    .tab-other-profile {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid;
+        @include border-primary-color;
+    }
+
+    .tab-other-profile th, .tab-other-profile td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid ;
+        @include border-primary-color;
+    }
+
+    /* Style de l'en-tête du tableau */
+    .tab-other-profile .title-table {
+        @include primary-background-color;
+        color: #fff;
+    }
+
+    /* Style pour les images */
+    .tab-other-profile img {
+        max-width: 100%;
+    }
+
+    /* Style pour la colonne de description avec un ellipsis pour les textes longs */
+    .tab-other-profile .description {
+        max-width: 300px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* Style pour le prix */
+    .tab-other-profile .price {
+        font-weight: bold;
+        color: #E44D26; /* Couleur du prix */
+    }
+
+    /* Style pour la catégorie */
+    .tab-other-profile .category {
+        font-style: italic;
+        color: #666; /* Couleur de la catégorie */
+    }
+
+    /* Style pour les lignes impaires du tableau */
+    .tab-other-profile tbody tr:nth-child(odd) {
+        background-color: #f2f2f2;
+    }
+
+    /* Style pour les lignes paires du tableau */
+    .tab-other-profile tbody tr:nth-child(even) {
+        background-color: #fff;
+    }
+
+    /* Style pour les cellules du tableau en responsive */
+    @media (max-width: 768px) {
+        .tab-other-profile {
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        .tab-other-profile th, .tab-other-profile td {
+            display: table-cell;
+            padding: 5px;
+        }
+    }
+
+
+
 
 
 @media (min-width: 550px){
