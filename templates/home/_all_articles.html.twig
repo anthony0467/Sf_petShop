@@ -9,7 +9,7 @@
             <!--récupérer la 1er image uniquement -->
             {% set image = produit.images.first() %}
             <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="352px" width="235px"
-                alt="Image de {{ image.nomImage }}">
+                alt="Image de {{ produit.nomProduit }}">
 
 
             {% else %}
