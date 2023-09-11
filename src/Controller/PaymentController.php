@@ -41,6 +41,8 @@ class PaymentController extends AbstractController
 
         $checkout_sessions = [];
 
+
+
         // Vérifiez s'il y a des offres pour ce produit
         $produitOffres = $produit->getOffres();
 
@@ -80,16 +82,22 @@ class PaymentController extends AbstractController
         } else {
             // Aucune offre, créez une session Stripe pour le prix de base
             $checkout_sessions[] = \Stripe\Checkout\Session::create([
-                'line_items' => [[
-                    'price_data' => [
-                        'currency' => 'eur',
-                        'unit_amount' => ($produit->getPrix() + 10) * 100, // Le prix de base en centimes
-                        'product_data' => [
-                            'name' => $produit->getNomProduit(),
-                        ],
+                'line_items' => [
+                    [
+                        'price' => $stripePriceId, // Utilisez l'identifiant de prix Stripe du produit
+                        'quantity' => 1,
                     ],
-                    'quantity' => 1,
-                ]],
+                    [
+                        'price_data' => [
+                            'currency' => 'eur', // La devise de vos frais de livraison
+                            'unit_amount' => 1000, // Le montant en cents (par exemple, 1000 pour 10 euros)
+                            'product_data' => [
+                                'name' => 'Frais de livraison', // Nom de l'article de frais de livraison
+                            ],
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
                 'mode' => 'payment',
                 'success_url' => $YOUR_DOMAIN .  $this->generateUrl('app_success', ['produitId' => $produitId]),
                 'cancel_url' => $YOUR_DOMAIN . $this->generateUrl('app_cancel'),
