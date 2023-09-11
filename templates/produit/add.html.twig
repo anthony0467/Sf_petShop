@@ -4,87 +4,90 @@
 
 {% block javascripts %}
 <script>
-    document.addEventListener("DOMContentLoaded", function() {
+    document.addEventListener("DOMContentLoaded", function () {
         const file_upload = document.querySelector('#produit_images');
         file_upload.addEventListener('change', previewFile);
-    
+
         function previewFile() {
             const file_extension_regex = /\.(jpe?g|png|gif)$/i;
             if (this.files.length === 0) {
-              return;
+                return;
             }
             const files = Array.from(this.files).filter(file => file_extension_regex.test(file.name));
-          
+
             const container = document.querySelector('#images-preview');
             container.innerHTML = ''; // vider le contenu existant
-          
+
             for (const file of files) {
-              const file_reader = new FileReader();
-          
-              file_reader.readAsDataURL(file);
-          
-              file_reader.addEventListener('load', (event) => displayImage(event, file, container));
+                const file_reader = new FileReader();
+
+                file_reader.readAsDataURL(file);
+
+                file_reader.addEventListener('load', (event) => displayImage(event, file, container));
             }
-          }
-          
-          function displayImage(event, file, container) {
+        }
+
+        function displayImage(event, file, container) {
             const figure_element = document.createElement('figure');
             figure_element.id = "image_selected";
-          
+
             const image_element = document.createElement('img');
             image_element.src = event.target.result;
-          
+
             // définir une taille pour l'image
             image_element.style.width = "200px";
             image_element.style.height = "250px";
-          
+
             figure_element.appendChild(image_element);
             container.appendChild(figure_element);
-          }
-          
+        }
+
     });
 </script>
 {% endblock javascripts %}
 
 {% block body %}
-    {% if edit %}
-        <h1>Modifier l'annonce</h1>
-        <p style="color:red;"><i class="fa-sharp fa-solid fa-triangle-exclamation fa-lg"></i> Attention ! En cas de modification, l'annonce n'apparaîtra plus et devra être validé par nos services. </p>
-        {% else %}
-        <h1>Ajouter produit</h1>
-    {% endif %}
-    
+{% if edit %}
+<h1>Modifier l'annonce</h1>
+<p style="color:red;"><i class="fa-sharp fa-solid fa-triangle-exclamation fa-lg"></i> Attention ! En cas de
+    modification, l'annonce n'apparaîtra plus et devra être validé par nos services. </p>
+{% else %}
+<h1>Ajouter produit</h1>
+{% endif %}
+
 
 
 
 {% if app.user %}
-            
+
 <div id="product-container">
-    
+
     {{ form_start(formAddProduit) }}
-        
-            <div id="images-preview"></div>
-            {% for image in produits.images %}
-                <div>
-                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="300px" alt="Image de {{ image.nomImage }}">
-                    <a href="{{path('delete_image', {'id': image.id })}}" data-delete data-token="{{csrf_token('delete' ~ image.id)}}" >Supprimer</a>
-                </div>
-            {% endfor %}
-           
-           
-            
-    
-      <div class="image-product">
+
+    <div id="images-preview"></div>
+    {% for image in produits.images %}
+    <div>
+        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="300px"
+            alt="Image de {{ image.nomImage }}">
+        <a href="{{path('delete_image', {'id': image.id })}}" data-delete
+            data-token="{{csrf_token('delete' ~ image.id)}}">Supprimer</a>
+    </div>
+    {% endfor %}
+
+
+
+
+    <div class="image-product">
         <p class="images-legende">Ajoute une ou plusieurs photos.</p>
         {{ form_row(formAddProduit.images) }}
     </div>
-        {{ form_row(formAddProduit.nomProduit) }}
-        {{ form_row(formAddProduit.description) }}
-        {{ form_row(formAddProduit.disponible) }}
-        {{ form_row(formAddProduit.categorie) }}
-        {{ form_row(formAddProduit.prix) }}
-        {{ form_row(formAddProduit.statut, {'attr': {'onchange': "this.children[0].disabled=true", 'data-placeholder': 'Sélectionnez une catégorie', 'class' : 'grey-color'}}) }}
-        <div class="product-valid">
+    {{ form_row(formAddProduit.nomProduit) }}
+    {{ form_row(formAddProduit.description) }}
+    {{ form_row(formAddProduit.categorie) }}
+    {{ form_row(formAddProduit.prix) }}
+    {{ form_row(formAddProduit.statut, {'attr': {'onchange': "this.children[0].disabled=true", 'data-placeholder':
+    'Sélectionnez une catégorie', 'class' : 'grey-color'}}) }}
+    <div class="product-valid">
         {{ form_row(formAddProduit.Valider, {'attr': {'class': 'btn' }}) }}
     </div>
     {{ form_end(formAddProduit) }}
@@ -92,7 +95,7 @@
     {% if app.flashes('error') is not empty %}
     <div class="alert alert-danger">
         {% for message in app.flashes('error') %}
-            {{ message }}
+        {{ message }}
         {% endfor %}
     </div>
 </div>
@@ -100,7 +103,7 @@
 
 {% else %}
 
-    <p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
+<p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
 
 {% endif %}
 
