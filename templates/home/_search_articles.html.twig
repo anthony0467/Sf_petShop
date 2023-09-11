@@ -30,7 +30,7 @@
                     produit.description }}</p>
                 <div class="flex justify-between w-100">
                     <p>{{ produit.prix }}€</p>
-                    <div class="p-05"><a href="{{ path('show_produit',{'id':produit.id})}}">Go</a></div>
+                    <div class="p-05"><a href="{{ path('show_produit',{'slug':produit.slug})}}">Go</a></div>
                 </div>
             </div>
         </li>
