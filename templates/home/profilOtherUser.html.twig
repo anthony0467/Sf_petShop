@@ -10,71 +10,76 @@
 
 <h1>Profil : {{ userProfil }} </h1>
 
-<p>Pseudo : {{ userProfil }} </p>
-<p>Email : {{ userProfil.email}}</p>
-<p>Annonce(s) en cours :
-  {{ nbProduitsActifs }}
-     
-    
-    
- </p>
+<div class="other-profile-container">
 
-<h2>Ses annonces en cours</h2>
-{% if userProfil.getProduits() is not empty  %}
-    
+    <p>Pseudo : {{ userProfil }} </p>
+    <p>Email : {{ userProfil.email}}</p>
+    <p>Annonce(s) en cours :
+        {{ nbProduitsActifs }}
+    </p>
+    <div class="mh-2">
+        <a href="{{path('show_avis', {'vendorId': userProfil.id })}}" class="btn">Voir les commentaires</a>
+    </div>
 
-<table>
-    <thead>
-        <tr class="title-table">
-            <th>Photos</th>
-            <th>Titre</th>
-            <th>Date</th>
-            <th>Description</th>
-            <th>Prix</th>
-            <th>Categorie</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        {% for produit in userProfil.getProduits() %}
-            {% if  produit.etat == true %}
-                
-            
-        <tr>
-            <td>
-                {% if produit.images is not empty %}
-                <!--récupérer la 1er image uniquement -->
-                {% set image = produit.images.first() %}
-                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="auto" width="200px"
-                    alt="Image de {{ image.nomImage }}">
+    <h2>Ses annonces en cours</h2>
+    {% if userProfil.getProduits() is not empty %}
 
 
-                {% else %}
-                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image">
-                {% endif %}
-            </td>
-            <td>{{ produit.nomProduit }}</td>
-            <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
-            <td>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}</td>
-            <td>{{ produit.prix }} €</td>
-            <td>{{ produit.categorie }}</td>
+    <table class="tab-other-profile">
+        <thead>
+            <tr class="title-table">
+                <th>Photos</th>
+                <th>Titre</th>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Categorie</th>
+                <th>Annonce</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in userProfil.getProduits() %}
+            {% if produit.etat == true %}
 
 
-        </tr>
+            <tr>
+                <td>
+                    {% if produit.images is not empty %}
+                    <!--récupérer la 1er image uniquement -->
+                    {% set image = produit.images.first() %}
+                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px"
+                        alt="Image de {{ image.nomImage }}">
+
+
+                    {% else %}
+                    <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="200px" alt="Mon image">
+                    {% endif %}
+                </td>
+                <td>{{ produit.nomProduit }}</td>
+                <td>{{ produit.dateCreationProduit | date("d/m/Y") }}</td>
+                <td>{{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' :
+                    produit.description }}</td>
+                <td>{{ produit.prix }}€</td>
+                <td>{{ produit.categorie }}</td>
+                <td><a href="{{ path('show_produit',{'slug':produit.slug})}}">Voir l'annonce</a></td>
+
+
+            </tr>
             {% endif %}
-        {% endfor %}
+            {% endfor %}
 
 
 
-        
-    </tbody>
-</table>
+
+        </tbody>
+    </table>
 
 
-{% else %}
-<p>Vous n'avez pas encore créé d'annonces.</p>
-{% endif %}
-
+    {% else %}
+    <p>Vous n'avez pas encore créé d'annonces.</p>
+    {% endif %}
+</div>
 {% else %}
 
 <p>Vous devez vous connectez pour avoir accès à cette page</p>
