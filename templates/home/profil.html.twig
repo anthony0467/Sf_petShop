@@ -31,8 +31,9 @@ endblock %} {% block body %} {% if app.user %}
       <p>Pseudo : {{ app.user }}</p>
       <p>Email : {{ app.user.email }}</p>
       <p>Annonce(s) en cours : {{ app.user.produits | length }}</p>
-      <div class="mh-2">
+      <div class="mh-2 flex wrap gap05">
         <a href="{{ path('app_messages') }}" class="btn">Ma messagerie</a>
+        <a href="{{path('show_avis', {'vendorId':   app.user.id })}}" class="btn">Mes commentaires</a>
       </div>
     </div>
 
@@ -192,6 +193,7 @@ endblock %} {% block body %} {% if app.user %}
             {% endif %}
 
           </div>
+          <a href="{{path('add_avis', {'vendorId': commande.produit.user.id })}}">Laisser un commentaire</a>
         </div>
       </li>
       {% else %}
@@ -229,7 +231,7 @@ endblock %} {% block body %} {% if app.user %}
           {% if offre.getStatutText() == 2 %}
 
           {% endif %}
-          <p><a href="{{ path('show_produit', { id: offre.produits.id }) }}">Voir le produit</a></p>
+          <p><a href="{{ path('show_produit', { slug: offre.produits.slug }) }}">Voir le produit</a></p>
         </li>
         {% endif %}
 
@@ -258,7 +260,7 @@ endblock %} {% block body %} {% if app.user %}
         alt="Image de {{ image.nomImage }}" />
 
       {% else %}
-      <img src="{{ asset('uploads/images/defaut.jpg') }}" height="300px" width="200px" alt="Mon image" />
+      <img src="{{ asset('uploads/images/defaut.jpg') }}" height="250px" width="100%" alt="Mon image" />
       {% endif %}
       <p class="title-annonce">Titre: {{ produit.nomProduit }}</p>
       <p class="date-annonce">Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
@@ -294,6 +296,8 @@ endblock %} {% block body %} {% if app.user %}
     </li>
     {% endfor %}
   </ul>
+
+
 
   {% else %}
   <p>Vous n'avez pas encore créé d'annonces.</p>
