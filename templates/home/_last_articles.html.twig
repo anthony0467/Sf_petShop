@@ -16,9 +16,10 @@
       <img src="{{ asset('uploads/images/defaut.jpg') }}" height="100%" width="300px" alt="Mon image" />
       {% endif %}
       <div class="article-name">
-        <p class="title-product">{{ produit.nomProduit }}</p>
+        <p class="title-product-last">{{ produit.nomProduit }}</p>
         <p class="price-product">{{ produit.prix }}€</p>
-        <div><a href="{{ path('show_produit', { slug: produit.slug }) }}" class="btn">Go</a></div>
+        <div><a href="{{ path('show_produit', { slug: produit.slug }) }}"
+            title="Lien vers le produit detaillé {{ produit.nomProduit }}" class="btn">Voir le produit</a></div>
       </div>
     </li>
     {% endif %}
@@ -45,9 +46,12 @@
           <img src="{{ asset('uploads/images/defaut.jpg') }}" height="400px" width="300px" alt="Mon image" />
           {% endif %}
           <div class="article-name text-center">
-            <p class="title-product">{{ produit.nomProduit }}</p>
+            <p class="title-product-last">{{ produit.nomProduit }}</p>
             <p class="price-product">{{ produit.prix }}€</p>
-            <div><a href="{{ path('show_produit', { slug: produit.slug }) }}" class="btn">Go</a></div>
+            <div>
+              <a href="{{ path('show_produit', { slug: produit.slug }) }}"
+                title="Lien vers le produit detaillé {{ produit.nomProduit }}" class="btn">Voir le produit</a>
+            </div>
           </div>
         </div>
       </div>

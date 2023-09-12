@@ -5,23 +5,29 @@
 
         {% for produit in paginations %}
         <li class="card-all-article flex flex-col justify-between">
-            {% if produit.images is not empty %}
-            <!--récupérer la 1er image uniquement -->
-            {% set image = produit.images.first() %}
-            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="352px" width="235px"
-                alt="Image de {{ produit.nomProduit }}">
+            <a href="{{ path('show_produit',{'slug':produit.slug})}}"
+                title="Lien vers le produit detaillé {{ produit.nomProduit }}">
+                {% if produit.images is not empty %}
+                <!--récupérer la 1er image uniquement -->
+                {% set image = produit.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="352px" width="235px"
+                    alt="Image de {{ produit.nomProduit }}">
 
 
-            {% else %}
-            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="352px" width="235px" alt="Mon image">
-            {% endif %}
-            <div class="flex flex-col justify-center gap05 p-05">
-                <p class="title-product">{{ produit.nomProduit }}</p>
-                <p class="price-product">{{ produit.prix }}€</p>
-                <div>
-                    <a href="{{ path('show_produit',{'slug':produit.slug})}}">Go</a>
+                {% else %}
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="352px" width="235px" alt="Mon image">
+                {% endif %}
+                <div class="flex flex-col justify-center gap05 p-05">
+                    <div class="flex wrap justify-between">
+                        <p class="title-product">{{ produit.nomProduit }}</p>
+                        <p class="statut-product">{{produit.statut }}</p>
+                    </div>
+                    <p class="price-product">{{ produit.prix }}€</p>
+                    <div class="btn-product">
+                        Voir le produit
+                    </div>
                 </div>
-            </div>
+            </a>
         </li>
         {% endfor %}
     </ul>
