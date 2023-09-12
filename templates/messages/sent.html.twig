@@ -14,38 +14,41 @@
                 {{ app.user.sent|length }}
                 messages</p>
         </div>
-        
-            <table class="mh-2 messagerie">
-                <thead>
-                    <tr class="title-table">
-                        <th>Expéditeur</th>
-                        <th>Date</th>
-                        <th>Message</th>
-                        <th>Voir la discussion</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for message in app.user.sent %}
-                        
-                        {% set bold = message.isRead ? '' : 'bold' %}
-                        <tr>
-                            <td class="{{bold}}">{{ message.sender.email }}</td>
-                            <td class="{{bold}}">{{ message.date | date('d/m/Y') }}</td>
-                            <td class="{{bold}}">{{ message|length > 40 ? message|slice(0, 40) ~ '...' : message }}</td>
-                            <td class="{{bold}}"><a href="{{path("show_messages", {id: message.id} )}}">Go</a></td>
-                            <td><a href="{{path("delete_messages", {id: message.id} )}}"><i class="fa-solid fa-trash"></i></a></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+
+        <table class="mh-2 messagerie">
+            <thead>
+                <tr class="title-table">
+                    <th>Expéditeur</th>
+                    <th>Date</th>
+                    <th>Message</th>
+                    <th>Voir la discussion</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in app.user.sent %}
+
+                {% set bold = message.isRead ? '' : 'bold' %}
+                <tr>
+                    <td class="{{bold}}">{{ message.sender.email }}</td>
+                    <td class="{{bold}}">{{ message.date | date('d/m/Y') }}</td>
+                    <td class="{{bold}}">{{ message|length > 40 ? message|slice(0, 40) ~ '...' : message }}</td>
+                    <td class="{{bold}}"><a href="{{path('show_messages', {id: message.id} )}}">Go</a></td>
+                    <td><a href="{{path('delete_messages', {id: message.id} )}}"><i class="fa-solid fa-trash"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="mh-2">
             <a href="{{path('app_messages')}}" class="btn">Retour sur la messagerie</a>
-        </section>
-            {% else %}
-            <p>Vous devez être connecté pour accéder à cette page.</p>
+        </div>
+</section>
+{% else %}
+<p>Vous devez être connecté pour accéder à cette page.</p>
 {% endif %}
-	
 
 
-			
+
+
 {% endblock %}
