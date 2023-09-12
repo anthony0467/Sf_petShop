@@ -2,15 +2,16 @@
 %} {% block body %} {% if is_granted('ROLE_ADMIN')%}
 
 {% if edit %}
-        <h1>Modifier le slide</h1>
-        {% else %}
-        <h1>Ajouter un slide</h1>
-    {% endif %}
-    
+<h1>Modifier le slide</h1>
+{% else %}
+<h1>Ajouter un slide</h1>
+{% endif %}
 
-{{ form_start(formAddSlider) }}
-{{ form_widget(formAddSlider) }}
-{{ form_end(formAddSlider) }}
+<div id="slide-container">
+    {{ form_start(formAddSlider) }}
+    {{ form_widget(formAddSlider) }}
+    {{ form_end(formAddSlider) }}
+</div>
 
 {% else %}
 
