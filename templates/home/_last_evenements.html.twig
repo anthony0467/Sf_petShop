@@ -2,7 +2,7 @@
   <h2 class="h2-home">Évenement à suivre</h2>
   <ul class="flex wrap justify-center">
     {% for evenement in evenements %}
-    <li class="flex flex-col gap">
+    <li class="flex flex-col gap card-evenement">
       {% if evenement.images is not empty %}
       <!--récupérer la 1er image uniquement -->
       {% set image = evenement.images.first() %}
@@ -10,13 +10,15 @@
       {% else %}
       <img src="{{ asset('uploads/images/defaut.jpg') }}" height="250px" alt="Mon image" />
       {% endif %}
-      <h3 class="title-event">{{ evenement }}</h3>
-      <span class="date-event">Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
-      <p>
-        {{ evenement.description|length > 100 ? evenement.description|slice(0, 150) ~ '...' : evenement.description }}
-      </p>
-      <div class="event-btn">
-        <a href="{{ path('show_evenement', { id: evenement.id }) }}" class="btn">En savoir plus</a>
+      <div class="p-1">
+        <h3 class="title-event">{{ evenement }}</h3>
+        <span class="date-event">Le {{ evenement.dateEvenement | date('d/m/Y')}}</span>
+        <p>
+          {{ evenement.description|length > 100 ? evenement.description|slice(0, 150) ~ '...' : evenement.description }}
+        </p>
+        <div class="event-btn">
+          <a href="{{ path('show_evenement', { id: evenement.id }) }}" class="btn">En savoir plus</a>
+        </div>
       </div>
     </li>
 
