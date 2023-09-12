@@ -1,5 +1,25 @@
 @import 'mixins';
 
+.top-button{
+   position: fixed;
+    right: 20px;
+    bottom: 110px;
+
+    i{
+        @include primary-color;
+    }
+   
+}
+
+#search_produit_Rechercher{
+   transition: .35s;
+   &:hover{
+    background-color: blue;
+    color: white;
+    }
+}
+
+
 //last articles
 
 #last-article-container{
@@ -58,17 +78,32 @@
     transition: .5s;
 }
 
+.title-product-last{
+    font-size: 16;
+    @include primary-color;
+}
+
 .title-product{
     //font-weight: 600;
-    font-size: 16px;
+    font-size: 14px;
+    color: grey;
     
 }
 
 .price-product{
-    font-size: 16px;
+    font-size: 14px;
     color: rgb(155, 40, 40);
 }
 
+.statut-product{
+    font-size: 14px;
+    color: grey;
+    font-style: italic;
+}
+
+.btn-product{
+    font-size: 14px;
+}
 
 .card-article-mobile{
     max-width: 300px;
@@ -129,6 +164,16 @@ background-attachment: fixed;
 }
 
 //evenement
+
+.card-evenement{
+    border: 1px solid #80808042;
+    background: white;
+    border-radius: 4px;
+    img{
+        border-radius: 4px;
+    }
+}
+
 
 #event-container{
     max-width: 1250px;
