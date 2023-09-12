@@ -27,7 +27,7 @@ class SliderType extends AbstractType
                 'label' => 'Photos',
                 'multiple' => true,
                 'mapped' => false,
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new Count([
                         'max' => 1,
@@ -45,6 +45,7 @@ class SliderType extends AbstractType
                         ])
                     ])
                 ],
+                'label_attr' => ['class' => 'file-label'],
             ])
             ->add('description', TextType::class, [
                 'required' => false,
@@ -60,7 +61,9 @@ class SliderType extends AbstractType
                 'label' => 'Nom du bouton(facultatif)',
                 'required' => false,
             ])
-            ->add('Valider', SubmitType::class);
+            ->add('Valider', SubmitType::class, [
+                'attr' => ['class' => 'btn']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

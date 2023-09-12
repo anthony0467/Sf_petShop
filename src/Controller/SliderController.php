@@ -39,11 +39,11 @@ class SliderController extends AbstractController
             // on recupere les images transmisse
             $images = $form->get('images')->getData();
 
-            foreach ($slider->getImage() as $image) {
+            /*  foreach ($slider->getImage() as $image) {
                 $slider->removeImage($image);
                 $entityManager->remove($image); // Supprimer l'image de la base de données si nécessaire
 
-            }
+            }*/
 
             // on boucle sur les tableaux
             foreach ($images as $image) {
