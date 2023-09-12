@@ -20,8 +20,9 @@ class MessagesType extends AbstractType
             //->add('is_read')
             //->add('sender')
             //>add('recipient')
-            ->add('Envoyer', SubmitType::class)
-        ;
+            ->add('Envoyer', SubmitType::class, [
+                'attr' => ['class' => 'btn']
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
