@@ -27,24 +27,25 @@
             </thead>
             <tbody>
                 {% for message in app.user.received %}
-                    
-                    {% set bold = message.isRead ? '' : 'bold' %}
-                    <tr>
-                        <td class="{{bold}}">{{ message.sender.email }}</td>
-                        <td class="{{bold}}">{{ message.date | date('d/m/Y') }}</td>
-                        <td class="{{bold}}">{{ message|length > 40 ? message|slice(0, 40) ~ '...' : message }}</td>
-                        <td class="{{bold}}"><a href="{{path("show_messages", {id: message.id} )}}">Go</a></td>
-                        <td class="{{bold}}"><a href="{{path("delete_messages", {id: message.id} )}}"><i class="fa-solid fa-trash"></i></a></td>
-                    </tr>
+
+                {% set bold = message.isRead ? '' : 'bold' %}
+                <tr>
+                    <td class="{{bold}}">{{ message.sender.email }}</td>
+                    <td class="{{bold}}">{{ message.date | date('d/m/Y') }}</td>
+                    <td class="{{bold}}">{{ message|length > 40 ? message|slice(0, 40) ~ '...' : message }}</td>
+                    <td class="{{bold}}"><a href="{{path('show_messages', {id: message.id} )}}">Go</a></td>
+                    <td class="{{bold}}"><a href="{{path('delete_messages', {id: message.id} )}}"><i
+                                class="fa-solid fa-trash"></i></a></td>
+                </tr>
                 {% endfor %}
             </tbody>
         </table>
-        
+
     </div>
 </section>
 {% else %}
 <p>Vous devez être connecté pour accéder à cette page.</p>
 {% endif %}
-	
+
 
 {% endblock %}
