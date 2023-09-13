@@ -11,11 +11,13 @@ use App\Entity\User;
 use App\Entity\Offre;
 use App\Entity\Images;
 use App\Entity\Slider;
+use App\Entity\Contact;
 use App\Entity\Produit;
 use App\Entity\Commande;
 use App\Entity\Categorie;
 use App\Entity\Evenement;
 use App\Form\ProduitType;
+use Cocur\Slugify\Slugify;
 use App\Entity\Notification;
 use App\Form\EtatAnnonceType;
 use App\Form\SearchProduitType;
@@ -32,7 +34,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Cocur\Slugify\Slugify;
 
 class HomeController extends AbstractController
 {
@@ -308,6 +309,7 @@ class HomeController extends AbstractController
         //$produits = $doctrine->getRepository(Produit::class)->findBy([], ["dateCreationProduit"=> "DESC"]); 
 
         $slider = $doctrine->getRepository(Slider::class)->findBy([]);
+        $contacts = $doctrine->getRepository(Contact::class)->findAll();
         $produitInactif = $pi->annonceInactif(); // requete dql
         $produitActif = $pi->annonceActif(); // requete dql
         $avisInactif = $Ar->inactifAvis();
@@ -319,7 +321,8 @@ class HomeController extends AbstractController
             'produitsActif' => $produitActif,
             'slider' => $slider,
             'avisInactif' => $avisInactif,
-            'avisActif' => $avisActif
+            'avisActif' => $avisActif,
+            'contacts' => $contacts
 
         ]);
     }
