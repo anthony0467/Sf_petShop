@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire de contact{% endblock %}
+
+{% block body %}
+
+
+<div>
+    <h1>Formulaire de contact</h1>
+
+    <div>
+        <p>De: {{ contact.nom}}</p>
+        <p>Email: {{ contact.email}}</p>
+        <p>Sujet: {{ contact.sujet}}</p>
+        <p>Message: {{ contact.message }}</p>
+    </div>
+    <div class="mh-2">
+        <a href="" class="btn">Répondre par mail</a>
+    </div>
+</div>
+{% endblock %}
