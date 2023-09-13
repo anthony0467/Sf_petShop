@@ -24,6 +24,16 @@ vertical-align: middle;
 font-size:20px;
 }
 
+.mail .fa{
+  position: relative;
+display: table-cell;
+width: 60px;
+height: 36px;
+text-align: center;
+vertical-align: middle;
+font-size:20px;
+}
+
 
 .main-menu:hover,nav.main-menu.expanded {
 width:250px;
@@ -421,5 +431,62 @@ display: block;
           display: block;
       }
       }
+
+      /* Styles pour le tableau de contact */
+
+      
+        .contact {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .contact th,
+        .contact td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        .contact th {
+            background-color: #f2f2f2;
+        }
+
+        /* Styles pour la suppression */
+        .delete-button {
+            background-color: #ff6666;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        /* Style responsive pour les petits écrans */
+        @media screen and (max-width: 600px) {
+            .contact {
+                border: 0;
+            }
+
+            .contact tr {
+                margin-bottom: 10px;
+                display: block;
+                border: 1px solid #ccc;
+            }
+
+            .contact td {
+                display: block;
+                text-align: left;
+                border-bottom: 1px solid #ccc;
+            }
+
+            .contact td:last-child {
+                border-bottom: 0;
+            }
+
+            .contact th,
+            .contact td::before {
+                display: none;
+            }
+        }
 
        
