@@ -1,0 +1,28 @@
+<div id="contact-container">
+    <h2>Contact</h2>
+    <table class="contact">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Sujet</th>
+                <th>Message</th>
+                <th>Supprimer</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.nom}}</td>
+                <td>{{contact.email}}</td>
+                <td>{{contact.sujet}}</td>
+                <td><a href="{{path('show_contact', {'id': contact.id })}}">Par ici</a></td>
+                <td><a href="{{path('delete_contact', {'id': contact.id })}}" class="delete-button">Supprimer</a></td>
+            </tr>
+            {% endfor %}
+
+            <!-- Ajoutez d'autres lignes de contact ici -->
+        </tbody>
+    </table>
+
+</div>
