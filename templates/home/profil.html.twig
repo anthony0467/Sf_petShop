@@ -207,10 +207,10 @@ endblock %} {% block body %} {% if app.user %}
     </ul>
 
     <div class="offer-container">
-      <h2>Offre émisse</h2>
+      <h2>Offre émise</h2>
       {% set offreTrouvee = false %}
       {% if offres is empty %}
-      <p>Aucune offre émisse.</p>
+      <p>Aucune offre émise.</p>
       {% else %}
       <ul class="flex wrap gap">
         {% for offre in offres %}
@@ -285,6 +285,11 @@ endblock %} {% block body %} {% if app.user %}
         <p style="color: #A58AFF">En cours</p>
         {% endif %}
       </div>
+      {% if produit.etat == true %}
+        <p>
+          <a href="{{ path('show_produit', {slug: produit.slug })}}">Voir l'annonce</a>
+        </p>
+      {% endif %}
       <div class="flex justify-center gap">
         <p>
           <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
@@ -304,11 +309,20 @@ endblock %} {% block body %} {% if app.user %}
   {% endif %}
 
   <div class="mh-2">
-    <a href="{{ path('delete_user') }}">Supprimer mon compte</a>
-    <p>
-      Attention! Si le compte est supprimé, vous perdrez toutes les informations
-      liés à celui-ci.
-    </p>
+    <a href="#" id="lien-popup" class="btn-menu">Supprimer mon compte</a>
+    <div id="popup" style="display: none;">
+      <div class="modal-content text-center">
+          <span id="fermer-popup" class="close"><i class="fa-solid fa-delete-left fa-lg"></i></span>
+          <p><i class="fa-solid fa-triangle-exclamation fa-xl" style="color: #cf0c0c;"></i>Si le compte est supprimé, vous perdrez toutes les informations
+            liés à celui-ci.</p>
+           <p>Souhaitez-vous supprimer quand même votre compte ?</p>
+           <div class="flex gap justify-center">
+            <a href="{{ path('delete_user') }}">Oui</a>
+            -
+            <a href="">Non</a>
+          </div>
+      </div>
+  </div>
   </div>
 </div>
 {% else %}
@@ -346,6 +360,6 @@ endblock %} {% block body %} {% if app.user %}
   });
 
 </script>
-
+<script src="{{ asset('js/popup.js') }}"></script>
 
 {% endblock %}
