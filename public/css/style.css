@@ -8,7 +8,7 @@
   bottom: 110px;
 }
 .top-button i {
-  color: #c6538c;
+  color: rgb(139, 30, 30);
 }
 
 #search_produit_Rechercher {
@@ -161,7 +161,8 @@
   border-radius: 4px;
 }
 .card-evenement img {
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 
 #event-container {
@@ -328,6 +329,13 @@
   }
   .border-article {
     transform: rotate(0deg);
+  }
+  .card-all-article img {
+    width: 125px;
+    height: 200px;
+  }
+  .width-mobile {
+    max-width: 125px;
   }
 }
 @media (max-width: 1099px) {
@@ -988,7 +996,7 @@ nav ul, nav li {
 .swiper-slide {
   text-align: center;
   font-size: 18px;
-  background: rgb(242, 242, 242);
+  background: none;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -1403,6 +1411,48 @@ input[type=file]:valid ~ .file-label::after {
   padding: 1rem;
 }
 
+#contact-container {
+  max-width: 1050px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+#contact-container form input {
+  padding: 0.5rem;
+  border-bottom: 1px dashed rgba(128, 128, 128, 0.431372549);
+  border-radius: 4px;
+}
+
+#contact-container form textarea {
+  padding: 0.5rem;
+  border-bottom: 1px dashed rgba(128, 128, 128, 0.431372549);
+  border-radius: 4px;
+}
+
+#contact-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0rem 2rem 2rem 2rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+
+#contact-container form div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: white;
+  padding: 1rem;
+}
+
 .container-send {
   min-height: 75vh;
   display: flex;
@@ -1438,8 +1488,6 @@ input[type=file]:valid ~ .file-label::after {
   flex-direction: column;
   gap: 1rem;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
   padding: 0rem 2rem 2rem 2rem;
   margin-top: 1rem;
   border-radius: 4px;
@@ -1480,33 +1528,44 @@ input[type=file]:valid ~ .file-label::after {
 }
 
 .offre-form {
+  max-width: 1050px;
+  margin-left: auto;
+  margin-right: auto;
   display: flex;
-  justify-content: center;
-}
-
-.offre-form form {
-  background: white;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 1rem;
-  max-width: 280px;
-  border-radius: 4px;
-  gap: 1rem;
 }
 
-.offre-form form div div {
+.offre-form form input {
+  padding: 0.5rem;
+  border-bottom: 1px dashed rgba(128, 128, 128, 0.431372549);
+  border-radius: 4px;
+}
+
+.offre-form form textarea {
+  padding: 0.5rem;
+  border-bottom: 1px dashed rgba(128, 128, 128, 0.431372549);
+  border-radius: 4px;
+}
+
+.offre-form form {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  background: white;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1rem;
+  border-radius: 4px;
+}
+
+.offre-form form div {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-}
-
-.offre-form input {
-  padding: 0.5rem;
-  border: 1px solid rgba(128, 128, 128, 0.23);
-  border-radius: 4px;
-  background-color: rgb(242, 242, 242);
+  justify-content: space-between;
+  padding: 1rem;
 }
 
 @media (max-width: 550px) {
@@ -1812,6 +1871,11 @@ img {
   color: white;
 }
 
+@media (max-width: 550px) {
+  h1 {
+    font-size: 27px;
+  }
+}
 #mapid {
   height: 300px;
 }
@@ -2269,6 +2333,33 @@ body {
 /* Style pour les lignes paires du tableau */
 .tab-other-profile tbody tr:nth-child(even) {
   background-color: #fff;
+}
+
+#lien-popup {
+  padding: 0.5rem;
+}
+
+#popup {
+  /* Position absolue pour centrer la popup */
+  position: fixed;
+  bottom: 43%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Autres styles de dimension et d'apparence de la popup */
+  max-width: 400px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  padding: 2rem;
+  transition: opacity 0.3s ease-in-out;
+}
+
+/* Style pour le bouton de fermeture */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  color: #c6538c;
 }
 
 /* Style pour les cellules du tableau en responsive */

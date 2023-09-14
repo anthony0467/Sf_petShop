@@ -6,7 +6,7 @@
     bottom: 110px;
 
     i{
-        @include primary-color;
+        color: rgb(139, 30, 30);
     }
    
 }
@@ -170,7 +170,8 @@ background-attachment: fixed;
     background: white;
     border-radius: 4px;
     img{
-        border-radius: 4px;
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
     }
 }
 
@@ -210,6 +211,8 @@ background-attachment: fixed;
     max-width: 235px;
     transition: .35s;
 }
+
+
 
 .card-all-article:hover{
     transform: translateY(-10px);
@@ -355,6 +358,17 @@ background-attachment: fixed;
 }
     .border-article{
     transform: rotate(-0deg);
+    }
+
+    //card all articles
+
+    .card-all-article img{
+        width: 125px;
+        height: 200px;
+    }
+
+    .width-mobile{
+        max-width: 125px;
     }
 
 }
