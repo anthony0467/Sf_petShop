@@ -42,10 +42,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private Collection $produits;
 
 
-    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Messages::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'sender', targetEntity: Messages::class)]
     private Collection $sent;
 
-    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Messages::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'recipient', targetEntity: Messages::class)]
     private Collection $received;
 
     #[ORM\OneToMany(mappedBy: 'users', targetEntity: Avis::class)]
@@ -57,10 +57,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'commander', targetEntity: Commande::class)]
     private Collection $commandes;
 
-    #[ORM\OneToMany(mappedBy: 'Users', targetEntity: Offre::class)]
+    #[ORM\OneToMany(mappedBy: 'Users', targetEntity: Offre::class, orphanRemoval: true)]
     private Collection $offres;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
     public function __construct()
