@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Avis;
 use App\Entity\User;
+use App\Entity\Commande;
+use App\Entity\Messages;
 use App\Entity\Categorie;
 use App\Form\EditProfileType;
 use App\Security\EmailVerifier;
@@ -57,7 +60,7 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('admin@worldofpets.com', 'Admin Site'))
                     ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
+                    ->subject('Confirmer votre email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
             // do anything else you need here, like send an email
@@ -90,9 +93,9 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre email a été verifié avec succés.');
 
-        return $this->redirectToRoute('app_register');
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/registration/edit', name: 'edit_user')] // user supprime son compte
@@ -122,9 +125,32 @@ class RegistrationController extends AbstractController
     {
 
         $user = $this->getUser();
+        $userAnonyme = $doctrine->getRepository(User::class)->findOneBy(["pseudo" => "anonyme"]);
 
         if ($user) {
             $entityManager = $doctrine->getManager();
+            // Réaffecter les avis associés à l'utilisateur
+            $avis = $entityManager->getRepository(Avis::class)->findBy(['users' => $user]);
+            foreach ($avis as $avi) {
+                $avi->setUsers($userAnonyme);
+            }
+            // Réaffecter les messages envoyé
+            $messageSend = $entityManager->getRepository(Messages::class)->findBy(['sender' => $user]);
+            foreach ($messageSend as $send) {
+                $send->setSender($userAnonyme);
+            }
+
+            // Réaffecter les messags reçus
+            $messageRecipient = $entityManager->getRepository(Messages::class)->findBy(['recipient' => $user]);
+            foreach ($messageRecipient as $recipient) {
+                $recipient->setRecipient($userAnonyme);
+            }
+
+            // Réaffecter les commandes
+            $commandes = $entityManager->getRepository(Commande::class)->findBy(['commander' => $user]);
+            foreach ($commandes as $commande) {
+                $commande->setCommander($userAnonyme);
+            }
 
             // Vider la session
             $session = new Session();
@@ -140,3 +166,5 @@ class RegistrationController extends AbstractController
         }
     }
 }
+
+
