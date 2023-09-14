@@ -60,7 +60,7 @@ class Produit
 
 
 
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Images::class, cascade: ["persist"])]
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Images::class, cascade: ["persist"], orphanRemoval: true)]
     private Collection $images;
 
     #[ORM\Column]
@@ -69,7 +69,7 @@ class Produit
     #[ORM\Column(length: 100)]
     private ?string $statut = null;
 
-    #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Offre::class)]
+    #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Offre::class, orphanRemoval: true)]
     private Collection $offres;
 
     #[ORM\Column(length: 255, nullable: true)]
