@@ -22,6 +22,7 @@ use App\Entity\Notification;
 use App\Form\EtatAnnonceType;
 use App\Form\SearchProduitType;
 use App\Repository\AvisRepository;
+use App\Repository\CommandeRepository;
 use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
@@ -277,15 +278,17 @@ class HomeController extends AbstractController
     }
 
     #[Route('/home/show', name: 'show_home')] // vue profil de l'utilisateur
-    public function show(ManagerRegistry $doctrine, ProduitRepository $Pr): Response
+    public function show(ManagerRegistry $doctrine, ProduitRepository $Pr, CommandeRepository $Cr): Response
     {
         $user = $this->getUser();
-        $produits = $doctrine->getRepository(Produit::class)->findBy(['user' => $user], ["dateCreationProduit" => "DESC"]); // uniquement les 5 derniers articles ajoutés
+        $produits = $doctrine->getRepository(Produit::class)->findBy(['user' => $user], ["dateCreationProduit" => "DESC"]);
         $categories = $doctrine->getRepository(Categorie::class)->findBy([], []);
-        $offres = $doctrine->getRepository(Offre::class)->findBy([], ['date' => 'DESC']); // uniquement les 5 derniers articles
+        $offres = $doctrine->getRepository(Offre::class)->findBy([], ['date' => 'DESC']);
         $offresObtenu = $doctrine->getRepository(Offre::class)->findBy([], []);
         $notifs = $doctrine->getRepository(Notification::class)->findBy([], ['date' => 'DESC']);
         $commandes = $doctrine->getRepository(Commande::class)->findBy([], ['dateCommande' => 'DESC']);
+        $commandeAcheteur = $doctrine->getRepository(Commande::class)->findBy(['commander' => $user], ['dateCommande' => 'DESC']);
+        $commandeVendeur = $Cr->commandeVendeur($user);
 
         return $this->render('home/profil.html.twig', [
             'controller_name' => 'HomeController',
@@ -294,9 +297,9 @@ class HomeController extends AbstractController
             'offres' => $offres,
             'offresObtenu' => $offresObtenu,
             'notifs' => $notifs,
-            'commandes' => $commandes
-
-
+            'commandes' => $commandes,
+            'commandeAcheteur' => $commandeAcheteur,
+            'commandeVendeur' => $commandeVendeur,
 
         ]);
 
