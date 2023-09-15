@@ -1,0 +1,41 @@
+<div>
+    <h2>Mes notifications</h2>
+
+
+
+    <div class="scroll-container">
+        {% if commandeAcheteur is not empty and notifs is not empty %}
+
+        {% for commande in commandes %}
+        {% if app.user == commande.produit.user and commande.produit.isSelling == true %}
+        <p class="notification notif-vente">{{ commande.message }}</p>
+        {% endif %}
+
+        {% if app.user == commande.commander %}
+        <p class="notification notif-vente">{{ commande.messageSent }}</p>
+        {% endif %}
+
+        {% endfor %}
+
+        {% for notif in notifs %}
+        {% set bold = notif.isRead ? '' : 'bold' %}
+        {% if app.user == notif.offre.produits.user %}
+        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.messageDestinataire }}</p>
+        {% set hasDisplayedNotifications = true %}
+        {% endif %}
+
+        {% if app.user == notif.offre.Users %}
+        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.message }}</p>
+        {% set hasDisplayedNotifications = true %}
+        {% endif %}
+
+        {% endfor %}
+
+        {% else %}
+        <p>Aucune notification.</p>
+        {% endif %}
+
+
+
+    </div>
+</div>
