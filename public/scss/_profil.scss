@@ -7,10 +7,18 @@
     padding: 1rem;
     margin: 1rem 0;
     border-radius: 4px;
-    border: 1px solid rgba(128, 128, 128, 0.332);
+    border: 1px solid rgba(128, 128, 128, 0.1);
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,.1);
+    background-color: white;
 }
 
+.card-seller h2{
+    margin: .5rem 0;
+}
 
+.card-seller h3{
+    margin: 1rem 0;
+}
 
 .profil-container{
     max-width: 1250px;
@@ -21,7 +29,7 @@
 
  .scroll-container {
       height: 160px;
-      border: 1px solid #ccc;
+       box-shadow: 0 4px 16px 0 rgba(0,0,0,.1);
       overflow: auto; /* Ajoute une barre de défilement si le contenu dépasse */
     }
 
@@ -40,11 +48,16 @@
 
 .card-command{
     background: white;
-    padding: 1rem;
-    border: 1px solid #80808045;
+    padding-right: 1rem;
+    border: 1px solid rgba(128, 128, 128, 0.1);
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,.1);
     border-radius: 4px;
 }
 
+.card-command img{
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
 
 
 .tooltip-container {
@@ -81,7 +94,9 @@
 
 .card-offer{
     background-color: white;
-    border: 1px solid #80808040;
+    border: 1px solid rgba(128, 128, 128, 0.1);
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,.1);
+
     padding: 0.5rem;
     width: 200px;
     justify-content: space-between;
@@ -93,12 +108,20 @@
 //annonce 
 
 .card-annonce{
-    border: 1px solid rgba(128, 128, 128, 0.507);
+    border: 1px solid rgba(128, 128, 128, 0.1);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    box-shadow: 0 4px 16px 0 rgba(0,0,0,.1);
     background-color: white;
 }
 
+.card-annonce img{
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
 .title-annonce{
-    padding: 0.5rem 0;
+    padding: 0.5rem;
     font-size: 18px;
     font-weight: bold;
 }
@@ -206,6 +229,25 @@
         @include primary-color;
     }
 
+    /* Style pour card command*/
+    @media (max-width: 635px) {
+        .card-seller ul{
+            align-items: center;
+        }
+
+        .card-command{
+            padding: 0;
+            max-width: 300px;
+        }
+        .card-command img{
+            width: 100%;
+            border-top-right-radius: 4px;
+            border-bottom-left-radius: 0;
+        }
+
+
+    }
+
     /* Style pour les cellules du tableau en responsive */
     @media (max-width: 768px) {
         .tab-other-profile {
@@ -223,15 +265,3 @@
 
 
 
-
-@media (min-width: 550px){
-    // commandes vendeur
-   .card-command{
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-
-}
-.adresse-commande{
-    grid-column: 3/5;
-}
-}
