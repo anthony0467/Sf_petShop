@@ -1,0 +1,103 @@
+<div class="card-seller">
+    <h2>Espace acheteur</h2>
+    <ul class="flex flex-col gap">
+        <h3>Vos commandes</h3>
+        {% if commandeAcheteur is not empty %}
+
+        {% for commande in commandeAcheteur %}
+        {% if commande.produit.isSelling == true %}
+        <li class="card-command flex wrap items-center gap05">
+
+            {% if commande.produit.images is not empty %}
+            <!--récupérer la 1er image uniquement -->
+            {% set image = commande.produit.images.first() %}
+            <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="150px" width="100px"
+                alt="Image de {{ image.nomImage }}" />
+
+            {% else %}
+            <img src="{{ asset('uploads/images/defaut.jpg') }}" height="150px" width="100px" alt="Mon image" />
+            {% endif %}
+
+            <div class="grow wrap p-05-w">
+                <div class="flex justify-between">
+                    <p> {{ commande.produit.nomProduit }}</p>
+                    <p> {{ commande.produit.prix}}€</p>
+                </div>
+                <div class="flex justify-between wrap">
+                    <p>Vendeur: {{ commande.produit.user.pseudo }}</p>
+                    <div class="flex wrap gap05">
+                        <p>Envoi: </p>
+                        {% if commande.isSent == false %}
+                        <p style="color: #A58AFF">En cours</p>
+                        {% else %}
+                        <p style="color:green">ok</p>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex wrap gap05 justify-between">
+                    <div class="flex gap05">
+                        <p class="tooltip-container">Produit reçu (?)
+                            <span class="tooltip">Penser à cliquer sur le lien une fois que vous avez reçu le
+                                colis.</span>
+                        </p>
+                        <div>
+                            {% if commande.isReceived == false %}
+                            <a href="{{path('order_received', {'id': commande.id })}}">
+                                <p style="color: red;">Non</p>
+                            </a>
+                            {% else %}
+                            <p style="color: green;">Oui</p>
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <a href="{{path('add_avis', {'vendorId': commande.produit.user.id })}}">Laisser un commentaire</a>
+                </div>
+            </div>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% else %}
+        <p>Aucune commande en cours</p>
+        {% endif %}
+    </ul>
+
+    <div class="offer-container">
+        <h3>Offre émise</h3>
+        {% set offreTrouvee = false %}
+        {% if offres is empty %}
+        <p>Aucune offre émise.</p>
+        {% else %}
+        <ul class="flex wrap gap">
+            {% for offre in offres %}
+            {% if offre.isDeleted == 0 and app.user == offre.Users %}
+            {% set offreTrouvee = true %}
+            <li class="flex flex-col card-offer">
+
+                {% set image = offre.produits.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto"
+                    width="80px" alt="Image de {{ image.nomImage }}">
+                <p>Produit : {{ offre.produits.nomProduit }}</p>
+                <p>Prix proposé : {{ offre.prix }}€</p>
+                <p>Prix initial : {{ offre.produits.prix }}€</p>
+                <p>Statut : {{ offre.getStatutText() }}</p>
+                {% if offre.statut == 1 %}
+                <a href="{{ path('show_order', {id: offre.produits.id })}}">Paiement</a>
+                {% endif %}
+                {% if offre.getStatutText() == 2 %}
+
+                {% endif %}
+                <p><a href="{{ path('show_produit', { slug: offre.produits.slug }) }}">Voir le produit</a></p>
+            </li>
+            {% endif %}
+
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if offres is not empty and not offreTrouvee %}
+        <p>Aucune offre reçue.</p>
+        {% endif %}
+    </div>
+</div>

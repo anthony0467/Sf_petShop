@@ -37,213 +37,15 @@ endblock %} {% block body %} {% if app.user %}
       </div>
     </div>
 
-    <div>
-      <h2>Mes notifications</h2>
-
-      {% set hasDisplayedNotifications = false %}
-
-      <div class="scroll-container">
-        {% for commande in commandes %}
-        {% if app.user == commande.produit.user and commande.produit.isSelling == true %}
-        <p class="notification notif-vente">{{ commande.message }}</p>
-        {% endif %}
-        {% if app.user == commande.commander %}
-        <p class="notification notif-vente">{{ commande.messageSent }}</p>
-        {% endif %}
-        {% endfor %}
-        {% for notif in notifs %}
-        {% set bold = notif.isRead ? '' : 'bold' %}
-        {% if app.user == notif.offre.produits.user %}
-        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.messageDestinataire }}</p>
-        {% set hasDisplayedNotifications = true %}
-        {% endif %}
-        {% if app.user == notif.offre.Users %}
-        <p class="notification {{ bold }}" data-notification-id="{{ notif.id }}">{{ notif.message }}</p>
-        {% set hasDisplayedNotifications = true %}
-        {% endif %}
-        {% endfor %}
-
-        {% if not hasDisplayedNotifications %}
-        <p>Aucune notification</p>
-        {% endif %}
-      </div>
-    </div>
+    {% include "profil/_notif.html.twig" %}
 
   </div>
 
 
 
+  {% include "profil/_vendeur.html.twig" %}
 
-  <div class="card-seller">
-    <h2>Espace vendeur</h2>
-    {% set offreTrouvee = true %}
-    <ul class="flex flex-col gap">
-      <h3>Vos commandes</h3>
-      {% for commande in commandes %}
-      {% if app.user == commande.produit.user and commande.produit.isSelling == true %}
-      <li class="card-command">
-        <p>Titre: {{ commande.produit.nomProduit }}</p>
-        <p>Prix: {{ commande.produit.prix}}€</p>
-        <div class="adresse-commande">
-          Adresse de livraison du client:
-          <div class="flex gap wrap">
-            <div>
-              <p>Nom: {{ commande.nom}}</p>
-              <p>Prénom: {{ commande.prenom}}</p>
-            </div>
-            <div>
-              <p>Adresse: {{ commande.adresse}}</p>
-              <p>Ville: {{ commande.ville}} - Code postal: {{ commande.codePostal}}</p>
-            </div>
-          </div>
-        </div>
-        <div class="flex wrap gap05">
-          <p class="tooltip-container">Produit envoyé (?)
-            <span class="tooltip">Penser à cliquer sur le lien une fois le colis envoyer afin de prévenir le
-              client.</span>
-          </p>
-          <div>
-
-            {% if commande.isSent == false %}
-            <a href="{{path('order_sent', {'id': commande.id })}}">
-              <p style="color: red;">Non</p>
-            </a>
-            {% else %}
-            <p style="color: green;">Oui</p>
-            {% endif %}
-
-          </div>
-        </div>
-      </li>
-      {% else %}
-      {% set offreTrouvee = false %}
-      {% endif %}
-
-      {% endfor %}
-      {% if commandes is not empty and not offreTrouvee %}
-      <p>Aucune commande</p>
-      {% endif %}
-    </ul>
-
-    <div class="offer-container">
-      <h3>Offre reçue</h3>
-      {% set offreTrouvee = false %}
-      {% if offresObtenu is empty %}
-      <p>Aucune offre reçue.</p>
-      {% else %}
-      <ul class="flex wrap gap">
-        {% for offre in offresObtenu %}
-        {% if app.user == offre.produits.user %}
-        {% set offreTrouvee = true %}
-        <li class="flex flex-col card-offer">
-          {% set image = offre.produits.images.first() %}
-          <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto" width="80px"
-            alt="Image de {{ image.nomImage }}">
-          <p>Produit : {{ offre.produits.nomProduit }}</p>
-          <p>Prix proposé : {{ offre.prix }}€</p>
-          <p>Prix initial : {{ offre.produits.prix }}€</p>
-          <p>Statut : {{ offre.getStatutText() }}</p>
-          {% if offre.statut == constant('App\\Entity\\Offre::STATUT_EN_ATTENTE') %}
-          <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'acceptee' }) }}">Accepter</a>
-          <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'refusee' }) }}">Refuser</a>
-          {% endif %}
-          <p><a href="{{ path('show_produit', { slug: offre.produits.slug }) }}">Voir le produit</a></p>
-        </li>
-        {% endif %}
-        {% endfor %}
-      </ul>
-      {% endif %}
-
-      {% if offresObtenu is not empty and not offreTrouvee %}
-      <p>Aucune offre reçue.</p>
-      {% endif %}
-    </div>
-  </div>
-
-  <div class="card-seller">
-    <h2>Espace acheteur</h2>
-    {% set offreTrouvee = true %}
-    <ul class="flex flex-col gap">
-      <h3>Vos commandes</h3>
-      {% for commande in commandes %}
-      {% if app.user == commande.commander and commande.produit.isSelling == true %}
-      <li class="card-command">
-        <p>Titre: {{ commande.produit.nomProduit }}</p>
-        <p>Prix: {{ commande.produit.prix}}€</p>
-        <p>Vendeur: {{ commande.produit.user.pseudo }}</p>
-        <div class="flex wrap gap05">
-          <p>Envoi: </p>
-          {% if commande.isSent == false %}
-          <p style="color: #A58AFF">En cours</p>
-          {% else %}
-          <p style="color:green">ok</p>
-          {% endif %}
-        </div>
-        <div class="flex wrap gap05">
-          <p class="tooltip-container">Produit reçu (?)
-            <span class="tooltip">Penser à cliquer sur le lien une fois que vous avez reçu le colis.</span>
-          </p>
-          <div>
-            {% if commande.isReceived == false %}
-            <a href="{{path('order_received', {'id': commande.id })}}">
-              <p style="color: red;">Non</p>
-            </a>
-            {% else %}
-            <p style="color: green;">Oui</p>
-            {% endif %}
-
-          </div>
-          <a href="{{path('add_avis', {'vendorId': commande.produit.user.id })}}">Laisser un commentaire</a>
-        </div>
-      </li>
-      {% else %}
-      {% set offreTrouvee = false %}
-      {% endif %}
-      {% endfor %}
-
-      {% if commandes is not empty and not offreTrouvee %}
-      <p>Aucune commande</p>
-      {% endif %}
-    </ul>
-
-    <div class="offer-container">
-      <h2>Offre émise</h2>
-      {% set offreTrouvee = false %}
-      {% if offres is empty %}
-      <p>Aucune offre émise.</p>
-      {% else %}
-      <ul class="flex wrap gap">
-        {% for offre in offres %}
-        {% if offre.isDeleted == 0 and app.user == offre.Users %}
-        {% set offreTrouvee = true %}
-        <li class="flex flex-col card-offer">
-
-          {% set image = offre.produits.images.first() %}
-          <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto" width="80px"
-            alt="Image de {{ image.nomImage }}">
-          <p>Produit : {{ offre.produits.nomProduit }}</p>
-          <p>Prix proposé : {{ offre.prix }}€</p>
-          <p>Prix initial : {{ offre.produits.prix }}€</p>
-          <p>Statut : {{ offre.getStatutText() }}</p>
-          {% if offre.statut == 1 %}
-          <a href="{{ path('show_order', {id: offre.produits.id })}}">Paiement</a>
-          {% endif %}
-          {% if offre.getStatutText() == 2 %}
-
-          {% endif %}
-          <p><a href="{{ path('show_produit', { slug: offre.produits.slug }) }}">Voir le produit</a></p>
-        </li>
-        {% endif %}
-
-        {% endfor %}
-      </ul>
-      {% endif %}
-
-      {% if offres is not empty and not offreTrouvee %}
-      <p>Aucune offre reçue.</p>
-      {% endif %}
-    </div>
-  </div>
+  {% include "profil/_acheteur.html.twig" %}
 
 
 
@@ -252,7 +54,7 @@ endblock %} {% block body %} {% if app.user %}
 
   <ul class="flex wrap  gap">
     {% for produit in produits %}
-    <li class="w-280 p-05 card-annonce flex flex-col justify-between">
+    <li class="w-280 card-annonce flex flex-col justify-between">
       {% if produit.images is not empty %}
       <!--récupérer la 1er image uniquement -->
       {% set image = produit.images.first() %}
@@ -262,14 +64,14 @@ endblock %} {% block body %} {% if app.user %}
       {% else %}
       <img src="{{ asset('uploads/images/defaut.jpg') }}" height="250px" width="100%" alt="Mon image" />
       {% endif %}
-      <p class="title-annonce">Titre: {{ produit.nomProduit }}</p>
-      <p class="date-annonce">Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
-      <p>Description:
+      <p class="title-annonce ">{{ produit.nomProduit }}</p>
+      <p class="date-annonce p-05-w ">Date: {{ produit.dateCreationProduit | date("d/m/Y") }}</p>
+      <p class="p-05-w ">Description:
         {{ produit.description|length > 100 ? produit.description|slice(0, 150) ~ '...' : produit.description }}
       </p>
-      <p>Prix: {{ produit.prix }} €</p>
-      <p>Catégorie: {{ produit.categorie }}</p>
-      <div class="flex gap">
+      <p class="p-05-w ">Prix: {{ produit.prix }} €</p>
+      <p class="p-05-w ">Catégorie: {{ produit.categorie }}</p>
+      <div class="flex gap p-05-w ">
         <p>Publiée: </p>
         {% if produit.etat == false %}
         <p style="color: red"> En attente</p>
@@ -277,7 +79,7 @@ endblock %} {% block body %} {% if app.user %}
         <p style="color: green">Ok</p>
         {% endif %}
       </div>
-      <div class="flex gap">
+      <div class="flex gap p-05-w ">
         <p>Statut:</p>
         {% if produit.isSelling == true %}
         <p style="color: green">Vendu</p>
@@ -286,11 +88,11 @@ endblock %} {% block body %} {% if app.user %}
         {% endif %}
       </div>
       {% if produit.etat == true %}
-        <p>
-          <a href="{{ path('show_produit', {slug: produit.slug })}}">Voir l'annonce</a>
-        </p>
+      <p class="p-05-w ">
+        <a href="{{ path('show_produit', {slug: produit.slug })}}">Voir l'annonce</a>
+      </p>
       {% endif %}
-      <div class="flex justify-center gap">
+      <div class="flex justify-center gap p-05-w ">
         <p>
           <a href="{{ path('edit_produit', { id: produit.id }) }}"><i class="fa-sharp fa-solid fa-pen"></i></a>
         </p>
@@ -312,17 +114,18 @@ endblock %} {% block body %} {% if app.user %}
     <a href="#" id="lien-popup" class="btn-menu">Supprimer mon compte</a>
     <div id="popup" style="display: none;">
       <div class="modal-content text-center">
-          <span id="fermer-popup" class="close"><i class="fa-solid fa-delete-left fa-lg"></i></span>
-          <p><i class="fa-solid fa-triangle-exclamation fa-xl" style="color: #cf0c0c;"></i>Si le compte est supprimé, vous perdrez toutes les informations
-            liés à celui-ci.</p>
-           <p>Souhaitez-vous supprimer quand même votre compte ?</p>
-           <div class="flex gap justify-center">
-            <a href="{{ path('delete_user') }}">Oui</a>
-            -
-            <a href="">Non</a>
-          </div>
+        <span id="fermer-popup" class="close"><i class="fa-solid fa-delete-left fa-lg"></i></span>
+        <p><i class="fa-solid fa-triangle-exclamation fa-xl" style="color: #cf0c0c;"></i>Si le compte est supprimé, vous
+          perdrez toutes les informations
+          liés à celui-ci.</p>
+        <p>Souhaitez-vous supprimer quand même votre compte ?</p>
+        <div class="flex gap justify-center">
+          <a href="{{ path('delete_user') }}">Oui</a>
+          -
+          <a href="">Non</a>
+        </div>
       </div>
-  </div>
+    </div>
   </div>
 </div>
 {% else %}

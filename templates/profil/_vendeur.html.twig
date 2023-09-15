@@ -1,0 +1,100 @@
+<div class="card-seller">
+    <div>
+        <h2>Espace vendeur</h2>
+        <ul class="flex flex-col gap">
+            <h3>Vos commandes</h3>
+            {% if commandeVendeur is not empty %}
+            {% for commande in commandeVendeur %}
+            <li class="card-command flex gap05 wrap">
+                {% if commande.produit.images is not empty %}
+                <!--récupérer la 1er image uniquement -->
+                {% set image = commande.produit.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="150px" width="100px"
+                    alt="Image de {{ image.nomImage }}" />
+
+                {% else %}
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="150px" width="100px" alt="Mon image" />
+                {% endif %}
+                <div class="grow mh-1 p-05-w">
+                    <div class="flex justify-between wrap">
+                        <p> {{ commande.produit.nomProduit }}</p>
+                        <p>Prix: {{ commande.produit.prix}}€</p>
+                    </div>
+                    <div class="adresse-commande flex justify-between wrap">
+                        <div>
+                            Adresse de livraison du client:
+
+                            <div class="flex gap05 wrap">
+                                <p>Nom: {{ commande.nom}}</p>
+                                <p>Prénom: {{ commande.prenom}}</p>
+                            </div>
+                            <div>
+                                <p>Adresse: {{ commande.adresse}}</p>
+                                <p>Ville: {{ commande.ville}}</p>
+                                <p>Code postal: {{ commande.codePostal}}</p>
+                            </div>
+                        </div>
+                        <div class="flex wrap gap05">
+                            <p class="tooltip-container">Produit envoyé (?)
+                                <span class="tooltip">Penser à cliquer sur le lien une fois le colis envoyer afin de
+                                    prévenir le
+                                    client.</span>
+                            </p>
+                            <div>
+
+                                {% if commande.isSent == false %}
+                                <a href="{{path('order_sent', {'id': commande.id })}}">
+                                    <p style="color: red;">Non</p>
+                                </a>
+                                {% else %}
+                                <p style="color: green;">Oui</p>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            {% endfor %}
+            {% else %}
+            <p>Aucune commande en cours</p>
+            {% endif %}
+        </ul>
+    </div>
+
+
+    <div class="offer-container">
+        <h3>Offre reçue</h3>
+        {% set offreTrouvee = false %}
+        {% if offresObtenu is empty %}
+        <p>Aucune offre reçue.</p>
+        {% else %}
+        <ul class="flex wrap gap">
+            {% for offre in offresObtenu %}
+            {% if app.user == offre.produits.user %}
+            {% set offreTrouvee = true %}
+            <li class="flex flex-col card-offer">
+                {% set image = offre.produits.images.first() %}
+                <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto"
+                    width="80px" alt="Image de {{ image.nomImage }}">
+                <p>Produit : {{ offre.produits.nomProduit }}</p>
+                <p>Prix proposé : {{ offre.prix }}€</p>
+                <p>Prix initial : {{ offre.produits.prix }}€</p>
+                <p>Statut : {{ offre.getStatutText() }}</p>
+                {% if offre.statut == constant('App\\Entity\\Offre::STATUT_EN_ATTENTE') %}
+                <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'acceptee' }) }}">Accepter</a>
+                <a href="{{ path('changer_statut_offre', { id: offre.id, statut: 'refusee' }) }}">Refuser</a>
+                {% endif %}
+                <p><a href="{{ path('show_produit', { slug: offre.produits.slug }) }}">Voir le produit</a></p>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if offresObtenu is not empty and not offreTrouvee %}
+        <p>Aucune offre reçue.</p>
+        {% endif %}
+    </div>
+</div>
