@@ -8,7 +8,7 @@
         {% if produit.etat == false %}
         {# Ne rien retourner #}
         {% else %}
-        <li class="flex  gap05 items-center p-05 search-card">
+        <li class="flex  gap05 items-center search-card shadow-box">
             {% if produit.images is not empty %}
             <!--récupérer la 1er image uniquement -->
             {% set image = produit.images.first() %}
@@ -21,7 +21,7 @@
             {% endif %}
             <div class="w-100 flex flex-col gap05">
                 <div class="flex justify-between w-100">
-                    <p>Titre: {{ produit.nomProduit }}</p>
+                    <p>{{ produit.nomProduit }}</p>
                     <p class="visibility-500 p-05">Vendeur: {{ produit.user.pseudo }} </p>
                 </div>
                 <p class="visibility-500">Description: {{ produit.description|length > 100 ?
