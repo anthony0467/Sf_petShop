@@ -29,8 +29,12 @@
             class="swiper mySwiper12 img-slide">
             <div class="swiper-wrapper">
                 {% for image in produit.images %}
-                <div class="swiper-slide">
-                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" alt="Image de {{ image.nomImage }}">
+                <div class="swiper-slide image-container">
+                    <a href="{{ asset('uploads/images/' ~ image.nomImage) }}" data-lightbox="{{ image.nomImage }}"
+                        class="w-100" data-title="World of pets - {{ image.produit.nomProduit }}">
+                        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" data-action="zoom"
+                            alt="World of pets - {{ image.produit.nomProduit }}">
+                    </a>
                 </div>
                 {% endfor %}
             </div>
@@ -41,7 +45,8 @@
             <div class="swiper-wrapper">
                 {% for image in produit.images %}
                 <div class="swiper-slide">
-                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" alt="Image de {{ image.nomImage }}">
+                    <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" data-action="zoom"
+                        alt="Image de {{ image.nomImage }}">
                 </div>
                 {% endfor %}
             </div>
@@ -67,3 +72,5 @@
         },
     });
 </script>
+
+<script src="{{asset('js/zoom.js')}}"></script>
