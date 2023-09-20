@@ -3,28 +3,42 @@
 namespace App\Entity;
 
 use Cocur\Slugify\Slugify;
+use ApiPlatform\Metadata\Get;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProduitRepository;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 #[ORM\Table(name: "produit"), ORM\Index(columns: ["nom_produit", "description"], flags: ["fulltext"])]
-
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => 'produit:item']),
+        new GetCollection(normalizationContext: ['groups' => 'produit:list'])
+    ],
+    order: ['dateCreationProduit' => 'DESC'],
+    paginationEnabled: false,
+)]
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $nomProduit = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $description = null;
 
     /**
@@ -35,6 +49,7 @@ class Produit
      */
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: '2')]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $prix = null;
 
 
@@ -49,45 +64,58 @@ class Produit
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?Categorie $categorie = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true,   options: ["default" => "CURRENT_TIMESTAMP"])]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?\DateTimeInterface $dateCreationProduit;
 
 
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Images::class, cascade: ["persist"], orphanRemoval: true)]
+    #[Groups(['produit:list', 'produit:item'])]
     private Collection $images;
 
     #[ORM\Column]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?bool $etat = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $statut = null;
 
     #[ORM\OneToMany(mappedBy: 'produits', targetEntity: Offre::class, orphanRemoval: true)]
+    #[Groups(['produit:list', 'produit:item'])]
     private Collection $offres;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $stripeProductId = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $stripePriceId = null;
 
     #[ORM\Column]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?bool $isSelling = false;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2, nullable: true)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $prixOffre = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['produit:list', 'produit:item'])]
     private ?string $imageShow = 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg';
     public function __construct()
     {
