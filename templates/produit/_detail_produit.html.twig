@@ -11,16 +11,16 @@
         <p class="price">Prix : {{ produit.prix }} €</p>
         <ul class="flex wrap gap mh-2">
             <li>
-                <a href="{{path('show_order', {'id': produit.id } )}}" class="btn">Acheter</a>
+                <a href="{{path('show_order', {'id': produit.id } )}}" class="btn-menu">Acheter</a>
             </li>
 
             <li>
                 <a href="{{ path('show_offre', {'vendorId': produit.user.id, 'productId': produit.id })}}"
-                    class="btn">Faire une offre</a>
+                    class="btn-menu">Faire une offre</a>
             </li>
 
             <li>
-                <a href="{{path('send', {'vendorId': produit.user.id })}}" class="btn">Contacter le vendeur</a>
+                <a href="{{path('send', {'vendorId': produit.user.id })}}" class="btn-menu">Contacter le vendeur</a>
             </li>
         </ul>
     </div>
