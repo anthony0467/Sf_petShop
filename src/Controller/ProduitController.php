@@ -269,7 +269,7 @@ class ProduitController extends AbstractController
 
                 Stripe::setApiKey('sk_test_51NibhTEctxRE8ZHzRSOxVx6iKTB7WP0MobKRL4IlWwtpmv7jkZ3ORBaS3zmprfTUVWrg6M4kxBrGdTUmTJikf7Xd00Up0YjBEr');
 
-                // Mettez à jour le prix de base du produit avec le prix de l'offre si l'utilisateur est le propriétaire
+                // Mettre à jour le prix de base du produit avec le prix de l'offre si l'utilisateur est le propriétaire
                 if ($this->getUser() === $offre->getProduits()->getUser()) {
                     $offre->getProduits()->setPrixOffre($offre->getPrix());
                 }
