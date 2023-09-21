@@ -53,7 +53,7 @@ class Offre
     private ?bool $notifStatus = null;
 
 
-    #[ORM\OneToMany(mappedBy: 'offre', targetEntity: Notification::class)]
+    #[ORM\OneToMany(mappedBy: 'offre', targetEntity: Notification::class, orphanRemoval: true)]
     private Collection $notifications;
 
     #[ORM\Column]
