@@ -246,6 +246,10 @@ box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
 .swiper-button-next:after, .swiper-button-prev:after{
 	@include primary-color;
 }
+
+.relative{
+	position: relative;
+}
 /* ----------------------------------------------------------------ENDFLEX- ----------------------------------------------------------------*/
 
 .bg-menu{

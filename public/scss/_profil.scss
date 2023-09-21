@@ -27,6 +27,39 @@
     padding: 1rem;
 }
 
+.notifications {
+        position: relative;
+        height: 148px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+    }
+
+    .tabs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: flex;
+        background-color: #f0f0f0;
+        z-index: 1;
+        /* Pour s'assurer que les onglets sont au-dessus du contenu */
+    }
+
+    .tab {
+        cursor: pointer;
+        padding: 10px;
+        margin-right: 10px;
+        border: 1px solid #ccc;
+        background-color: #f0f0f0;
+    }
+
+    .tab-content {
+        display: none;
+        transform: translateY(40px);
+        border-top: 1px solid black;
+
+    }
+
  .scroll-container {
       height: 160px;
        box-shadow: 0 4px 16px 0 rgba(0,0,0,.1);
