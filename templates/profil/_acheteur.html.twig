@@ -74,10 +74,14 @@
             {% if offre.isDeleted == 0 and app.user == offre.Users %}
             {% set offreTrouvee = true %}
             <li class="flex flex-col card-offer">
-
+                {% if offre.produits.images is not empty %}
                 {% set image = offre.produits.images.first() %}
                 <img src="{{ asset('uploads/images/' ~ offre.produits.images.first.nomImage) }}" height="auto"
                     width="80px" alt="Image de {{ image.nomImage }}">
+                {% else %}
+                <img src="{{ asset('uploads/images/defaut.jpg') }}" height="auto" width="80px" alt="Mon image" />
+                {% endif %}
+
                 <p>Produit : {{ offre.produits.nomProduit }}</p>
                 <p>Prix proposé : {{ offre.prix }}€</p>
                 <p>Prix initial : {{ offre.produits.prix }}€</p>
