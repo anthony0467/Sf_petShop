@@ -42,11 +42,11 @@ endblock %} {% block body %} {% if app.user %}
   </div>
 
 
+  <div>
+    {% include "profil/_vendeur.html.twig" %}
 
-  {% include "profil/_vendeur.html.twig" %}
-
-  {% include "profil/_acheteur.html.twig" %}
-
+    {% include "profil/_acheteur.html.twig" %}
+  </div>
 
 
   <h2>Mes annonces</h2>
@@ -136,33 +136,7 @@ endblock %} {% block body %} {% if app.user %}
 
 {% endif %}
 
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const notifications = document.querySelectorAll(".notification");
-
-    notifications.forEach(notification => {
-      const notificationId = notification.getAttribute("data-notification-id");
-      const isDefaultNotification = notification.textContent.includes("Offre en cours de traitement");
-
-      notification.addEventListener("click", function () {
-        if (!notification.classList.contains("read") && !isDefaultNotification) {
-          // Envoyer une requête AJAX pour marquer l'offre comme lue
-          fetch(`/marquer-offre-lue/${notificationId}`, {
-            method: "POST",
-            headers: {
-              "X-Requested-With": "XMLHttpRequest",
-              "Content-Type": "application/json"
-            }
-          });
-
-          // Marquer la notification comme lue visuellement
-          notification.classList.remove("bold");
-        }
-      });
-    });
-  });
-
-</script>
 <script src="{{ asset('js/popup.js') }}"></script>
+<script src="{{ asset('js/read.js')}}"></script>
 <script src="{{asset('js/profil.js')}}"></script>
 {% endblock %}

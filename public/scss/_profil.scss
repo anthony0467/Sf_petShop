@@ -32,6 +32,9 @@
         height: 148px;
         overflow-y: auto;
         border: 1px solid #ccc;
+        min-width: 280px;
+        background-color: white;
+        border-radius: 4px;
     }
 
     .tabs {
@@ -40,8 +43,8 @@
         left: 0;
         right: 0;
         display: flex;
-        background-color: #f0f0f0;
         z-index: 1;
+        background-color: #f0f0f0;
         /* Pour s'assurer que les onglets sont au-dessus du contenu */
     }
 
@@ -50,14 +53,22 @@
         padding: 10px;
         margin-right: 10px;
         border: 1px solid #ccc;
-        background-color: #f0f0f0;
+        border-bottom: none;
+        background-color: white;
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
     }
 
     .tab-content {
         display: none;
         transform: translateY(40px);
-        border-top: 1px solid black;
+        background-color: white;
+        box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
 
+    }
+
+    .notif-p{
+    padding: 1rem;
+    border-top: 1px solid #8080807d;
     }
 
  .scroll-container {
