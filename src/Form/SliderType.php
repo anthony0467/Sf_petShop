@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -60,6 +61,12 @@ class SliderType extends AbstractType
             ->add('nameButton', TextType::class, [
                 'label' => 'Nom du bouton(facultatif)',
                 'required' => false,
+                'constraints' => [
+                    new Length([
+                        'max' => 20,
+                        'maxMessage' => 'Le champ ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
             ])
             ->add('Valider', SubmitType::class, [
                 'attr' => ['class' => 'btn']
