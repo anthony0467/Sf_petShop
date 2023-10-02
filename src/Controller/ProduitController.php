@@ -253,7 +253,7 @@ class ProduitController extends AbstractController
 
 
 
-    #[Route('/changer-statut-offre/{id}/{statut}', name: 'changer_statut_offre')]
+    #[Route('/changer-statut-offre/{id}/{statut}', name: 'changer_statut_offre')] // changer le statut de l'offre 
     public function changerStatutOffre(ManagerRegistry $doctrine, Offre $offre, string $statut, MailerInterface $mailer): Response
     {
         // Vérifier que l'utilisateur connecté est bien le propriétaire de l'offre
@@ -318,7 +318,7 @@ class ProduitController extends AbstractController
 
 
 
-    #[Route('/marquer-offre-lue/{id}', name: 'marquer_offre_lue')]
+    #[Route('/marquer-offre-lue/{id}', name: 'marquer_offre_lue')] // offre lue 
     public function marquerOffreLue(Notification $notification, EntityManagerInterface $entityManager): Response
     {
         // Mettre à jour l'état isRead dans la base de données

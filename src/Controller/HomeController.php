@@ -93,7 +93,7 @@ class HomeController extends AbstractController
     }
 
 
-    #[Route('/pagination', name: 'app_pagination')]
+    #[Route('/pagination', name: 'app_pagination')] // pagination des produits
     public function pagination(ProduitRepository $Pr, Request $request, PaginatorInterface $paginator): JsonResponse
     {
         // Récupérer la page demandée depuis la requête
@@ -373,6 +373,7 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
     }
+
     #[Route('/error', name: 'error_page')] // page 404
     public function errorRedirection(): Response
     {

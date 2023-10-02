@@ -23,7 +23,7 @@ class CategorieController extends AbstractController
         ]);
     }
 
-    #[Route('/categorie/show/{slug}', name: 'show_categorie')] // afficher prodtuis par categorie
+    #[Route('/categorie/show/{slug}', name: 'show_categorie')] // afficher produits par categorie
     public function show(ManagerRegistry $doctrine, ProduitRepository $Pr, Categorie $categorie = null, Request $request): Response
     {
 

@@ -20,7 +20,7 @@ class ContactController extends AbstractController
         ]);
     }
 
-    #[Route('/contact/add', name: 'send_contact')]
+    #[Route('/contact/add', name: 'send_contact')] // envoyer un message contact
     public function send(Request $request, ManagerRegistry $doctrine): Response
     {
 
@@ -45,7 +45,7 @@ class ContactController extends AbstractController
         ]);
     }
 
-    #[Route('/contact/show/{id}', name: 'show_contact')]
+    #[Route('/contact/show/{id}', name: 'show_contact')] // detail du message contact
     public function show(Contact $contact, ManagerRegistry $doctrine): Response
     {
 
@@ -58,7 +58,7 @@ class ContactController extends AbstractController
         ]);
     }
 
-    #[Route('/contact/delete/{id}', name: 'delete_contact')]
+    #[Route('/contact/delete/{id}', name: 'delete_contact')] // supprimer un message contact
     public function delete(Contact $contact, ManagerRegistry $doctrine): Response
     {
 

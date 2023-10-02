@@ -27,14 +27,13 @@ class MessagesController extends AbstractController
         return $this->render('messages/sent.html.twig', []);
     }
 
-    #[Route('/send/{vendorId}', name: 'send')]
+    #[Route('/send/{vendorId}', name: 'send')] // envoyer un message
     public function send(Request $request, ManagerRegistry $doctrine, $vendorId): Response
     {
         $user = $this->getUser();
-
         $vendor = $doctrine->getRepository(User::class)->find($vendorId);
-        //dd($vendor);
         $message = new Messages();
+
         $form = $this->createForm(MessagesType::class, $message);
         $form->handleRequest($request);
 
@@ -61,7 +60,7 @@ class MessagesController extends AbstractController
         ]);
     }
 
-    #[Route('/messages/show/{id}', name: 'show_messages')]
+    #[Route('/messages/show/{id}', name: 'show_messages')] // detail message
     public function show(Messages $message, ManagerRegistry $doctrine): Response
     {
         $message->setIsRead(1);
@@ -72,7 +71,7 @@ class MessagesController extends AbstractController
         return $this->render('messages/show.html.twig', compact("message"));
     }
 
-    #[Route('/messages/delete/{id}', name: 'delete_messages')]
+    #[Route('/messages/delete/{id}', name: 'delete_messages')] // supprimer un message
     public function delete(Messages $message, ManagerRegistry $doctrine): Response
     {
 
