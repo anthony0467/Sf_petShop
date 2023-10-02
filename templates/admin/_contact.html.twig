@@ -16,7 +16,7 @@
                 <td>{{ contact.nom}}</td>
                 <td>{{contact.email}}</td>
                 <td>{{contact.sujet}}</td>
-                <td><a href="{{path('show_contact', {'id': contact.id })}}">Par ici</a></td>
+                <td><a href="{{path('show_contact', {'id': contact.id })}}">Voir le message</a></td>
                 <td><a href="{{path('delete_contact', {'id': contact.id })}}" class="delete-button">Supprimer</a></td>
             </tr>
             {% endfor %}
