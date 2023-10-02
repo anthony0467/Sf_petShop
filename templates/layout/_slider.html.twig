@@ -2,24 +2,19 @@
 <div class="swiper mySwiper">
   <div class="swiper-wrapper">
     {% for element in slide %}
-      {% for image in element.image %}
-        <div class="swiper-slide">
-          {% if element.description is not null %}
-            <div class="slider-pop-up">
-              <p>{{ element.description}}</p>
-              {% if element.url is not null %}
-              <a href="{{ element.url }}" class="btn">{{ element.nameButton}}</a>
-              {% endif %}
-          </div>
-          {% endif %}
-          <img
-            src="{{ asset('uploads/images/' ~ image.nomImage) }}"
-            alt="{{element.title}}"
-            width="100%"
-            height="400px"
-          />
-        </div>
-      {% endfor %}
+    {% for image in element.image %}
+    <div class="swiper-slide">
+      {% if element.description is not null %}
+      <div class="slider-pop-up">
+        <p>{{ element.description}}</p>
+        {% if element.url is not null %}
+        <a href="{{ element.url }}" class="btn">{{ element.nameButton}}</a>
+        {% endif %}
+      </div>
+      {% endif %}
+      <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" alt="{{element.title}}" width="100%" height="400px" />
+    </div>
+    {% endfor %}
     {% endfor %}
   </div>
   <div class="swiper-pagination"></div>
@@ -36,5 +31,6 @@
       delay: 2500, // Temps en millisecondes entre chaque slide
       disableOnInteraction: false, // Permet à l'autoplay de continuer même si l'utilisateur interagit avec le slider
     },
+    speed: 1000, // Ralentir la transition à 1 seconde (1000 millisecondes)
   });
 </script>
