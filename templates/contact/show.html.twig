@@ -5,8 +5,10 @@
 {% block body %}
 
 
-<div>
-    <h1>Formulaire de contact</h1>
+<div class="show-contact">
+    {% if is_granted('ROLE_ADMIN') %}
+
+    <h1>Message de {{ contact.nom}}</h1>
 
     <div>
         <p>De: {{ contact.nom}}</p>
@@ -15,7 +17,10 @@
         <p>Message: {{ contact.message }}</p>
     </div>
     <div class="mh-2">
-        <a href="" class="btn">Répondre par mail</a>
+        <a href="mailto:{{contact.email}}" class="btn">Répondre par mail</a>
     </div>
+    {% else %}
+    <p>Vous n'êtes pas autorisé à acceder au contenu de cette page.</p>
+    {% endif %}
 </div>
 {% endblock %}
