@@ -1433,9 +1433,6 @@ input[type=file]:valid ~ .file-label::after {
   max-width: 1050px;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 1rem;
 }
 
@@ -1469,6 +1466,16 @@ input[type=file]:valid ~ .file-label::after {
   justify-content: space-between;
   background: white;
   padding: 1rem;
+}
+
+.show-contact {
+  max-width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .container-send {
@@ -1686,7 +1693,7 @@ img {
 }
 
 .container {
-  min-height: 82.5vh;
+  min-height: 81.5vh;
 }
 
 .container-error {
