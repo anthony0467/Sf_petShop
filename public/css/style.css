@@ -12,11 +12,15 @@
 }
 
 #search_produit_Rechercher {
+  background-color: #c6538c;
+  border: 1px solid white;
+  color: white;
   transition: 0.35s;
 }
 #search_produit_Rechercher:hover {
-  background-color: blue;
-  color: white;
+  background-color: white;
+  border: 1px solid white;
+  color: #c6538c;
 }
 
 #last-article-container {
@@ -1085,12 +1089,8 @@ nav ul, nav li {
   margin-top: 5rem;
 }
 
-.card-other-product {
-  background-color: #c6538c;
-}
-
 .card-other-product figcaption p {
-  color: white;
+  color: #c6538c;
   font-style: italic;
 }
 
@@ -1693,7 +1693,7 @@ img {
 }
 
 .container {
-  min-height: 81.5vh;
+  min-height: 82.5vh;
 }
 
 .container-error {
@@ -1776,6 +1776,10 @@ img {
 
 .shadow-box {
   box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
+}
+
+.alert-danger {
+  color: red;
 }
 
 /*----------------------------------------------------------------FLEX- ----------------------------------------------------------------*/

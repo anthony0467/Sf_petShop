@@ -127,12 +127,10 @@
     
 }
 
-.card-other-product{
-    @include primary-background-color;
-}
+
 
 .card-other-product figcaption p{
-    color: white;
+    @include primary-color;
     font-style: italic;
 }
 

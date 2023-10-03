@@ -12,10 +12,14 @@
 }
 
 #search_produit_Rechercher{
+    @include primary-background-color;
+    border: 1px solid white;
+    color: white;
    transition: .35s;
    &:hover{
-    background-color: blue;
-    color: white;
+    background-color: white;
+    border: 1px solid white;
+    @include primary-color;
     }
 }
 
