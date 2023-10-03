@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -53,7 +54,13 @@ class ProduitType extends AbstractType
             ])
             ->add('nomProduit', TextType::class, [
                 'label' => 'Nom du produit',
-                'attr' => ['placeholder' => 'ex: croquettes']
+                'attr' => ['placeholder' => 'ex: croquettes'],
+                'constraints' => [
+                    new Length([
+                        'max' => 50,
+                        'maxMessage' => 'Le champ ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
             ])
             ->add('description', TextareaType::class, [
                 'attr' => ['placeholder' => 'ex: Sac de 5 kilos jamais utilisé', 'rows' => 5, 'cols' => 33]
@@ -69,7 +76,7 @@ class ProduitType extends AbstractType
                     'Occasion' => 'occasion',
                     'Usagés' => 'usagé',
                 ],
-                'required' => false, // Permet de ne pas rendre le champ obligatoire
+                'required' => true,
             ])
             /*->add('disponible', NumberType::class,  [
                 'attr' => [

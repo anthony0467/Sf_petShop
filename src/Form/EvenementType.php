@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -22,12 +23,32 @@ class EvenementType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('Titre', TextType::class)
+            ->add('Titre', TextType::class, [
+                'constraints' => [
+                    new Length([
+                        'max' => 150,
+                        'maxMessage' => 'Le champ ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
+            ])
             ->add('localisation', TextType::class, [
                 'attr' => ['placeholder' => 'Saisissez votre adresse ici'],
+                'constraints' => [
+                    new Length([
+                        'max' => 150,
+                        'maxMessage' => 'Le champ ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
             ])
             ->add('ville', TextType::class, [
                 'attr' => ['placeholder' => 'ex: Marseille'],
+                'constraints' => [
+                    new Length([
+                        'max' => 100,
+                        'maxMessage' => 'Le champ ne doit pas dépasser {{ limit }} caractères.',
+                    ]),
+                ],
+
             ])
             ->add('cp', TextType::class, [
                 'attr' => ['placeholder' => 'ex : 13000'],
