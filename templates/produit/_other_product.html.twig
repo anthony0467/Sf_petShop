@@ -1,0 +1,41 @@
+<div class="other-product-container">
+    <div>
+        <h2 class="text-center">Articles qui pourrait vous interessé</h2>
+    </div>
+    <div class="swiper mySwiper99 bg-white">
+        <div class="swiper-wrapper">
+            {% for produitCategorie in produit.categorie.produits %}
+
+            {% if produitCategorie.etat == true and produitCategorie.id != produit.id %} {# afficher si produit
+            valider
+            #}
+            <div class="swiper-slide bg-white">
+                <a href="{{ path('show_produit',{'slug':produitCategorie.slug })}}">
+                    <figure class="card-other-product">
+                        {% if produitCategorie.images is not empty %} {# si il y a une image #}
+
+                        <!--récupérer la 1er image uniquement -->
+                        {% set image = produitCategorie.images.first() %}
+                        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px"
+                            alt="Image de {{ image.nomImage }}">
+
+
+                        {% else %}
+                        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="200px"
+                            alt="Mon image">
+                        {% endif %}
+                        <figcaption>
+                            <p>{{ produitCategorie.nomProduit }}</p>
+                            <p>{{ produitCategorie.prix }} €</p>
+                        </figcaption>
+                    </figure>
+                </a>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+    </div>
+</div>

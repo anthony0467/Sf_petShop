@@ -14,53 +14,16 @@
 
 {% include "produit/_detail_produit.html.twig" %}
 
-{% include "produit/_avis_client.html.twig" %}
-
+<section id="avis-container">
+    {% include "produit/_avis_client.html.twig" %}
+</section>
 {% if produit.categorie.produits is not empty %}
 
+{% include "produit/_other_product.html.twig" %}
 
-<div class="other-product-container">
-    <div>
-        <h2 class="text-center">Articles qui pourrait vous interessé</h2>
-    </div>
-    <div class="swiper mySwiper99 bg-white">
-        <div class="swiper-wrapper">
-            {% for produitCategorie in produit.categorie.produits %}
-
-            {% if produitCategorie.etat == true and produitCategorie.id != produit.id %} {# afficher si produit
-            valider
-            #}
-            <div class="swiper-slide bg-white">
-                <a href="{{ path('show_produit',{'slug':produitCategorie.slug})}}">
-                    <figure class="card-other-product">
-                        {% if produitCategorie.images is not empty %} {# si il y a une image #}
-
-                        <!--récupérer la 1er image uniquement -->
-                        {% set image = produitCategorie.images.first() %}
-                        <img src="{{ asset('uploads/images/' ~ image.nomImage) }}" height="200" width="200px"
-                            alt="Image de {{ image.nomImage }}">
-
-
-                        {% else %}
-                        <img src="{{ asset('uploads/images/defaut.jpg') }}" height="200px" width="200px"
-                            alt="Mon image">
-                        {% endif %}
-                        <figcaption>
-                            <p>{{ produitCategorie.nomProduit }}</p>
-                            <p>{{ produitCategorie.prix }} €</p>
-                        </figcaption>
-                    </figure>
-                </a>
-            </div>
-            {% endif %}
-            {% endfor %}
-        </div>
-        <div class="swiper-button-next"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-pagination"></div>
-    </div>
-</div>
 {% endif %}
+
+
 
 <script>
     var swiper = new Swiper(".mySwiper99", {
@@ -83,8 +46,12 @@
             1024: {
                 slidesPerView: 3, // Deux diapositives sur tablette
             },
+            1250: {
+                slidesPerView: 4, // Deux diapositives sur tablette
+            },
         },
     });
 </script>
-
+<script src="{{asset('js/zoom.js')}}"></script>
+<script src="{{asset('js/paginationAvis.js')}}"></script>
 {% endblock %}
