@@ -4,6 +4,7 @@ namespace App\Controller;
 
 
 use Stripe\Stripe;
+use App\Entity\Avis;
 use App\Entity\User;
 use App\Entity\Offre;
 use App\Entity\Produit;
@@ -13,8 +14,11 @@ use App\Entity\Commande;
 use App\Entity\Categorie;
 use App\Entity\Notification;
 use Symfony\Component\Mime\Email;
+use App\Repository\AvisRepository;
+use App\Repository\ProduitRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,9 +37,20 @@ class ProduitController extends AbstractController
     }
 
     #[Route('/produit/show/{slug}', name: 'show_produit')] // vue detaillé du produit
-    public function show(ManagerRegistry $doctrine,  Produit $produit = null,): Response
+    public function show(ManagerRegistry $doctrine,  Produit $produit = null, Request $request, PaginatorInterface $paginator, AvisRepository $av): Response
     {
         $user = $this->getUser();
+        $vendeur = $produit->getUser(); // Récupérez le vendeur du produit
+        $avis = $av->findBy(['Vendeur' => $vendeur], ["id" => "DESC"]);
+        //dd($avis);
+
+        //pagination tous les avis
+        $paginationAvis = $paginator->paginate(
+            $avis,
+            $request->query->get('page', 1),
+            6
+        );
+
 
         //dd($produit->isIsSelling());
 
@@ -47,6 +62,8 @@ class ProduitController extends AbstractController
             return $this->render('produit/show.html.twig', [
                 'controller_name' => 'HomeController',
                 'produit' => $produit,
+                'avis' => $avis,
+                'paginations' => $paginationAvis,
 
 
 
@@ -55,6 +72,37 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
     }
+    #[Route('/pagination/produit/show/{slug}', name: 'app_pagination_avis')] // pagination des produits
+    public function pagination(ProduitRepository $produitRepository, Request $request, PaginatorInterface $paginator, AvisRepository $av): JsonResponse
+    {
+        // Récupérer la page demandée depuis la requête
+        $page = $request->query->getInt('page', 1);
+        // Récupérer le produit en fonction du slug
+        $slug = $request->attributes->get('slug');
+        $produit = $produitRepository->findOneBy(['slug' => $slug]);
+        $vendeur = $produit->getUser(); // Récupérez le vendeur du produit
+        $avis = $av->findBy(['Vendeur' => $vendeur], ["id" => "DESC"]);
+        // Nombre d'articles à afficher par page
+        $limit = 6;
+
+        // Effectuer la recherche en utilisant les paramètres
+        $pagination = $paginator->paginate(
+            $avis,
+            $page,
+            $limit
+        );
+
+        // Renvoyer les résultats paginés au format HTML
+        return $this->json([
+            'resultProduct' => $this->renderView('produit/_avis_client.html.twig', [
+                'paginations' => $pagination,
+                'produit' => $produit, // Passer le produit à la vue partielle
+            ])
+        ]);
+    }
+
+
+
 
 
     #[Route('/produit/order/{id}', name: 'show_order')] // vue de la commande

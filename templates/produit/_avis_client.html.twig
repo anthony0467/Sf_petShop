@@ -14,8 +14,81 @@
         <p>Voir le profil du vendeur:
             <a href="{{path('show_avis', {'vendorId': produit.user.id })}}">Par ici</a>
         </p>
-        <p class="avis">Avis vendeur : </p>
+        <!--<p class="avis">Avis vendeur : </p>
         <a href="{{path('add_avis', {'vendorId': produit.user.id })}}" class="btn-menu btn-pad">Donné nous votre avis
-            !</a>
+            !</a>-->
     </div>
+</div>
+<div>
+
+    <ul class="container-avis">
+        {% set hasComments = false %}
+        {% for commentaire in paginations %}
+
+        {% if produit.user == commentaire.vendeur %}
+        {% set hasComments = true %}
+        <li class="comment-product">
+            <div class="flex justify-between">
+                <p>De {{commentaire.users}}</p>
+                <p>{{commentaire.dateAvis | date('d/m/Y H:i:s')}}</p>
+            </div>
+            <p>Note :
+                {% for i in 1..5 %}
+                {% if i <= commentaire.note %} <i class="fa fa-star fa-star-filled"></i>
+                    {% else %}
+                    <i class="fa-regular fa-star fa-star-filled"></i>
+                    {% endif %}
+                    {% endfor %}
+            </p>
+            <p>{{ commentaire}}</p>
+            {% if app.user == commentaire.users.pseudo %}
+            <p class="text-right"><a
+                    href="{{path('delete_avis', {'id': commentaire.id, 'vendorId': commentaire.vendeur.id })}}"><i
+                        class="fa-sharp fa-solid fa-trash"></i></a></p>
+            {% endif %}
+
+            <!--{% if app.user == commentaire.vendeur %}
+        <p><a href="{{ path('add_reply', {'vendorId': commentaire.vendeur.id, 'parentId': commentaire.id}) }}"
+                class="btn" data-reply data-id="{{ commentaire.id }}">Répondre</a></p>
+        {% endif %} -->
+
+
+            <!-- Affichage des réponses -->
+            {% for reply in commentaire.getReponse() %}
+            {% if reply.actif == true %}
+            <ul class="reply">
+                <li class="comment">
+                    <div class="flex justify-between">
+                        <p>De {{reply.users}}</p>
+                        <p>{{reply.dateAvis | date('d/m/Y H:i:s')}}</p>
+                    </div>
+                    <p>{{ reply.commentaire }}</p>
+
+                    {% if reply.users.pseudo == app.user %}
+                    <p class="text-right"><a
+                            href="{{path('delete_reply', { 'vendorId': reply.vendeur.id, 'parentId' : reply.id})}}"><i
+                                class="fa-sharp fa-solid fa-trash"></i></a></p>
+                    {% endif %}
+
+
+                </li>
+                <!-- Affichez les autres informations de la réponse -->
+            </ul>
+
+            {% endif %}
+
+            {% endfor %}
+        </li>
+        {% endif %}
+
+        {% endfor %}
+    </ul>
+
+    {% if hasComments %}
+    {{knp_pagination_render(paginations)}}
+    {% endif %}
+
+
+
+
 </div>
