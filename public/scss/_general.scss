@@ -19,6 +19,7 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1.25;
 	background-color: rgb(242, 242, 242);
+	min-height: 100vh;
 }
 
 ol, ul, li {
@@ -85,7 +86,8 @@ img {
 }
 
 .container{
-	min-height: 82.5vh;
+	
+    min-height: 100vh;
 }
 
 .container-error{
@@ -173,6 +175,12 @@ box-shadow: 0 4px 16px 0 rgba(0, 0, 0, 0.1);
 	color: red;
 }
 
+.height-form{
+	min-height: 79vh;
+}
+.height-form-offre{
+	min-height: 84vh;
+}
 /*----------------------------------------------------------------FLEX- ----------------------------------------------------------------*/
 
 .flex{
