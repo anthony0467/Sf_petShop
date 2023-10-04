@@ -34,29 +34,31 @@
 </head>
 
 <body>
-  <!--Barre de recherche-->
-  <div id="menu-container">
-    {% include "layout/_navbar.html.twig" %}
 
-    <!--Menu-->
-    {% include "layout/_menu.html.twig" %}
+  <div class="container">
+    <!--Barre de recherche-->
+    <div id="menu-container">
+      {% include "layout/_navbar.html.twig" %}
+
+      <!--Menu-->
+      {% include "layout/_menu.html.twig" %}
+    </div>
+
+    {% for message in app.flashes("message") %}
+    <div class="custom-flash">
+      {{ message }}
+    </div>
+    {% endfor %}
+    {% block body %}{% endblock %}
+    <!--footer-->
+    {% include "layout/_footer.html.twig" %}
   </div>
 
-  {% for message in app.flashes("message") %}
-  <div class="custom-flash">
-    {{ message }}
-  </div>
-  {% endfor %}
-
-  <div class="container">{% block body %}{% endblock %}</div>
-
-  <!--footer-->
-  {% include "layout/_footer.html.twig" %}
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
     integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script src="{{ asset('js/app.js') }}"></script>
+
   <script src="{{asset('js/tarteaucitron/tarteaucitron.js')}}"></script>
   <script src="{{asset('js/tarteaucitron.js')}}"></script>
 </body>
