@@ -1081,6 +1081,26 @@ nav ul, nav li {
   padding: 0.5rem;
 }
 
+.container-avis {
+  max-width: 1250px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.comment-product {
+  margin: 1rem 0;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1098039216);
+}
+
+.comment-product * {
+  margin: 0.5rem 0;
+}
+
+.fa-star-filled {
+  color: #c6538c;
+}
+
 .other-product-container {
   max-width: 850px;
   margin-right: auto;
@@ -1281,7 +1301,6 @@ input[type=file]:valid ~ .file-label::after {
   max-width: 1050px;
   margin-left: auto;
   margin-right: auto;
-  display: flex;
   justify-content: center;
   align-items: center;
   padding: 1rem;
@@ -1625,6 +1644,7 @@ footer, header, hgroup, menu, nav, section {
 body {
   line-height: 1.25;
   background-color: rgb(242, 242, 242);
+  min-height: 100vh;
 }
 
 ol, ul, li {
@@ -1693,7 +1713,7 @@ img {
 }
 
 .container {
-  min-height: 82.5vh;
+  min-height: 100vh;
 }
 
 .container-error {
@@ -1780,6 +1800,14 @@ img {
 
 .alert-danger {
   color: red;
+}
+
+.height-form {
+  min-height: 79vh;
+}
+
+.height-form-offre {
+  min-height: 84vh;
 }
 
 /*----------------------------------------------------------------FLEX- ----------------------------------------------------------------*/
