@@ -23,7 +23,7 @@ USE `worldofpets`;
 CREATE TABLE IF NOT EXISTS `avis` (
   `id` int NOT NULL AUTO_INCREMENT,
   `note` int DEFAULT NULL,
-  `commentaire` longtext COLLATE utf8mb4_bin,
+  `commentaire` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin,
   `date_avis` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `actif` tinyint(1) NOT NULL,
   `users_id` int DEFAULT NULL,
@@ -36,70 +36,94 @@ CREATE TABLE IF NOT EXISTS `avis` (
   CONSTRAINT `FK_8F91ABF067B3B43D` FOREIGN KEY (`users_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_8F91ABF0727ACA70` FOREIGN KEY (`parent_id`) REFERENCES `avis` (`id`),
   CONSTRAINT `FK_8F91ABF0858C065E` FOREIGN KEY (`vendeur_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.avis : ~17 rows (environ)
+-- Listage des données de la table worldofpets.avis : ~23 rows (environ)
 INSERT INTO `avis` (`id`, `note`, `commentaire`, `date_avis`, `actif`, `users_id`, `parent_id`, `vendeur_id`) VALUES
-	(2, 3, 'aaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaa', '2023-06-10 10:40:35', 1, 2, NULL, 1),
+	(2, 3, 'L\'état n\'étais pas aussi bon que sur la photo', '2023-06-10 10:40:35', 1, 2, NULL, 1),
 	(3, 4, 'Bon vendeur, bravo', '2023-06-10 09:03:01', 1, 1, NULL, 6),
 	(4, 4, 'bon vendeur', '2023-06-11 09:16:28', 0, 1, NULL, 1),
 	(11, 4, 'excellent vendeur !!!!', '2023-06-18 09:19:16', 1, 1, NULL, 1),
 	(14, 5, 'Excellent confrère', '2023-06-18 18:15:17', 1, 1, NULL, 6),
-	(15, 5, 'merci !!', '2023-06-19 07:06:50', 1, 1, 2, 1),
-	(22, 5, 'asasas', '2023-06-25 09:52:50', 0, 1, NULL, 1),
-	(23, 5, 'saz&z&a', '2023-06-25 09:54:16', 0, 1, NULL, 1),
-	(28, 4, 'fggfgf', '2023-06-25 11:46:47', 0, 1, 2, 1),
+	(22, 5, 'Perfection', '2023-06-25 09:52:50', 0, 1, NULL, 1),
+	(23, 5, 'Parfait', '2023-06-25 09:54:16', 0, 1, NULL, 1),
+	(28, 4, 'Reçu tardivement mais produit nickel', '2023-06-25 11:46:47', 1, 1, 2, 1),
 	(31, 4, 'test 2', '2023-06-28 11:06:41', 1, 2, 14, 6),
-	(33, 1, 'sdqdqd', '2023-06-28 11:11:11', 1, 1, 14, 6),
+	(33, 1, 'Très mauvais vendeur', '2023-06-28 11:11:11', 1, 1, 14, 6),
 	(34, 4, 'nouveau test', '2023-06-28 12:21:18', 1, 1, 11, 1),
-	(35, NULL, 'dqdq', '2023-06-28 14:46:56', 1, 1, 2, 1),
-	(36, NULL, 'test', '2023-06-28 13:04:10', 1, 1, 11, 1),
-	(39, 5, 'dgs', '2023-06-28 13:07:00', 1, 1, NULL, 1),
-	(40, 4, 'quasi parfait', '2023-06-28 13:07:33', 1, 1, NULL, 1);
+	(39, 5, 'Rien à dire', '2023-06-28 13:07:00', 1, 1, NULL, 1),
+	(40, 4, 'quasi parfait', '2023-06-28 13:07:33', 1, 1, NULL, 1),
+	(41, 5, 'Incroyable', '2023-09-11 08:34:57', 1, 1, NULL, 2),
+	(42, 4, 'pas mal', '2023-09-11 09:13:47', 1, 1, NULL, 1),
+	(45, 5, 'excellent', '2023-09-14 12:06:18', 1, 28, NULL, 1),
+	(46, 4, 'bon vendeur', '2023-10-04 14:54:55', 1, 1, NULL, 2),
+	(47, 5, 'excellent', '2023-10-04 14:55:51', 1, 28, NULL, 2),
+	(48, 3, 'Moyen', '2023-10-04 14:56:18', 1, 34, NULL, 2),
+	(49, 5, 'article nickel, vendeur reactif', '2023-10-04 14:56:44', 1, 20, NULL, 2),
+	(50, 4, 'quasi parfait', '2023-10-04 14:57:14', 1, 39, NULL, 2),
+	(51, 5, 'parfait, rien à dire', '2023-10-04 14:58:18', 1, 14, NULL, 2),
+	(52, 5, 'Génial!!', '2023-10-04 15:44:09', 1, 1, NULL, 34);
 
 -- Listage de la structure de table worldofpets. categorie
 CREATE TABLE IF NOT EXISTS `categorie` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nom_categorie` varchar(50) COLLATE utf8mb4_bin NOT NULL,
-  `image_categorie` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `nom_categorie` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `image_categorie` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `slug` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table worldofpets.categorie : ~6 rows (environ)
-INSERT INTO `categorie` (`id`, `nom_categorie`, `image_categorie`) VALUES
-	(1, 'Chien', 'https://t3.ftcdn.net/jpg/03/90/12/30/360_F_390123053_dLdh2YggDNrXYlGP9OgBGfTdIwUKU2Hx.jpg'),
-	(2, 'Chat', 'https://icatcare.org/app/uploads/2019/02/CFC-website-banner-1920x660.jpg'),
-	(3, 'Rongeur', 'https://elliscountypest.com/wp-content/uploads/2017/03/banner-Mice-and-rat-control.jpg'),
-	(4, 'Poisson', 'https://hcas.nova.edu/_library/images/upgrade/nsu-halmos-sea-turtle-research-banner.jpg'),
-	(5, 'Oiseau', 'https://www.petlandiowacity.com/wp-content/uploads/2022/09/birds-for-sale-hero.jpg'),
-	(6, 'Reptile', 'https://www.gribblesvets.com.au/media/1470/reptile-banner-1.jpg');
+INSERT INTO `categorie` (`id`, `nom_categorie`, `image_categorie`, `slug`) VALUES
+	(1, 'Chien', 'https://t3.ftcdn.net/jpg/03/90/12/30/360_F_390123053_dLdh2YggDNrXYlGP9OgBGfTdIwUKU2Hx.jpg', 'Chien'),
+	(2, 'Chat', 'https://icatcare.org/app/uploads/2019/02/CFC-website-banner-1920x660.jpg', 'chat'),
+	(3, 'Rongeur', 'https://elliscountypest.com/wp-content/uploads/2017/03/banner-Mice-and-rat-control.jpg', 'rongeur'),
+	(4, 'Poisson', 'https://hcas.nova.edu/_library/images/upgrade/nsu-halmos-sea-turtle-research-banner.jpg', 'poisson'),
+	(5, 'Oiseau', 'https://www.petlandiowacity.com/wp-content/uploads/2022/09/birds-for-sale-hero.jpg', 'oiseau'),
+	(6, 'Reptile', 'https://www.gribblesvets.com.au/media/1470/reptile-banner-1.jpg', 'reptile');
 
 -- Listage de la structure de table worldofpets. commande
 CREATE TABLE IF NOT EXISTS `commande` (
   `id` int NOT NULL AUTO_INCREMENT,
   `date_commande` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `nom` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `prenom` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `adresse` varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `ville` varchar(30) COLLATE utf8mb4_bin NOT NULL,
-  `code_postal` varchar(20) COLLATE utf8mb4_bin NOT NULL,
+  `nom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `prenom` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `adresse` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `ville` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `code_postal` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `commander_id` int DEFAULT NULL,
   `produit_id` int DEFAULT NULL,
-  `message` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_sent` tinyint(1) NOT NULL,
-  `message_sent` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `message_sent` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_received` tinyint(1) NOT NULL,
+  `etat` int NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_6EEAA67DF347EFB` (`produit_id`),
   KEY `IDX_6EEAA67D3349A583` (`commander_id`),
   CONSTRAINT `FK_6EEAA67D3349A583` FOREIGN KEY (`commander_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_6EEAA67DF347EFB` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=111 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table worldofpets.commande : ~1 rows (environ)
-INSERT INTO `commande` (`id`, `date_commande`, `nom`, `prenom`, `adresse`, `ville`, `code_postal`, `commander_id`, `produit_id`, `message`, `is_sent`, `message_sent`, `is_received`) VALUES
-	(21, '2023-08-30 07:51:27', 'Doe', 'John', '34 rue du test', 'manosque', '04100', 1, 25, 'Félicitation! Le produit : "Jouet pour chat" a été vendu, merci de procéder rapidement à l\'envoi.', 0, 'Votre commande concernant "Jouet pour chat" à bien été envoyé.', 0),
-	(30, '2023-08-31 12:49:31', 'Doe', 'John', 'rue de la rue', 'manosque', '04100', 2, 62, 'Félicitation! Le produit : "Os jouet pour chien" a été vendu, merci de procéder rapidement à l\'envoi.', 1, 'Votre commande concernant "Os jouet pour chien" à bien été envoyé.', 1);
+INSERT INTO `commande` (`id`, `date_commande`, `nom`, `prenom`, `adresse`, `ville`, `code_postal`, `commander_id`, `produit_id`, `message`, `is_sent`, `message_sent`, `is_received`, `etat`) VALUES
+	(109, '2023-09-21 12:07:12', 'test', 'John', 'test', 'test', '04100', 1, 35, 'Félicitation! Le produit : "Lot de jouet pour chien" a été vendu, merci de procéder rapidement à l\'envoi.', 0, 'Votre commande est en cours de traitement', 0, 0),
+	(110, '2023-10-04 07:51:28', 'Spiteri', 'Anthony', '04100', 'Manosque', '04100', 1, 17, 'Félicitation! Le produit : "teste" a été vendu, merci de procéder rapidement à l\'envoi.', 0, 'Votre commande est en cours de traitement', 0, 0);
+
+-- Listage de la structure de table worldofpets. contact
+CREATE TABLE IF NOT EXISTS `contact` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nom` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `sujet` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+-- Listage des données de la table worldofpets.contact : ~2 rows (environ)
+INSERT INTO `contact` (`id`, `nom`, `email`, `sujet`, `message`) VALUES
+	(2, 'admin', 'admin@admin.fr', 'on continue les test', 'Ceci est un test pour voir si tout fonctionne correctement'),
+	(3, 'Anthony', 'antho04100m@gmail.com', 'teste depuis le formulaire', 'Je teste mon formulaire pour savoir s\'il fonctionne');
 
 -- Listage de la structure de table worldofpets. doctrine_migration_versions
 CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
@@ -118,17 +142,17 @@ INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_
 -- Listage de la structure de table worldofpets. evenement
 CREATE TABLE IF NOT EXISTS `evenement` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `titre` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `description` longtext COLLATE utf8mb4_bin NOT NULL,
+  `titre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `date_evenement` datetime NOT NULL,
-  `localisation` varchar(150) COLLATE utf8mb4_bin DEFAULT NULL,
+  `localisation` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `latitude` double DEFAULT NULL,
   `longitude` double DEFAULT NULL,
-  `ville` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
-  `cp` varchar(50) COLLATE utf8mb4_bin DEFAULT NULL,
-  `lien` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `ville` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `cp` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `lien` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table worldofpets.evenement : ~3 rows (environ)
 INSERT INTO `evenement` (`id`, `titre`, `description`, `date_evenement`, `localisation`, `latitude`, `longitude`, `ville`, `cp`, `lien`) VALUES
@@ -140,7 +164,7 @@ INSERT INTO `evenement` (`id`, `titre`, `description`, `date_evenement`, `locali
 CREATE TABLE IF NOT EXISTS `images` (
   `id` int NOT NULL AUTO_INCREMENT,
   `produit_id` int DEFAULT NULL,
-  `nom_image` varchar(255) COLLATE utf8mb4_bin NOT NULL,
+  `nom_image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `evenement_id` int DEFAULT NULL,
   `slider_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -150,9 +174,9 @@ CREATE TABLE IF NOT EXISTS `images` (
   CONSTRAINT `FK_E01FBE6A2CCC9638` FOREIGN KEY (`slider_id`) REFERENCES `slider` (`id`),
   CONSTRAINT `FK_E01FBE6AF347EFB` FOREIGN KEY (`produit_id`) REFERENCES `produit` (`id`),
   CONSTRAINT `FK_E01FBE6AFD02F13` FOREIGN KEY (`evenement_id`) REFERENCES `evenement` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.images : ~30 rows (environ)
+-- Listage des données de la table worldofpets.images : ~55 rows (environ)
 INSERT INTO `images` (`id`, `produit_id`, `nom_image`, `evenement_id`, `slider_id`) VALUES
 	(23, 21, 'e77cdbd69ff90b05c5e73274a4667194.jpg', NULL, NULL),
 	(30, 25, '23274fe85f87dbfe6d842131ad8ff3f9.jpg', NULL, NULL),
@@ -185,14 +209,37 @@ INSERT INTO `images` (`id`, `produit_id`, `nom_image`, `evenement_id`, `slider_i
 	(79, 40, 'b8fe7a78182ea390968ab4acef226d08.jpg', NULL, NULL),
 	(84, 45, '8261e4d832710493a23d3efe4a31d582.jpg', NULL, NULL),
 	(100, 61, 'b8c57ecfc036fab75f3522440fe2c6b2.jpg', NULL, NULL),
-	(101, 62, 'ecf903df2ececf628ad2fc0276ee9a71.jpg', NULL, NULL);
+	(101, 62, 'ecf903df2ececf628ad2fc0276ee9a71.jpg', NULL, NULL),
+	(109, 64, 'db214f1ac70fbc40f548e2e742cc3c5a.jpg', NULL, NULL),
+	(110, 65, 'aedff030f8cfc7b7b834ab40339305af.jpg', NULL, NULL),
+	(111, 66, 'dec0d4dc7ad514f15108da3954a093ab.jpg', NULL, NULL),
+	(112, 67, '02cb37ac17f1e938470cbce455eca0d7.jpg', NULL, NULL),
+	(113, 68, '04e92d9c8d0d19c980430abc93ceec96.jpg', NULL, NULL),
+	(114, 69, '8286c5b767cd3104e438e5dc9dc472ef.jpg', NULL, NULL),
+	(115, 70, '6f83dab4c1260dd4afd352ab38ec3434.jpg', NULL, NULL),
+	(116, 70, '5b39d7c699c18d307a942e253529390d.jpg', NULL, NULL),
+	(117, 70, 'e1e7281148945d72ea1bfc3c6b3e5d48.jpg', NULL, NULL),
+	(118, 71, 'ca148696f4aabf40419b1d003042decb.jpg', NULL, NULL),
+	(125, 75, '1d01a3ad091b57d72a9283faa62580a5.jpg', NULL, NULL),
+	(126, 75, '6a6a6caa82be8636f386f89676d97d94.jpg', NULL, NULL),
+	(127, 76, '0d5caae1f8bdbfdfbb7124d8804ad12f.jpg', NULL, NULL),
+	(128, 77, '0649cf6c745b27cf154b511aa640a86b.jpg', NULL, NULL),
+	(129, 78, '60942cf04e6de0ee9fd8f90e2646649a.jpg', NULL, NULL),
+	(130, 78, 'df7ce3e947ef8a91042c6e376fbd5cdc.jpg', NULL, NULL),
+	(131, 79, 'a3164f6a228c42bb4cd0e14204b73090.jpg', NULL, NULL),
+	(132, 80, 'd004080d8b64efd4cbb1c941ab77c6bb.jpg', NULL, NULL),
+	(133, 80, '789fea0d50ebd1d9c530ec46aa644f74.jpg', NULL, NULL),
+	(134, 81, '5ba6e96585ba2a5d1a8fb8dba8ee00cb.jpg', NULL, NULL),
+	(135, 81, '3c1143965ff5d059a835fa4597304d48.png', NULL, NULL),
+	(136, 81, '9caa03c6d6e49daf57ee06f35e6596e4.jpg', NULL, NULL),
+	(137, 82, '8832a87f690f7a1fcd186a958be697dd.jpg', NULL, NULL);
 
 -- Listage de la structure de table worldofpets. messages
 CREATE TABLE IF NOT EXISTS `messages` (
   `id` int NOT NULL AUTO_INCREMENT,
   `sender_id` int NOT NULL,
   `recipient_id` int NOT NULL,
-  `message` longtext COLLATE utf8mb4_bin NOT NULL,
+  `message` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `is_read` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
@@ -200,9 +247,9 @@ CREATE TABLE IF NOT EXISTS `messages` (
   KEY `IDX_DB021E96E92F8F78` (`recipient_id`),
   CONSTRAINT `FK_DB021E96E92F8F78` FOREIGN KEY (`recipient_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_DB021E96F624B39D` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.messages : ~18 rows (environ)
+-- Listage des données de la table worldofpets.messages : ~17 rows (environ)
 INSERT INTO `messages` (`id`, `sender_id`, `recipient_id`, `message`, `date`, `is_read`) VALUES
 	(1, 1, 2, 'teste', '2023-06-02 14:12:57', 1),
 	(5, 1, 6, 'coucou', '2023-06-02 13:05:37', 1),
@@ -216,13 +263,11 @@ INSERT INTO `messages` (`id`, `sender_id`, `recipient_id`, `message`, `date`, `i
 	(13, 6, 1, 'Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l\'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n\'a pas fait que survivre cinq siècles, mais s\'est aussi adapté à la bureautique informatique, sans que son contenu n\'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.', '2023-06-03 12:32:55', 1),
 	(14, 2, 1, 'coucou comment ça va ?', '2023-06-03 14:31:45', 0),
 	(16, 1, 2, 'test', '2023-06-04 09:44:55', 0),
-	(17, 1, 2, 'fqdqd', '2023-06-04 09:46:57', 0),
-	(18, 1, 2, 'dqdqd', '2023-06-04 09:49:38', 0),
-	(19, 1, 2, 'dqdqddq', '2023-06-04 09:51:09', 0),
-	(20, 1, 2, 'qdqdqd', '2023-06-04 09:51:48', 0),
 	(21, 1, 2, 'qdqdqd', '2023-06-04 09:54:50', 0),
-	(22, 1, 6, 'teste', '2023-07-19 08:35:55', 0),
-	(23, 1, 1, 'cucu', '2023-08-02 09:46:37', 0);
+	(23, 1, 1, 'cucu', '2023-08-02 09:46:37', 0),
+	(24, 1, 20, 'Bonjour, je fais un teste pour savoir si ma messagerie fonctionne', '2023-09-12 12:38:38', 1),
+	(25, 28, 1, 'teste suppression', '2023-09-14 12:18:46', 1),
+	(26, 1, 28, 'teste suppression ok', '2023-09-14 12:24:52', 1);
 
 -- Listage de la structure de table worldofpets. messenger_messages
 CREATE TABLE IF NOT EXISTS `messenger_messages` (
@@ -239,7 +284,7 @@ CREATE TABLE IF NOT EXISTS `messenger_messages` (
   KEY `IDX_75EA56E016BA31DB` (`delivered_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.messenger_messages : ~39 rows (environ)
+-- Listage des données de la table worldofpets.messenger_messages : ~42 rows (environ)
 INSERT INTO `messenger_messages` (`id`, `body`, `headers`, `queue_name`, `created_at`, `available_at`, `delivered_at`) VALUES
 	(1, 'O:36:\\"Symfony\\\\Component\\\\Messenger\\\\Envelope\\":2:{s:44:\\"\\0Symfony\\\\Component\\\\Messenger\\\\Envelope\\0stamps\\";a:1:{s:46:\\"Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\";a:1:{i:0;O:46:\\"Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\":1:{s:55:\\"\\0Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\0busName\\";s:21:\\"messenger.bus.default\\";}}}s:45:\\"\\0Symfony\\\\Component\\\\Messenger\\\\Envelope\\0message\\";O:51:\\"Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\":2:{s:60:\\"\\0Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\0message\\";O:39:\\"Symfony\\\\Bridge\\\\Twig\\\\Mime\\\\TemplatedEmail\\":4:{i:0;s:41:\\"registration/confirmation_email.html.twig\\";i:1;N;i:2;a:3:{s:9:\\"signedUrl\\";s:168:\\"https://127.0.0.1:8000/verify/email?expires=1682674930&signature=qhmYeZngd9npakCQ2YuSXVAl6E4%2FhD4om5vxyFlG6q4%3D&token=dP%2BB4uxftEvM06cSUi3AJvS9mQ8CDwvZ2F13axMZpLI%3D\\";s:19:\\"expiresAtMessageKey\\";s:26:\\"%count% hour|%count% hours\\";s:20:\\"expiresAtMessageData\\";a:1:{s:7:\\"%count%\\";i:1;}}i:3;a:6:{i:0;N;i:1;N;i:2;N;i:3;N;i:4;a:0:{}i:5;a:2:{i:0;O:37:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\":2:{s:46:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\0headers\\";a:3:{s:4:\\"from\\";a:1:{i:0;O:47:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\":5:{s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\";s:4:\\"From\\";s:56:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\";i:76;s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\";N;s:53:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\";s:5:\\"utf-8\\";s:58:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\0addresses\\";a:1:{i:0;O:30:\\"Symfony\\\\Component\\\\Mime\\\\Address\\":2:{s:39:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0address\\";s:21:\\"admin@worldofpets.com\\";s:36:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0name\\";s:10:\\"Admin Site\\";}}}}s:2:\\"to\\";a:1:{i:0;O:47:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\":5:{s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\";s:2:\\"To\\";s:56:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\";i:76;s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\";N;s:53:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\";s:5:\\"utf-8\\";s:58:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\0addresses\\";a:1:{i:0;O:30:\\"Symfony\\\\Component\\\\Mime\\\\Address\\":2:{s:39:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0address\\";s:14:\\"admin@admin.fr\\";s:36:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0name\\";s:0:\\"\\";}}}}s:7:\\"subject\\";a:1:{i:0;O:48:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\UnstructuredHeader\\":5:{s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\";s:7:\\"Subject\\";s:56:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\";i:76;s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\";N;s:53:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\";s:5:\\"utf-8\\";s:55:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\UnstructuredHeader\\0value\\";s:25:\\"Please Confirm your Email\\";}}}s:49:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\0lineLength\\";i:76;}i:1;N;}}}s:61:\\"\\0Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\0envelope\\";N;}}', '[]', 'default', '2023-04-28 08:42:11', '2023-04-28 08:42:11', NULL),
 	(2, 'O:36:\\"Symfony\\\\Component\\\\Messenger\\\\Envelope\\":2:{s:44:\\"\\0Symfony\\\\Component\\\\Messenger\\\\Envelope\\0stamps\\";a:1:{s:46:\\"Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\";a:1:{i:0;O:46:\\"Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\":1:{s:55:\\"\\0Symfony\\\\Component\\\\Messenger\\\\Stamp\\\\BusNameStamp\\0busName\\";s:21:\\"messenger.bus.default\\";}}}s:45:\\"\\0Symfony\\\\Component\\\\Messenger\\\\Envelope\\0message\\";O:51:\\"Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\":2:{s:60:\\"\\0Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\0message\\";O:39:\\"Symfony\\\\Bridge\\\\Twig\\\\Mime\\\\TemplatedEmail\\":4:{i:0;s:41:\\"registration/confirmation_email.html.twig\\";i:1;N;i:2;a:3:{s:9:\\"signedUrl\\";s:166:\\"https://127.0.0.1:8000/verify/email?expires=1682675256&signature=xZAOPTY69VAslRnFJ%2BNZkBrfXGozN3Ik4yZnys0o2CU%3D&token=EPl1uROy4wO8nFdCG4WusfuO1iSc1hulVTuVyw95S4w%3D\\";s:19:\\"expiresAtMessageKey\\";s:26:\\"%count% hour|%count% hours\\";s:20:\\"expiresAtMessageData\\";a:1:{s:7:\\"%count%\\";i:1;}}i:3;a:6:{i:0;N;i:1;N;i:2;N;i:3;N;i:4;a:0:{}i:5;a:2:{i:0;O:37:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\":2:{s:46:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\0headers\\";a:3:{s:4:\\"from\\";a:1:{i:0;O:47:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\":5:{s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\";s:4:\\"From\\";s:56:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\";i:76;s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\";N;s:53:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\";s:5:\\"utf-8\\";s:58:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\0addresses\\";a:1:{i:0;O:30:\\"Symfony\\\\Component\\\\Mime\\\\Address\\":2:{s:39:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0address\\";s:21:\\"admin@worldofpets.com\\";s:36:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0name\\";s:10:\\"Admin Site\\";}}}}s:2:\\"to\\";a:1:{i:0;O:47:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\":5:{s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\";s:2:\\"To\\";s:56:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\";i:76;s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\";N;s:53:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\";s:5:\\"utf-8\\";s:58:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\MailboxListHeader\\0addresses\\";a:1:{i:0;O:30:\\"Symfony\\\\Component\\\\Mime\\\\Address\\":2:{s:39:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0address\\";s:12:\\"test@test.fr\\";s:36:\\"\\0Symfony\\\\Component\\\\Mime\\\\Address\\0name\\";s:0:\\"\\";}}}}s:7:\\"subject\\";a:1:{i:0;O:48:\\"Symfony\\\\Component\\\\Mime\\\\Header\\\\UnstructuredHeader\\":5:{s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0name\\";s:7:\\"Subject\\";s:56:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lineLength\\";i:76;s:50:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0lang\\";N;s:53:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\AbstractHeader\\0charset\\";s:5:\\"utf-8\\";s:55:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\UnstructuredHeader\\0value\\";s:25:\\"Please Confirm your Email\\";}}}s:49:\\"\\0Symfony\\\\Component\\\\Mime\\\\Header\\\\Headers\\0lineLength\\";i:76;}i:1;N;}}}s:61:\\"\\0Symfony\\\\Component\\\\Mailer\\\\Messenger\\\\SendEmailMessage\\0envelope\\";N;}}', '[]', 'default', '2023-04-28 08:47:36', '2023-04-28 08:47:36', NULL),
@@ -288,32 +333,31 @@ INSERT INTO `messenger_messages` (`id`, `body`, `headers`, `queue_name`, `create
 CREATE TABLE IF NOT EXISTS `notification` (
   `id` int NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `message` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `offre_id` int DEFAULT NULL,
   `is_read` tinyint(1) NOT NULL,
   `user_id` int DEFAULT NULL,
-  `message_destinataire` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message_destinataire` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_BF5476CA4CC8505A` (`offre_id`),
   KEY `IDX_BF5476CAA76ED395` (`user_id`),
   CONSTRAINT `FK_BF5476CA4CC8505A` FOREIGN KEY (`offre_id`) REFERENCES `offre` (`id`),
   CONSTRAINT `FK_BF5476CAA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.notification : ~8 rows (environ)
+-- Listage des données de la table worldofpets.notification : ~11 rows (environ)
 INSERT INTO `notification` (`id`, `date`, `message`, `offre_id`, `is_read`, `user_id`, `message_destinataire`) VALUES
-	(18, '2023-08-24 08:33:27', 'Votre offre pour le produit "Niche pour oiseau" est en attente.', 59, 1, 2, 'Vous avez reçu une offre concernant le produit "Niche pour oiseau" '),
-	(19, '2023-08-24 08:33:50', 'Votre offre pour le produit "Graine pour oiseau" est en attente.', 60, 1, 2, 'Vous avez reçu une offre concernant le produit "Graine pour oiseau" '),
-	(20, '2023-08-24 08:34:08', 'Votre offre pour le produit "Vivarium serpent" est en attente.', 61, 1, 2, 'Vous avez reçu une offre concernant le produit "Vivarium serpent" '),
-	(21, '2023-08-24 08:36:48', 'Votre offre pour le produit "Niche pour oiseau" a été acceptée.', 59, 0, 2, 'Vous avez accepté l\'offre concernant le produit "Niche pour oiseau".'),
-	(24, '2023-08-30 12:17:52', 'Votre offre pour le produit "lot de jouets pour chat" est en attente.', 62, 0, 2, 'Vous avez reçu une offre concernant le produit "lot de jouets pour chat" '),
-	(25, '2023-08-30 12:20:15', 'Votre offre pour le produit "stripe test" est en attente.', 63, 0, 2, 'Vous avez reçu une offre concernant le produit "stripe test" '),
-	(26, '2023-08-30 12:20:56', 'Votre offre pour le produit "Lot de jouet pour chien" est en attente.', 64, 0, 2, 'Vous avez reçu une offre concernant le produit "Lot de jouet pour chien" '),
-	(27, '2023-08-30 12:23:11', 'Votre offre pour le produit "Cage pour souris" est en attente.', 65, 1, 2, 'Vous avez reçu une offre concernant le produit "Cage pour souris" '),
-	(28, '2023-08-30 13:16:07', 'Votre offre pour le produit "Lot de jouet pour chien" est en attente.', 66, 0, 19, 'Vous avez reçu une offre concernant le produit "Lot de jouet pour chien" '),
-	(29, '2023-08-30 13:26:51', 'Votre offre pour le produit "stripe test" est en attente.', 67, 0, 19, 'Vous avez reçu une offre concernant le produit "stripe test" '),
-	(30, '2023-08-30 13:30:27', 'Votre offre pour le produit "Niche pour oiseau" est en attente.', 68, 0, 19, 'Vous avez reçu une offre concernant le produit "Niche pour oiseau" '),
-	(31, '2023-08-30 13:32:02', 'Votre offre pour le produit "Vivarium serpent" est en attente.', 69, 0, 19, 'Vous avez reçu une offre concernant le produit "Vivarium serpent" ');
+	(35, '2023-09-06 08:16:13', 'Votre offre pour le produit "Niche pour oiseau" est en attente.', 71, 1, 2, 'Vous avez reçu une offre concernant le produit "Niche pour oiseau" '),
+	(36, '2023-09-06 08:17:09', 'Votre offre pour le produit "Niche pour oiseau" a été acceptée.', 71, 1, 2, 'Vous avez accepté l\'offre concernant le produit "Niche pour oiseau".'),
+	(37, '2023-09-11 07:53:24', 'Votre offre pour le produit "Jouet pour chat" est en attente.', 72, 1, 1, 'Vous avez reçu une offre concernant le produit "Jouet pour chat" '),
+	(38, '2023-09-11 07:54:30', 'Votre offre pour le produit "Lot de jouet pour chien" est en attente.', 73, 1, 1, 'Vous avez reçu une offre concernant le produit "Lot de jouet pour chien" '),
+	(39, '2023-09-11 08:23:48', 'Votre offre pour le produit "Lot de jouet pour chien" a été acceptée.', 73, 1, 1, 'Vous avez accepté l\'offre concernant le produit "Lot de jouet pour chien".'),
+	(40, '2023-09-11 13:36:30', 'Votre offre pour le produit "Paquet de croquette neuf" est en attente.', 74, 0, 20, 'Vous avez reçu une offre concernant le produit "Paquet de croquette neuf" '),
+	(42, '2023-09-14 14:30:45', 'Votre offre pour le produit "Jouet pour chat" est en attente.', 76, 1, 34, 'Vous avez reçu une offre concernant le produit "Jouet pour chat" '),
+	(44, '2023-09-21 12:29:38', 'Votre offre pour le produit "Jouet pour chat" a été refusée.', 72, 1, 1, 'Vous avez refusé l\'offre concernant le produit "Jouet pour chat".'),
+	(45, '2023-09-21 12:35:57', 'Votre offre pour le produit "Jouet pour chat" est en attente.', 78, 0, 1, 'Vous avez reçu une offre concernant le produit "Jouet pour chat" '),
+	(46, '2023-09-21 12:36:10', 'Votre offre pour le produit "Jouet pour chat" a été refusée.', 78, 1, 1, 'Vous avez refusé l\'offre concernant le produit "Jouet pour chat".'),
+	(47, '2023-09-21 14:33:04', 'Votre offre pour le produit "Aquarium" est en attente.', 79, 1, 2, 'Vous avez reçu une offre concernant le produit "Aquarium" ');
 
 -- Listage de la structure de table worldofpets. offre
 CREATE TABLE IF NOT EXISTS `offre` (
@@ -330,80 +374,94 @@ CREATE TABLE IF NOT EXISTS `offre` (
   KEY `IDX_AF86866F67B3B43D` (`users_id`),
   CONSTRAINT `FK_AF86866F67B3B43D` FOREIGN KEY (`users_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_AF86866FCD11A2CF` FOREIGN KEY (`produits_id`) REFERENCES `produit` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.offre : ~11 rows (environ)
+-- Listage des données de la table worldofpets.offre : ~8 rows (environ)
 INSERT INTO `offre` (`id`, `produits_id`, `prix`, `date`, `statut`, `users_id`, `notif_status`, `is_deleted`) VALUES
-	(59, 40, 12, '2023-08-24 08:33:27', 1, 2, 0, 0),
-	(60, 39, 12, '2023-08-24 08:33:50', 0, 2, 0, 0),
-	(61, 38, 60, '2023-08-24 08:34:08', 0, 2, 0, 0),
-	(62, 34, 8, '2023-08-30 12:17:52', 0, 2, 0, 0),
-	(63, 45, 8, '2023-08-30 12:20:15', 0, 2, 0, 0),
-	(64, 35, 7, '2023-08-30 12:20:56', 0, 2, 0, 0),
-	(65, 28, 25, '2023-08-30 12:23:10', 0, 2, 0, 0),
-	(66, 35, 12, '2023-08-30 13:16:07', 0, 19, 0, 0),
 	(67, 45, 8, '2023-08-30 13:26:51', 0, 19, 0, 0),
-	(68, 40, 10, '2023-08-30 13:30:27', 0, 19, 0, 0),
-	(69, 38, 75, '2023-08-30 13:32:02', 0, 19, 0, 0);
+	(71, 40, 15, '2023-09-06 08:16:13', 1, 2, 0, 0),
+	(72, 25, 12, '2023-09-11 07:53:24', 2, 1, 0, 1),
+	(73, 35, 8, '2023-09-11 07:54:30', 1, 1, 0, 0),
+	(74, 26, 15, '2023-09-11 13:36:30', 0, 20, 0, 0),
+	(76, 25, 10, '2023-09-14 14:30:45', 0, 34, 0, 0),
+	(78, 25, 7, '2023-09-21 12:35:57', 2, 1, 0, 1),
+	(79, 32, 10, '2023-09-21 14:33:04', 0, 2, 0, 0);
 
 -- Listage de la structure de table worldofpets. produit
 CREATE TABLE IF NOT EXISTS `produit` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `nom_produit` varchar(50) COLLATE utf8mb4_bin NOT NULL,
-  `description` longtext COLLATE utf8mb4_bin NOT NULL,
+  `nom_produit` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `prix` decimal(10,2) NOT NULL,
   `disponible` int NOT NULL,
   `categorie_id` int NOT NULL,
   `date_creation_produit` datetime DEFAULT CURRENT_TIMESTAMP,
   `etat` tinyint(1) NOT NULL,
-  `statut` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `stripe_product_id` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `stripe_price_id` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
+  `statut` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `stripe_product_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `stripe_price_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `is_selling` tinyint(1) NOT NULL,
+  `prix_offre` decimal(10,2) DEFAULT NULL,
+  `slug` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `image_show` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `IDX_29A5EC27A76ED395` (`user_id`),
   KEY `IDX_29A5EC27BCF5E72D` (`categorie_id`),
   FULLTEXT KEY `IDX_29A5EC27DC2AE7EF6DE44026` (`nom_produit`,`description`),
   CONSTRAINT `FK_29A5EC27A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
   CONSTRAINT `FK_29A5EC27BCF5E72D` FOREIGN KEY (`categorie_id`) REFERENCES `categorie` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=63 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.produit : ~19 rows (environ)
-INSERT INTO `produit` (`id`, `user_id`, `nom_produit`, `description`, `prix`, `disponible`, `categorie_id`, `date_creation_produit`, `etat`, `statut`, `stripe_product_id`, `stripe_price_id`, `is_selling`) VALUES
-	(17, 1, 'teste', 'sffs', 14.00, 1, 1, '2023-05-09 13:03:51', 1, 'neuf', NULL, 'price_1NizvAEctxRE8ZHzOTMxZdXg', 0),
-	(21, 1, 'teste', 'qsqqx', 40.00, 1, 1, '2023-05-09 11:48:22', 1, 'usage', NULL, 'price_1NizwDEctxRE8ZHzQZWe2QU5', 0),
-	(24, 1, 'Lots de poissons', 'Morbi hendrerit ut diam vel vestibulum. Nunc aliquam porttitor lorem, id commodo velit euismod et. Vivamus imperdiet elementum ex, vel bibendum nisi laoreet ut. Morbi cursus euismod rhoncus. Curabitur quis turpis eu sem imperdiet cursus at ac leo. Sed malesuada dictum nunc vel mollis. Vivamus tempor mollis sem ac pulvinar. Donec ullamcorper velit ac ex tincidunt, at interdum ipsum lobortis. Praesent dapibus ultrices nisl, at sodales justo sagittis et. Praesent euismod mauris eu cursus placerat. Donec vitae nulla ac tellus tristique dignissim at vel ligula. Curabitur vulputate mollis metus in commodo. Sed sed ex in elit porta mollis.', 39.00, 1, 4, '2023-05-11 08:00:48', 1, 'neuf', NULL, 'price_1NizsFEctxRE8ZHzHW9tdJaC', 0),
-	(25, 2, 'Jouet pour chat', 'Phasellus auctor egestas felis, non eleifend lacus porttitor sed. Duis sodales tristique dolor, vel rhoncus risus tempus fringilla. Ut at pretium orci. Mauris bibendum, velit vitae sodales aliquet, sem nunc lobortis odio, quis vulputate diam est et odio. Praesent facilisis finibus elit ac faucibus. Donec condimentum quam a neque venenatis pharetra. Vivamus ligula tortor, tincidunt vel felis in, molestie ornare turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi nec metus at velit maximus laoreet. Pellentesque eros orci, feugiat at metus ac, fringilla posuere quam. Proin a convallis quam.', 18.00, 1, 2, '2023-05-05 12:49:51', 1, 'neuf', NULL, 'price_1NizpEEctxRE8ZHz9ZG3sNN8', 1),
-	(26, 6, 'Paquet de croquette neuf', 'Bonjour, je vend un paquet de croquette pour chat neuf.  Prix neuf 19 euros.', 14.50, 1, 2, '2023-05-05 13:18:35', 1, 'neuf', NULL, 'price_1NiztBEctxRE8ZHzta0hhw79', 0),
-	(27, 1, 'Cage à oiseaux', 'Cage à oiseaux bblablabla', 28.00, 1, 5, '2023-05-09 11:51:38', 1, 'occasion', NULL, 'price_1NizyMEctxRE8ZHzcO5UCBVb', 0),
-	(28, 1, 'Cage pour souris', 'Morbi cursus, ex sit amet molestie aliquam, orci erat consectetur tortor, semper dignissim libero enim non ligula. Curabitur vel mi id eros scelerisque tincidunt non a eros. Pellentesque sed vehicula nisl. Vivamus sit amet sapien non augue faucibus lobortis et quis orci. Mauris turpis diam, semper non ex nec, laoreet venenatis est. Nullam malesuada erat eget feugiat dignissim. Pellentesque eget tortor magna.', 39.00, 2, 3, '2023-05-09 09:08:47', 1, 'neuf', NULL, 'price_1NizkaEctxRE8ZHzTjH7mEPm', 0),
-	(30, 1, 'teste', 'ceci est un teste', 18.00, 1, 2, '2023-05-10 12:40:32', 1, 'occasion', NULL, 'price_1Nizx3EctxRE8ZHzR8fi7JUi', 0),
-	(32, 1, 'Aquarium', 'aquarium peut utilisé', 18.00, 1, 4, '2023-05-11 08:11:51', 1, 'occasion', NULL, 'price_1NizjnEctxRE8ZHzevsJOw5g', 0),
-	(34, 1, 'lot de jouets pour chat', 'Plein de petit jouets pour que votre chat dépense son énergie !!', 12.00, 1, 2, '2023-08-01 08:02:52', 1, 'occasion', NULL, 'price_1Nizu8EctxRE8ZHzQ4pCrRnU', 0),
-	(35, 1, 'Lot de jouet pour chien', 'Plein de jouets pour que votre chien se dépense', 15.00, 1, 1, '2023-08-01 08:04:17', 1, 'neuf', NULL, 'price_1NizqSEctxRE8ZHz65WjbAAK', 0),
-	(36, 1, 'Croquette pour chien', 'Paquet de croquette 18 kilos gamm vert. Le paquet n\'a jamais était ouvert', 20.00, 1, 1, '2023-08-01 08:09:12', 1, 'neuf', NULL, 'price_1Nizn1EctxRE8ZHzOvI0bvH9', 0),
-	(37, 1, 'Croquette ultima', 'Un paquet de croquette pour chat stérilisé  de marque ultima. Le paquet à été ouvert une fois mais le paquet est complet. date de péremption ok.', 15.00, 1, 2, '2023-08-01 08:12:05', 1, 'neuf', NULL, 'price_1NizoJEctxRE8ZHzDJnhwiBc', 0),
-	(38, 1, 'Vivarium serpent', 'Vivarium pour serpent ou autre reptile en très bonne état.', 110.00, 1, 6, '2023-08-01 08:16:43', 1, 'occasion', NULL, 'price_1NizhzEctxRE8ZHzfNNIlPiV', 0),
-	(39, 1, 'Graine pour oiseau', 'Paquet de graine pour oiseau jamais ouvert', 6.00, 1, 5, '2023-08-01 08:20:04', 1, 'neuf', NULL, 'price_1NizfOEctxRE8ZHzFHwSmfzh', 0),
-	(40, 1, 'Niche pour oiseau', 'Niche pour oiseau en pin FSC, finition petits rondins. A poser ou suspendre.', 20.00, 1, 5, '2023-08-01 08:22:16', 1, 'neuf', NULL, 'price_1NizcTEctxRE8ZHzuSpR1AxM', 0),
-	(45, 1, 'stripe test', 'je teste stripe', 10.00, 0, 2, '2023-08-25 12:36:57', 1, 'neuf', 'prod_OW1IJir92MNbNv', 'price_1NizG3EctxRE8ZHzc6KWmNbX', 0),
-	(61, 2, 'Canard en peluche', 'doudou pour votre toutou', 6.00, 1, 1, '2023-08-30 11:42:58', 1, 'neuf', 'prod_OXsYN0YStlBDG1', 'price_1NkmnYEctxRE8ZHzI7FjKikX', 0),
-	(62, 1, 'Os jouet pour chien', 'Je vend un os en jouet pour votre compagnon à poil. Il n\'a jamais servi.', 6.00, 1, 1, '2023-08-31 11:56:29', 1, 'neuf', 'prod_OYG05TPbeq1vZ3', 'price_1Nl9UDEctxRE8ZHz7HfofQKv', 1);
+-- Listage des données de la table worldofpets.produit : ~33 rows (environ)
+INSERT INTO `produit` (`id`, `user_id`, `nom_produit`, `description`, `prix`, `disponible`, `categorie_id`, `date_creation_produit`, `etat`, `statut`, `stripe_product_id`, `stripe_price_id`, `is_selling`, `prix_offre`, `slug`, `image_show`) VALUES
+	(17, 1, 'teste', 'sffs', 14.00, 1, 1, '2023-05-09 13:03:51', 1, 'neuf', NULL, 'price_1NizvAEctxRE8ZHzOTMxZdXg', 1, NULL, 'teste', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(21, 1, 'teste', 'qsqqx', 40.00, 1, 1, '2023-05-09 11:48:22', 1, 'usage', NULL, 'price_1NizwDEctxRE8ZHzQZWe2QU5', 0, NULL, 'teste2', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(24, 1, 'Lots de poissons', 'Morbi hendrerit ut diam vel vestibulum. Nunc aliquam porttitor lorem, id commodo velit euismod et. Vivamus imperdiet elementum ex, vel bibendum nisi laoreet ut. Morbi cursus euismod rhoncus. Curabitur quis turpis eu sem imperdiet cursus at ac leo. Sed malesuada dictum nunc vel mollis. Vivamus tempor mollis sem ac pulvinar. Donec ullamcorper velit ac ex tincidunt, at interdum ipsum lobortis. Praesent dapibus ultrices nisl, at sodales justo sagittis et. Praesent euismod mauris eu cursus placerat. Donec vitae nulla ac tellus tristique dignissim at vel ligula. Curabitur vulputate mollis metus in commodo. Sed sed ex in elit porta mollis.', 39.00, 1, 4, '2023-05-11 08:00:48', 1, 'neuf', NULL, 'price_1NizsFEctxRE8ZHzHW9tdJaC', 0, NULL, 'Lots-de-poissons', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(25, 2, 'Jouet pour chat', 'Phasellus auctor egestas felis, non eleifend lacus porttitor sed. Duis sodales tristique dolor, vel rhoncus risus tempus fringilla. Ut at pretium orci. Mauris bibendum, velit vitae sodales aliquet, sem nunc lobortis odio, quis vulputate diam est et odio. Praesent facilisis finibus elit ac faucibus. Donec condimentum quam a neque venenatis pharetra. Vivamus ligula tortor, tincidunt vel felis in, molestie ornare turpis. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi nec metus at velit maximus laoreet. Pellentesque eros orci, feugiat at metus ac, fringilla posuere quam. Proin a convallis quam.', 18.00, 1, 2, '2023-05-05 12:49:51', 1, 'neuf', NULL, 'price_1NizpEEctxRE8ZHz9ZG3sNN8', 0, NULL, 'Jouet-pour-chat', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(26, 6, 'Paquet de croquette neuf', 'Bonjour, je vend un paquet de croquette pour chat neuf.  Prix neuf 19 euros.', 14.50, 1, 2, '2023-05-05 13:18:35', 1, 'neuf', NULL, 'price_1NiztBEctxRE8ZHzta0hhw79', 0, NULL, 'Paquet-de-croquette-neuf', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(27, 1, 'Cage à oiseaux', 'Cage à oiseaux bblablabla', 28.00, 1, 5, '2023-05-09 11:51:38', 1, 'occasion', NULL, 'price_1NizyMEctxRE8ZHzcO5UCBVb', 0, NULL, 'Cage-à-oiseaux', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(28, 1, 'Cage pour souris', 'Morbi cursus, ex sit amet molestie aliquam, orci erat consectetur tortor, semper dignissim libero enim non ligula. Curabitur vel mi id eros scelerisque tincidunt non a eros. Pellentesque sed vehicula nisl. Vivamus sit amet sapien non augue faucibus lobortis et quis orci. Mauris turpis diam, semper non ex nec, laoreet venenatis est. Nullam malesuada erat eget feugiat dignissim. Pellentesque eget tortor magna.', 39.00, 2, 3, '2023-05-09 09:08:47', 1, 'neuf', NULL, 'price_1NizkaEctxRE8ZHzTjH7mEPm', 0, NULL, 'Cage-pour-souris', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(30, 1, 'teste', 'ceci est un teste', 18.00, 1, 2, '2023-05-10 12:40:32', 1, 'occasion', NULL, 'price_1Nizx3EctxRE8ZHzR8fi7JUi', 0, NULL, 'teste3', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(32, 1, 'Aquarium', 'aquarium peut utilisé', 18.00, 1, 4, '2023-05-11 08:11:51', 1, 'occasion', NULL, 'price_1NizjnEctxRE8ZHzevsJOw5g', 0, NULL, 'Aquarium', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(34, 1, 'lot de jouets pour chat', 'Plein de petit jouets pour que votre chat dépense son énergie !!', 12.00, 1, 2, '2023-08-01 08:02:52', 1, 'occasion', NULL, 'price_1Nizu8EctxRE8ZHzQ4pCrRnU', 0, 8.00, 'lot-de-jouets-pour-chat', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(35, 1, 'Lot de jouet pour chien', 'Plein de jouets pour que votre chien se dépense', 15.00, 1, 1, '2023-08-01 08:04:17', 1, 'neuf', NULL, 'price_1NizqSEctxRE8ZHz65WjbAAK', 0, 8.00, 'Lot-de-jouet-pour-chien', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(36, 1, 'Croquette pour chien', 'Paquet de croquette 18 kilos gamm vert. Le paquet n\'a jamais était ouvert', 20.00, 1, 1, '2023-08-01 08:09:12', 1, 'neuf', NULL, 'price_1Nizn1EctxRE8ZHzOvI0bvH9', 0, NULL, 'Croquette-pour-chien', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(37, 1, 'Croquette ultima', 'Un paquet de croquette pour chat stérilisé  de marque ultima. Le paquet à été ouvert une fois mais le paquet est complet. date de péremption ok.', 15.00, 1, 2, '2023-08-01 08:12:05', 1, 'neuf', NULL, 'price_1NizoJEctxRE8ZHzDJnhwiBc', 0, NULL, 'Croquette-ultima', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(38, 1, 'Vivarium serpent', 'Vivarium pour serpent ou autre reptile en très bonne état.', 110.00, 1, 6, '2023-08-01 08:16:43', 1, 'occasion', NULL, 'price_1NizhzEctxRE8ZHzfNNIlPiV', 0, NULL, 'Vivarium-serpent', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(39, 1, 'Graine pour oiseau', 'Paquet de graine pour oiseau jamais ouvert', 12.00, 1, 5, '2023-08-01 08:20:04', 1, 'neuf', NULL, 'price_1NizfOEctxRE8ZHzFHwSmfzh', 0, NULL, 'Graine-pour-oiseau', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(40, 1, 'Niche pour oiseau', 'Niche pour oiseau en pin FSC, finition petits rondins. A poser ou suspendre.', 20.00, 1, 5, '2023-09-01 12:22:30', 1, 'neuf', 'prod_OYde1g7NxjGJ0i', 'price_1NlWMvEctxRE8ZHzVCASBUya', 0, 15.00, 'Niche-pour-oiseau', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(45, 1, 'stripe test', 'je teste stripe', 10.00, 1, 2, '2023-08-25 12:36:57', 1, 'neuf', 'prod_OW1IJir92MNbNv', 'price_1NizG3EctxRE8ZHzc6KWmNbX', 0, NULL, 'stripe-test', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(61, 2, 'Canard en peluche', 'doudou pour votre toutou', 6.00, 1, 1, '2023-08-30 11:42:58', 1, 'neuf', 'prod_OXsYN0YStlBDG1', 'price_1NkmnYEctxRE8ZHzI7FjKikX', 0, NULL, 'Canard-en-peluche', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(62, 1, 'Os jouet pour chien', 'Je vend un os en jouet pour votre compagnon à poil. Il n\'a jamais servi.', 6.00, 1, 1, '2023-08-31 11:56:29', 1, 'neuf', 'prod_OYG05TPbeq1vZ3', 'price_1Nl9UDEctxRE8ZHz7HfofQKv', 0, NULL, 'Os- jouet pour-chien', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(63, 1, 'test', 'test', 5.00, 1, 1, '2023-09-01 07:09:39', 0, 'neuf', 'prod_OYYbgRSOMh4evj', 'price_1NlRU8EctxRE8ZHztiuZ3LXD', 0, NULL, 'test', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(68, 1, 'jouet pour chien', 'teste', 4.00, 1, 1, '2023-09-07 12:00:35', 1, 'neuf', 'prod_OaseX7sDcgtT4J', 'price_1Nngt0EctxRE8ZHzT9JzuNh9', 0, NULL, 'jouet-pour-chien-70caac', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(69, 1, 'jouet pour chien', 'teste', 6.00, 1, 1, '2023-09-07 12:02:09', 1, 'neuf', 'prod_OasfDRwHEAAObn', 'price_1NnguVEctxRE8ZHzYmxSZOqj', 0, NULL, 'jouet-pour-chien-ad48e4', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(70, 6, 'Nourriture pour tortue', 'Plusieurs box de nourriture pour tortues', 25.00, 1, 6, '2023-09-11 12:03:17', 1, 'neuf', 'prod_OcNbYhhFR3iPk7', 'price_1Np8ppEctxRE8ZHzpoWoQchW', 0, NULL, 'nourriture-pour-tortue-5f49ee', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(71, 20, 'Tapis rafraichissant pour chat', 'Tapis rafraichissant pour chat. Il suffit de remplir le réservoir d\'eau et peu également être placé au frigo quelques minutes.', 25.00, 1, 2, '2023-09-11 13:44:34', 1, 'occasion', 'prod_OcPEFuuxeihuHH', 'price_1NpAPqEctxRE8ZHzYnqHnIRa', 0, NULL, 'tapis-rafraichissant-pour-chat-90ed4d', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(75, 34, 'Nourriture pour hamster', 'Lots de paquets de nourriture pour hamsters. Jamais ouvert', 9.00, 1, 3, '2023-09-18 08:36:22', 1, 'neuf', 'prod_Oewqtz35XDzoA6', 'price_1NrcwQEctxRE8ZHzC0DxvoXr', 0, NULL, 'nourriture-pour-hamster-734704', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(76, 34, 'Paradisio souris et rat', 'Paquet paradision pour souris et rat. 2.7kilos', 7.00, 1, 3, '2023-09-18 08:41:05', 1, 'neuf', 'prod_OewukkIUfQnfc4', 'price_1Nrd0zEctxRE8ZHz8gPimxeM', 0, NULL, 'paradisio-souris-et-rat-7046a0', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(77, 34, 'Croquette au fromage', 'Paquet de croquette 3kilos de croquette  au fromage pour lapin, hamster ou souris', 10.00, 1, 3, '2023-09-18 08:44:01', 1, 'neuf', 'prod_OewxxwzwSgBq2v', 'price_1Nrd3pEctxRE8ZHzr4gy6bjm', 0, NULL, 'croquette-au-fromage-586e5f', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(78, 34, 'Roues pour hamster', 'Roues disponible pour hamster. Plusieurs coloris dispo; bleu, vert rouge.', 15.00, 1, 3, '2023-09-18 08:48:11', 1, 'occasion', 'prod_Oex1UUJ6Dt8ako', 'price_1Nrd7rEctxRE8ZHzc5vy9hzM', 0, NULL, 'roues-pour-hamster-7e93dc', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(79, 34, 'Décoration vivarium', 'Décoration vivarium. Taille : 30cm sur 60cm', 45.00, 1, 6, '2023-09-18 09:16:40', 1, 'occasion', 'prod_OexU265xyJ3dkF', 'price_1NrdZQEctxRE8ZHzG9ykGTPI', 0, NULL, 'decoration-vivarium-6f1797', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(80, 34, 'Bocal pour poissons', 'Un bocal pour poisson en bonne état.', 3.00, 1, 4, '2023-09-18 11:58:18', 1, 'usagé', 'prod_Of066lZLy42quk', 'price_1Nrg5pEctxRE8ZHzjpfyzxrS', 0, NULL, 'bocal-pour-poissons-ebe3a6', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(81, 34, 'Lot de nourriture poissons', 'Lots de nourriture pour poissons. Le NutraFin est entamé mais il reste les 3/4 du pot. Le reste est neuf.', 25.00, 1, 4, '2023-09-18 12:07:00', 1, 'occasion', 'prod_Of0El0RFe0xfuK', 'price_1NrgEFEctxRE8ZHzpSiRmuaO', 0, NULL, 'lot-de-nourriture-poissons-81cf42', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(82, 34, 'Distributeur de nourriture', 'Distributeur de nourriture pour poisson grand bassin. Fonctionne parfaitement.', 20.00, 1, 4, '2023-09-18 12:08:43', 1, 'occasion', 'prod_Of0GawSeuFaJrc', 'price_1NrgFuEctxRE8ZHzjkb8nq5p', 0, NULL, 'distributeur-de-nourriture-e4dbc1', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg'),
+	(85, 1, 'test', 'dsssc', 15.00, 1, 1, '2023-10-03 09:21:43', 0, '', 'prod_OkZx8AIOOIK7Bz', 'price_1Nx4nYEctxRE8ZHzyFymjzqs', 0, NULL, 'test-905d95', 'https://static.zoomalia.com/prod_img/114198/banner_advantage-jouet-knot.jpeg');
 
 -- Listage de la structure de table worldofpets. slider
 CREATE TABLE IF NOT EXISTS `slider` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `title` varchar(150) COLLATE utf8mb4_bin NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8mb4_bin DEFAULT NULL,
-  `name_button` varchar(20) COLLATE utf8mb4_bin DEFAULT NULL,
+  `title` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
+  `name_button` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Listage des données de la table worldofpets.slider : ~3 rows (environ)
 INSERT INTO `slider` (`id`, `title`, `description`, `url`, `name_button`) VALUES
-	(2, 'evenement parc aquatique', 'Le parc aquatique va bientôt ouvrir ses portes. Plus d\'infos ci-dessous', 'http://127.0.0.1:8000/evenement/show/27', 'Par ici'),
+	(2, 'evenement parc aquatique', 'Le parc aquatique va bientôt ouvrir ses portes. Plus d\'infos ci-dessous', 'http://127.0.0.1:8000/evenement/show/27', 'Découvrir'),
 	(3, 'chat gris', NULL, NULL, NULL),
 	(17, 'world of pets', 'Votre chat ne veut plus de sa pâté? Il n\'utilise plus ses jouets?', 'http://127.0.0.1:8000/home/add', 'Vendez tous!');
 
@@ -417,9 +475,9 @@ CREATE TABLE IF NOT EXISTS `user` (
   `pseudo` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_8D93D649E7927C74` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Listage des données de la table worldofpets.user : ~10 rows (environ)
+-- Listage des données de la table worldofpets.user : ~15 rows (environ)
 INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`, `pseudo`) VALUES
 	(1, 'admin@admin.fr', '["ROLE_ADMIN"]', '$2y$13$2/RFoGJG9HRO.4kYy5cs/O5wICKQcq8xDayokrQ2Qzg9nP0VR0D0i', 1, 'admin'),
 	(2, 'test@test.fr', '[]', '$2y$13$RriFy1DXc.kcScm8fYJzcubjM1L0N6yGK8of6qkiFQSSbcQT/.er.', 0, 'test'),
@@ -430,7 +488,14 @@ INSERT INTO `user` (`id`, `email`, `roles`, `password`, `is_verified`, `pseudo`)
 	(16, 'adad@lzk.fr', '[]', '$2y$13$BfNsaBwOruXxYkmC1y9DA.mm0QfcR5xZN5.CWMQUxRnOxPpKtmlNK', 0, 'dadadad'),
 	(17, 'papa@pap.fr', '[]', '$2y$13$bQ9sAn9npkb49dgPBByg0uPRpKj5t.pJiRO86uZpQ4EQYzI5xO4.y', 0, 'papa'),
 	(18, 'azaz@zkz.fr', '[]', '$2y$13$/3GaA7xNdo8K08GlhGkUl.tZQ/INUlf7pk55DBa7.RfRkHx8xNA2m', 0, 'mail'),
-	(19, 'titi@tutu.fr', '[]', '$2y$13$NlCROWu/XAEQoiIFV7vaUOgzsReyZ.ZAe36ft2IN5k2EODVYo79EW', 1, 'Titi');
+	(19, 'titi@tutu.fr', '[]', '$2y$13$NlCROWu/XAEQoiIFV7vaUOgzsReyZ.ZAe36ft2IN5k2EODVYo79EW', 1, 'Titi'),
+	(20, 'juju@gmail.com', '[]', '$2y$13$7ZgNWX/tjgmuT63Uk.4uLuhRyvKm0Yt72nko90VXabmhQlTkjeTFi', 0, 'Juju'),
+	(28, 'anonyme@a.fr', '[]', '$2y$13$XvBhrXSyKobD9bEA/iUVD.a2USJzC0iwUYTPu6J0TnLRmkbZZGN2K', 0, 'anonyme'),
+	(34, 'tt@tutu.fr', '[]', '$2y$13$WHgJzOFFpe7WsJcKkstjGu42a2EVLZKGw0iHG834HbSY.NkkBeHrO', 0, 'test1'),
+	(36, 'tutu@tt.fr', '[]', '$2y$13$BoRz0VmIz.jbBbPYCui9BeDx7Fx72a/Sx38pk3XYnT5gLvl1Kb5Le', 0, 'Tutu'),
+	(37, 'test4@fr.fr', '[]', '$2y$13$hTSEWPAStxmMZiXAuB8p9Oq1SV8wNeHqdKk7XLRNU9PWEpxShZhIW', 0, 'mdp'),
+	(38, 'mdp@test.fr', '[]', '$2y$13$CKCxw63gJcRsJZelcq6Qj.Fxm3JNjHtzzqmfZAv6iGW2CAr3GBToS', 0, 'mdpTest'),
+	(39, 'antho04100m@gmail.comadaadadqdadadadaddadada', '[]', '$2y$13$4YsGp1M9zQMTBTul4ijEH.bcfsj0wyOmjBL/.iRyC98eHk5a6s5ui', 0, 'delete');
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
