@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Offre;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -19,6 +20,13 @@ class OffreType extends AbstractType
                 'attr' => [
                     'placeholder' => 'euros', // Ajouter un placeholder
                 ],
+                'constraints' => [
+                    new Range([
+                        'min' => 0.1,
+                        'minMessage' => 'Le prix attendu doit être au-dessus de 0.00€ ',
+
+                    ])
+                ]
             ])
             //->add('date')
             //->add('statut')

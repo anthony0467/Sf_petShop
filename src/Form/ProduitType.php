@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints\All;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Range;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -67,7 +68,14 @@ class ProduitType extends AbstractType
             ])
             ->add('prix', NumberType::class, [
                 'label' => 'Prix Unitaire',
-                'attr' => ['placeholder' => '0.00€']
+                'attr' => ['placeholder' => '0.00€'],
+                'constraints' => [
+                    new Range([
+                        'min' => 0.1,
+                        'minMessage' => 'Le prix attendu doit être au-dessus de 0.1€ ',
+
+                    ])
+                ]
             ])
             ->add('statut', ChoiceType::class, [
                 'choices' => [
