@@ -36,42 +36,42 @@ class ProduitController extends AbstractController
         ]);
     }
 
-    #[Route('/produit/show/{slug}', name: 'show_produit')] // vue detaillé du produit
-    public function show(ManagerRegistry $doctrine,  Produit $produit = null, Request $request, PaginatorInterface $paginator, AvisRepository $av): Response
+    #[Route('/produit/show/{slug}', name: 'show_produit')]
+    public function show(ManagerRegistry $doctrine, Produit $produit = null, Request $request, PaginatorInterface $paginator, AvisRepository $av): Response
     {
-        $user = $this->getUser();
-        $vendeur = $produit->getUser(); // Récupérez le vendeur du produit
-        $avis = $av->findBy(['Vendeur' => $vendeur], ["id" => "DESC"]);
-        //dd($avis);
-
-        //pagination tous les avis
-        $paginationAvis = $paginator->paginate(
-            $avis,
-            $request->query->get('page', 1),
-            6
-        );
-
-
-        //dd($produit->isIsSelling());
-
-        if ($produit && $produit->isIsSelling() == false && $produit->isEtat() == true) {
-
-            // $message->setExpediteur($user);
-            //$message->setDestinataire($vendeur);
-
-            return $this->render('produit/show.html.twig', [
-                'controller_name' => 'HomeController',
-                'produit' => $produit,
-                'avis' => $avis,
-                'paginations' => $paginationAvis,
-
-
-
-            ]);
-        } else {
+        if ($produit === null) {
+            // Si le produit n'existe pas, redirigez l'utilisateur vers une page d'erreur ou une autre page appropriée.
             return $this->redirectToRoute('app_home');
         }
+
+        $user = $this->getUser();
+
+        // Vérifiez si l'utilisateur est connecté avant d'accéder à $user
+        if ($user !== null) {
+            $vendeur = $produit->getUser(); // Récupérez le vendeur du produit
+            $avis = $av->findBy(['Vendeur' => $vendeur], ["id" => "DESC"]);
+
+            // Pagination de tous les avis
+            $paginationAvis = $paginator->paginate(
+                $avis,
+                $request->query->get('page', 1),
+                6
+            );
+
+            if ($produit->isIsSelling() == false && $produit->isEtat() == true) {
+                return $this->render('produit/show.html.twig', [
+                    'controller_name' => 'HomeController',
+                    'produit' => $produit,
+                    'avis' => $avis,
+                    'paginations' => $paginationAvis,
+                ]);
+            }
+        }
+
+        // Redirigez l'utilisateur vers la page d'accueil par défaut
+        return $this->redirectToRoute('app_home');
     }
+
     #[Route('/pagination/produit/show/{slug}', name: 'app_pagination_avis')] // pagination des produits
     public function pagination(ProduitRepository $produitRepository, Request $request, PaginatorInterface $paginator, AvisRepository $av): JsonResponse
     {
