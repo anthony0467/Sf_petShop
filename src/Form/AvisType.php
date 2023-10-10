@@ -32,7 +32,11 @@ class AvisType extends AbstractType
             ->add('parentid', HiddenType::class, [
                 'mapped' => false,
             ])
-            ->add('Envoyer', SubmitType::class);
+            ->add('Envoyer', SubmitType::class,  [
+                'attr' => [
+                    'class' => 'btn'
+                ]
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
