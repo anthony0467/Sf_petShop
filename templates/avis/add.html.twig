@@ -2,36 +2,36 @@
 {% block body %} {% if app.user %}
 <div class="height-form">
   <h1>Ajouter un avis</h1>
+  <div id="events-container">
+    {{ form_start(form) }}
 
-  {{ form_start(form) }}
+    {% if avis is null %}
+    <div>
+      {{ form_label(form.note) }}
+      {{ form_widget(form.note) }}
+      {{ form_errors(form.note) }}
+    </div>
 
-  {% if avis is null %}
-  <div>
-    {{ form_label(form.note) }}
-    {{ form_widget(form.note) }}
-    {{ form_errors(form.note) }}
+    {% else %}
+    <div style="display: none">
+      {{ form_label(form.note) }}
+      {{ form_widget(form.note) }}
+      {{ form_errors(form.note) }}
+    </div>
+    {% endif %}
+
+    <div>
+      {{ form_label(form.commentaire) }}
+      {{ form_widget(form.commentaire) }}
+      {{ form_errors(form.commentaire) }}
+    </div>
+
+    <div>
+      {{ form_widget(form.Envoyer) }}
+    </div>
+
+    {{ form_end(form) }}
   </div>
-
-  {% else %}
-  <div style="display: none">
-    {{ form_label(form.note) }}
-    {{ form_widget(form.note) }}
-    {{ form_errors(form.note) }}
-  </div>
-  {% endif %}
-
-  <div>
-    {{ form_label(form.commentaire) }}
-    {{ form_widget(form.commentaire) }}
-    {{ form_errors(form.commentaire) }}
-  </div>
-
-  <div>
-    {{ form_widget(form.Envoyer) }}
-  </div>
-
-  {{ form_end(form) }}
-
   {% else %}
 
   <p>Vous devez vous connectez pour pouvoir vendre un produit.</p>
