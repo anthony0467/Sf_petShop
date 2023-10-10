@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Entity\Avis;
 use App\Entity\User;
 use App\Form\AvisType;
+use App\Entity\Produit;
+use App\Entity\Commande;
 use App\Repository\AvisRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,10 +36,20 @@ class AvisController extends AbstractController
         if (!$vendor) { // si le vendeur n'existe pas
             throw $this->createNotFoundException('Le vendeur spécifié n\'existe pas.');
         }
+
+        // Vérifiez si une commande existe pour l'utilisateur 
+        $orderExists = $doctrine->getRepository(Commande::class)->findOneBy([
+            'commander' => $user,
+        ]);
+
         // dd($vendor);
         if (!$avis) {
             $avis = new Avis();
         }
+        if (!$orderExists) {
+            return $this->redirectToRoute('app_home');
+        }
+
 
         $form = $this->createForm(AvisType::class, $avis);
         $form->handleRequest($request);
