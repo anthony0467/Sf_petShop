@@ -19,7 +19,7 @@ class EvenementController extends AbstractController
     public function index(ManagerRegistry $doctrine): Response
     {
 
-        $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"], 5);
+        $evenements = $doctrine->getRepository(Evenement::class)->findBy([], ["dateEvenement" => "DESC"]);
 
         return $this->render('evenement/index.html.twig', [
             'controller_name' => 'EvenementController',
